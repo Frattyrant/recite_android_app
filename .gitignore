@@ -1,0 +1,15 @@
+.android-sdk/
+.android-sdk-downloads/
+.gradle-dist/
+.gradle-user-home/
+.gradle/
+.idea/
+local.properties
+**/build/
+*.iml
+tools/.venv/
+tools/.piper-models/
+tools/__pycache__/
+tools/tests/__pycache__/
+output/
+tmp/
