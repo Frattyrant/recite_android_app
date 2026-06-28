@@ -11,7 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Headphones
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -136,7 +136,7 @@ private fun QuizQuestionView(
             ) {
                 if (state.question.mode == QuizMode.LISTENING) {
                     IconButton(onClick = { onPlay(state.question.word) }) {
-                        Icon(Icons.Rounded.Headphones, contentDescription = "重播发音")
+                        Icon(Icons.Default.PlayArrow, contentDescription = "重播发音")
                     }
                 }
                 Text(

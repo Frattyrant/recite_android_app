@@ -5,13 +5,13 @@ import org.junit.Test
 
 class EnglishVariantParserTest {
     @Test
-    fun splitsOnlyAsciiAndFullWidthSemicolons() {
+    fun splitsAllConfiguredSeparators() {
         assertEquals(
-            listOf("fixture", "jig", "checking fixture"),
+            listOf("fixture", "jig", "checking", "fixture"),
             EnglishVariantParser.parse(" fixture；jig; checking fixture "),
         )
         assertEquals(
-            listOf("support, pad/net"),
+            listOf("support,", "pad", "net"),
             EnglishVariantParser.parse("support, pad/net"),
         )
     }

@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Quiz
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -142,13 +142,13 @@ fun MIearnApp(viewModel: MainViewModel) {
             NavigationBar {
                 MainTab.entries.forEach { item ->
                     val icon = when (item) {
-                        MainTab.LEARNING -> Icons.Rounded.Home
-                        MainTab.QUIZ -> Icons.Rounded.Quiz
-                        MainTab.MINE -> Icons.Rounded.Person
+                        MainTab.LEARNING -> Icons.Default.Home
+                        MainTab.QUIZ -> Icons.Default.Check
+                        MainTab.MINE -> Icons.Default.AccountCircle
                     }
                     NavigationBarItem(
                         selected = tab == item,
-                        onClick = { viewModel.selectedTab.value = item },
+                        onClick = { viewModel.selectTab(item) },
                         icon = { Icon(icon, contentDescription = item.label) },
                         label = { Text(item.label) },
                     )

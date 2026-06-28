@@ -12,6 +12,11 @@ import com.miearn.app.ui.theme.MIearnTheme
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
 
+    override fun onStop() {
+        viewModel.stopAudio()
+        super.onStop()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

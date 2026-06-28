@@ -16,9 +16,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.FavoriteBorder
-import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -224,7 +224,7 @@ private fun StudyHeader(
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = onClose) {
-            Icon(Icons.Rounded.Close, contentDescription = "退出")
+            Icon(Icons.Default.Close, contentDescription = "退出")
         }
         Column(Modifier.weight(1f)) {
             Row(
@@ -294,10 +294,10 @@ private fun BrowseCard(
             Spacer(Modifier.height(14.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { onPlay(state.word) }) {
-                    Icon(Icons.Rounded.PlayArrow, contentDescription = "播放发音")
+                    Icon(Icons.Default.PlayArrow, contentDescription = "播放发音")
                 }
                 IconButton(onClick = { onFavorite(state.word.id) }) {
-                    Icon(Icons.Rounded.FavoriteBorder, contentDescription = "收藏")
+                    Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
                 }
             }
             if (state.expanded) {
@@ -385,10 +385,10 @@ private fun ChoiceCard(
                 )
                 Row {
                     IconButton(onClick = { onPlay(state.word) }) {
-                        Icon(Icons.Rounded.PlayArrow, contentDescription = "播放发音")
+                        Icon(Icons.Default.PlayArrow, contentDescription = "播放发音")
                     }
                     IconButton(onClick = { onFavorite(state.word.id) }) {
-                        Icon(Icons.Rounded.FavoriteBorder, contentDescription = "收藏")
+                        Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
                     }
                 }
             }

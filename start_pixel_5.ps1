@@ -12,4 +12,6 @@ if (-not (Test-Path "$env:ANDROID_HOME\emulator\emulator.exe")) {
 
 Write-Host "Starting Pixel_5..." -ForegroundColor Cyan
 # Start in background
-Start-Process -FilePath "$env:ANDROID_HOME\emulator\emulator.exe" -ArgumentList "-avd Pixel_5", "-no-snapshot-load"
+Start-Process -FilePath "$env:ANDROID_HOME\emulator\emulator.exe" `
+    -ArgumentList "-avd Pixel_5", "-no-snapshot-load" `
+    -WindowStyle Hidden

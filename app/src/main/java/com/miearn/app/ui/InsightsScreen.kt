@@ -12,8 +12,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -55,7 +55,7 @@ fun InsightsScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = onClose) {
-                Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "返回")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
             }
             Text("学习数据", style = MaterialTheme.typography.headlineSmall)
         }
@@ -75,7 +75,7 @@ fun InsightsScreen(
             ) {
                 Text(state.message)
                 TextButton(onClick = onRetry) {
-                    Icon(Icons.Rounded.Refresh, contentDescription = null)
+                    Icon(Icons.Default.Refresh, contentDescription = null)
                     Text("重试")
                 }
             }

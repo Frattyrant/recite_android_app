@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "words",
     indices = [
-        Index(value = ["category", "sourceIndex"], unique = true),
+        Index(value = ["category", "sourceIndex"]),
         Index(value = ["english"]),
         Index(value = ["chinese"]),
     ],
@@ -29,6 +29,7 @@ data class WordEntity(
     val exampleZh: String,
     val audioText: String,
     val audioAsset: String,
+    val isCustom: Boolean = false,
 )
 
 @Entity(

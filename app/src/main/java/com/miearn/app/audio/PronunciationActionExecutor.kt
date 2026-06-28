@@ -134,6 +134,15 @@ class PronunciationActionExecutor(
         }
     }
 
+    fun stop() {
+        synchronized(machineLock) {
+            if (closed) return
+            runCatching { driver.stopPlayback() }
+            machine.cancel()
+            synchronizeStatus()
+        }
+    }
+
     fun release() {
         synchronized(machineLock) {
             if (closed) {

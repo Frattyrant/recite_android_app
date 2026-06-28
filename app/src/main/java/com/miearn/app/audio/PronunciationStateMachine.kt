@@ -143,6 +143,13 @@ class PronunciationStateMachine {
         }
     }
 
+    fun cancel() {
+        if (closed) return
+        pendingTts = null
+        ttsFailures = 0
+        invalidateActiveAttempt()
+    }
+
     fun close() {
         if (closed) {
             return

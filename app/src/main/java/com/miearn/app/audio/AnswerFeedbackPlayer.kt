@@ -20,16 +20,27 @@ class AnswerFeedbackPlayer(context: Context) {
                 .build(),
         )
         .build()
-    private val soundIds = mapOf(
-        AnswerFeedback.CORRECT to soundPool.load(context, R.raw.answer_correct, 1),
-        AnswerFeedback.WRONG to soundPool.load(context, R.raw.answer_wrong, 1),
-    )
+    private val loadedGate = LoadedSoundGate { soundId ->
+        soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+    }
+    private val soundIds: Map<AnswerFeedback, Int>
+
+    init {
+        soundPool.setOnLoadCompleteListener { _, soundId, status ->
+            loadedGate.onLoadComplete(soundId, status)
+        }
+        soundIds = mapOf(
+            AnswerFeedback.CORRECT to soundPool.load(context, R.raw.answer_correct, 1),
+            AnswerFeedback.WRONG to soundPool.load(context, R.raw.answer_wrong, 1),
+        )
+    }
 
     fun play(feedback: AnswerFeedback) {
-        soundIds[feedback]?.let { soundPool.play(it, 1f, 1f, 1, 0, 1f) }
+        soundIds[feedback]?.let(loadedGate::request)
     }
 
     fun release() {
+        loadedGate.close()
         soundPool.release()
     }
 }

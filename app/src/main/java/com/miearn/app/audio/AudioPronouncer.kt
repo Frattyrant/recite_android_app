@@ -62,7 +62,7 @@ class AudioPronouncer(context: Context) {
     }
 
     fun stop() {
-        driver.stopPlayback()
+        executor.stop()
     }
 
     private fun playRequest(request: SpeechRequest) {

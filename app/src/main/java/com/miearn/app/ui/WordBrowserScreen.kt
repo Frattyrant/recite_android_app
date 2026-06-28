@@ -13,10 +13,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.FavoriteBorder
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -57,7 +57,7 @@ fun WordBrowserScreen(
     Column(Modifier.fillMaxSize().padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "返回")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
             }
             Text(destination.title, style = MaterialTheme.typography.headlineSmall)
         }
@@ -77,7 +77,7 @@ fun WordBrowserScreen(
                     },
                 )
             },
-            leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
             singleLine = true,
         )
         Spacer(Modifier.height(12.dp))
@@ -120,10 +120,10 @@ fun WordBrowserScreen(
                 Text(word.chinese, style = MaterialTheme.typography.titleLarge)
                 Row {
                     IconButton(onClick = { onPlay(word) }) {
-                        Icon(Icons.Rounded.PlayArrow, contentDescription = "播放完整发音")
+                        Icon(Icons.Default.PlayArrow, contentDescription = "播放完整发音")
                     }
                     IconButton(onClick = { onFavorite(word.id) }) {
-                        Icon(Icons.Rounded.FavoriteBorder, contentDescription = "收藏")
+                        Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
                     }
                 }
                 Text(word.exampleEn, modifier = Modifier.fillMaxWidth())
@@ -176,10 +176,10 @@ private fun WordBrowserRow(
                 )
             }
             IconButton(onClick = onPlay) {
-                Icon(Icons.Rounded.PlayArrow, contentDescription = "播放")
+                Icon(Icons.Default.PlayArrow, contentDescription = "播放")
             }
             IconButton(onClick = onFavorite) {
-                Icon(Icons.Rounded.FavoriteBorder, contentDescription = "收藏")
+                Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
             }
         }
     }

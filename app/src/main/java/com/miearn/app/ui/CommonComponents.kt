@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -25,7 +25,7 @@ fun ErrorScreen(message: String, onRetry: () -> Unit) {
         Text("词库加载失败")
         Text(message, modifier = Modifier.padding(vertical = 12.dp))
         Button(onClick = onRetry) {
-            Icon(Icons.Rounded.Refresh, contentDescription = null)
+            Icon(Icons.Default.Refresh, contentDescription = null)
             Text("重试", modifier = Modifier.padding(start = 8.dp))
         }
     }

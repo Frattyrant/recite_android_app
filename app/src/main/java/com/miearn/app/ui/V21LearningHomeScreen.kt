@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
@@ -67,7 +67,7 @@ fun V21LearningHomeScreen(
                         )
                         TextButton(onClick = { categoryMenu = true }) {
                             Text(active?.categoryLabel ?: "选择词库")
-                            Icon(Icons.Rounded.ExpandMore, contentDescription = null)
+                            Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
                         }
                         DropdownMenu(
                             expanded = categoryMenu,
@@ -85,10 +85,10 @@ fun V21LearningHomeScreen(
                         }
                     }
                     IconButton(onClick = onOpenSearch) {
-                        Icon(Icons.Rounded.Search, contentDescription = "搜索全词库")
+                        Icon(Icons.Default.Search, contentDescription = "搜索全词库")
                     }
                     IconButton(onClick = onOpenSettings) {
-                        Icon(Icons.Rounded.Settings, contentDescription = "设置")
+                        Icon(Icons.Default.Settings, contentDescription = "设置")
                     }
                 }
             }
@@ -132,7 +132,7 @@ fun V21LearningHomeScreen(
                 .testTag("primary-study-action"),
             shape = RoundedCornerShape(20.dp),
         ) {
-            Icon(Icons.Rounded.PlayArrow, contentDescription = null)
+            Icon(Icons.Default.PlayArrow, contentDescription = null)
             Text(
                 "开始学习",
                 modifier = Modifier.padding(start = 8.dp),

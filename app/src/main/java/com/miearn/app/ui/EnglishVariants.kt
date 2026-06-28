@@ -24,15 +24,6 @@ fun EnglishVariants(
     modifier: Modifier = Modifier,
 ) {
     val variants = EnglishVariantParser.parse(word.english)
-    if (variants.size == 1) {
-        Text(
-            text = variants.single(),
-            modifier = modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
-        )
-        return
-    }
     FlowRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -46,6 +37,7 @@ fun EnglishVariants(
                 },
                 shape = RoundedCornerShape(16.dp),
                 color = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
             ) {
                 Text(
                     text = variant,

@@ -9,7 +9,7 @@ RATE = 22_050
 OUT = Path(__file__).resolve().parents[1] / "app" / "src" / "main" / "res" / "raw"
 
 
-def write_tone(path: Path, notes: list[tuple[float, float]], volume: float = 0.24) -> None:
+def write_tone(path: Path, notes: list[tuple[float, float]], volume: float = 0.75) -> None:
     frames: list[int] = []
     for frequency, duration in notes:
         count = int(RATE * duration)
@@ -27,4 +27,4 @@ def write_tone(path: Path, notes: list[tuple[float, float]], volume: float = 0.2
 
 
 write_tone(OUT / "answer_correct.wav", [(660, 0.09), (880, 0.13)])
-write_tone(OUT / "answer_wrong.wav", [(260, 0.18)], volume=0.18)
+write_tone(OUT / "answer_wrong.wav", [(260, 0.18)], volume=0.65)

@@ -18,8 +18,8 @@ Use the project-local environment for every Gradle command:
 
 ```powershell
 $env:JAVA_HOME = 'D:\Android_Studio\jbr'
-$env:ANDROID_HOME = (Resolve-Path '.android-sdk')
-$env:GRADLE_USER_HOME = (Resolve-Path '.gradle-user-home')
+$env:ANDROID_HOME = 'D:\Android\Sdk'
+$env:GRADLE_USER_HOME = 'D:\Android\Gradle'
 ```
 
 Do not add `INTERNET`, `ACCESS_NETWORK_STATE`, broad storage permissions, or notification behavior for imports.
@@ -1366,13 +1366,13 @@ Each test must assert the final Room state in addition to the visible Compose no
 Create the missing API 29 AVD once, then run it:
 
 ```powershell
-& .android-sdk\cmdline-tools\latest\bin\sdkmanager.bat `
+& D:\Android\Sdk\cmdline-tools\latest\bin\sdkmanager.bat `
   'system-images;android-29;google_apis;x86_64'
-'no' | & .android-sdk\cmdline-tools\latest\bin\avdmanager.bat create avd `
+'no' | & D:\Android\Sdk\cmdline-tools\latest\bin\avdmanager.bat create avd `
   --force --name MIearn_API_29 `
   --package 'system-images;android-29;google_apis;x86_64' `
   --device 'pixel_4'
-Start-Process .android-sdk\emulator\emulator.exe `
+Start-Process D:\Android\Sdk\emulator\emulator.exe `
   -ArgumentList '-avd','MIearn_API_29','-no-snapshot','-no-boot-anim' `
   -WindowStyle Hidden
 .\gradlew.bat connectedDebugAndroidTest --no-daemon
@@ -1453,7 +1453,7 @@ Expected:
 - [ ] **Step 4: Verify Manifest permissions**
 
 ```powershell
-$aapt = Get-ChildItem .android-sdk\build-tools -Recurse -Filter aapt2.exe |
+$aapt = Get-ChildItem D:\Android\Sdk\build-tools -Recurse -Filter aapt2.exe |
     Sort-Object FullName -Descending |
     Select-Object -First 1
 & $aapt.FullName dump permissions app\build\outputs\apk\debug\app-debug.apk
@@ -1495,4 +1495,4 @@ app/src/main/assets/dictionaries/ecdict_compact.db.gz
 output/reports/import_v22_verification_report.md
 ```
 
-Commit message if Git exists: `docs: complete miearn v2.2 import verification`
+Commit message if Git exists: `docs: complete miearn v2.1 import verification`

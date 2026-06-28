@@ -14,16 +14,18 @@ if (-not $env:JAVA_HOME) {
     }
 }
 
-# Android SDK
-$sdk_path = Join-Path $root ".android-sdk"
+# Shared Android environment on D:
+$sdk_path = "D:\Android\Sdk"
 if (Test-Path $sdk_path) {
     $env:ANDROID_HOME = $sdk_path
     $env:ANDROID_SDK_ROOT = $sdk_path
+    $env:ANDROID_USER_HOME = "D:\Android\AndroidUserHome"
+    $env:ANDROID_AVD_HOME = "D:\Android\AVD"
     Write-Host "ANDROID_HOME set to $env:ANDROID_HOME"
 }
 
-# Gradle Home (optional, keeps project isolated)
-$gradle_user_home = Join-Path $root ".gradle-user-home"
+# Shared Gradle cache keeps the project directory lean.
+$gradle_user_home = "D:\Android\Gradle"
 if (Test-Path $gradle_user_home) {
     $env:GRADLE_USER_HOME = $gradle_user_home
     Write-Host "GRADLE_USER_HOME set to $env:GRADLE_USER_HOME"

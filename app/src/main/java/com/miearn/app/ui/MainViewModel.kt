@@ -160,6 +160,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun selectTab(tab: MainTab) {
+        container.audio.stop()
+        selectedTab.value = tab
+    }
+
+    fun stopAudio() {
+        container.audio.stop()
+    }
+
     fun selectActiveCategory(category: String) {
         viewModelScope.launch {
             settingsRepository.setActiveCategory(category)
@@ -172,6 +181,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun closeWordBrowser() {
+        container.audio.stop()
         wordBrowserDestination.value = null
         wordBrowserQuery.value = ""
     }
@@ -356,6 +366,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun closeStudy() {
+        container.audio.stop()
         studyState.value = StudyUiState.Idle
     }
 
@@ -526,6 +537,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun resetQuiz() {
+        container.audio.stop()
         quizState.value = QuizUiState.Setup
     }
 
