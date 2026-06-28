@@ -1,15 +1,25 @@
-.android-sdk/
-.android-sdk-downloads/
-.gradle-dist/
-.gradle-user-home/
-.gradle/
+# Android Studio
 .idea/
-local.properties
-**/build/
 *.iml
-tools/.venv/
-tools/.piper-models/
-tools/__pycache__/
-tools/tests/__pycache__/
+# Gradle
+.gradle/
+.gradle-user-home/
+.gradle-dist/
+# Android SDK
+.android/
+.android-sdk/
+.android-user-home/
+# Kotlin
+.kotlin/
+# Local config
+local.properties
+# Build output
+build/
+**/build/
+# Output
 output/
-tmp/
+# Logs
+*.log
+# OS
+.DS_Store
+Thumbs.db
