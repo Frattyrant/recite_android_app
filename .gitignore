@@ -5,6 +5,7 @@
 .gradle/
 .gradle-user-home/
 .gradle-dist/
+.worktrees/
 # Android SDK
 .android/
 .android-sdk/
