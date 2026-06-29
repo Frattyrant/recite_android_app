@@ -46,34 +46,4 @@ fixture,夹具,/ˈfɪkstʃər/,制造业术语,Inspect the fixture.,检查夹具
 
 ## 安装
 
-将 `app/build/outputs/apk/debug/app-debug.apk` 复制到 Android 10 或更高版本设备，
-允许文件管理器安装未知来源应用后安装。Debug APK 使用 Android 调试证书，仅用于
-本地安装和测试。
-
-## 构建
-
-```powershell
-$env:JAVA_HOME = "D:\Android_Studio\jbr"
-$env:ANDROID_HOME = "D:\Android\Sdk"
-$env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
-$env:GRADLE_USER_HOME = "D:\Android\Gradle"
-
-.\gradlew.bat testDebugUnitTest compileDebugAndroidTestKotlin lintDebug verifyDebugApkSize
-```
-
-重新构建精简 ECDICT：
-
-```powershell
-Invoke-WebRequest `
-  -Uri "https://raw.githubusercontent.com/skywind3000/ECDICT/master/ecdict.csv" `
-  -OutFile "tools\vendor\ecdict.csv"
-
-python tools\build_compact_ecdict.py `
-  --source tools\vendor\ecdict.csv `
-  --output app\src\main\assets\dictionaries\ecdict_compact.db.gz.bin `
-  --manifest app\src\main\assets\dictionaries\ecdict_compact_manifest.json `
-  --limit 120000
-```
-
-原始 `ecdict.csv` 是临时构建输入，已被 `.gitignore` 排除。第三方模型、词典与许可
-见 `THIRD_PARTY_NOTICES.md`。
+点击release页下载MIearn(v2.1),目前仅支持APK
