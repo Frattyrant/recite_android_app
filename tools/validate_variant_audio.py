@@ -10,6 +10,11 @@ from pathlib import Path
 from tools.validate_audio import probe_audio
 
 
+def pause_tolerance(segment_count: int) -> float:
+    """Allow deterministic Opus pre-skip/padding accumulated per encoded clip."""
+    return 0.12 + max(0, segment_count - 1) * 0.005
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, default=Path("app/src/main/assets/content/audio_manifest_v1.json"))
@@ -48,7 +53,10 @@ def main() -> None:
             for segment in entry["segments"]
         )
         expected_pause = (len(entry["segments"]) - 1) * 0.5
-        if abs(full_duration - segment_duration - expected_pause) > 0.12:
+        if (
+            abs(full_duration - segment_duration - expected_pause)
+            > pause_tolerance(len(entry["segments"]))
+        ):
             raise RuntimeError(
                 f"pause duration mismatch for {entry['id']}: "
                 f"full={full_duration}, segments={segment_duration}, pause={expected_pause}"

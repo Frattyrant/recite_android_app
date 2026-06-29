@@ -1,5 +1,6 @@
 package com.miearn.app.data.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -29,7 +30,7 @@ data class WordEntity(
     val exampleZh: String,
     val audioText: String,
     val audioAsset: String,
-    val isCustom: Boolean = false,
+    @ColumnInfo(defaultValue = "0") val isCustom: Boolean = false,
 )
 
 @Entity(

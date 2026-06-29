@@ -39,4 +39,21 @@ class SpeechRequestFactoryTest {
         assertEquals("audio/variants/mec_0002_01.ogg", request.assetPath)
         assertEquals(listOf("jig"), request.segments.map { it.text })
     }
+
+    @Test
+    fun phraseRequestUsesSentenceSegmentsAndSanitizesSlashForTts() {
+        val phrase = fixture.copy(
+            id = "cus_0097",
+            kind = "PHRASE",
+            english = "Read at 300mm/s. Then inspect the result.",
+            audioText = "Read at 300mm/s. Then inspect the result.",
+        )
+
+        val request = SpeechRequestFactory.full(phrase)
+
+        assertEquals(
+            listOf("Read at 300mm s.", "Then inspect the result."),
+            request.segments.map { it.text },
+        )
+    }
 }

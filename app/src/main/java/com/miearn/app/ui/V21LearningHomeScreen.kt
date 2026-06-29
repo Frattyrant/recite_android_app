@@ -36,6 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.miearn.app.data.local.ImportJobEntity
+import com.miearn.app.data.local.ImportJobStatus
 
 @Composable
 fun V21LearningHomeScreen(
@@ -45,6 +47,8 @@ fun V21LearningHomeScreen(
     onSelectCategory: (String) -> Unit,
     onOpenSettings: () -> Unit,
     onOpenSearch: () -> Unit,
+    onImportVocabulary: () -> Unit,
+    importJob: ImportJobEntity? = null,
 ) {
     var categoryMenu by rememberSaveable { mutableStateOf(false) }
     val active = state.activeStats
@@ -83,6 +87,9 @@ fun V21LearningHomeScreen(
                                 )
                             }
                         }
+                    }
+                    TextButton(onClick = onImportVocabulary) {
+                        Text("导入")
                     }
                     IconButton(onClick = onOpenSearch) {
                         Icon(Icons.Default.Search, contentDescription = "搜索全词库")
@@ -123,6 +130,26 @@ fun V21LearningHomeScreen(
                     }
                 }
             }
+            if (
+                importJob != null &&
+                importJob.status !in setOf(
+                    ImportJobStatus.COMPLETED.name,
+                    ImportJobStatus.FAILED.name,
+                    ImportJobStatus.CANCELLED.name,
+                )
+            ) {
+                item {
+                    Card(onClick = onImportVocabulary, shape = RoundedCornerShape(18.dp)) {
+                        Column(
+                            Modifier.fillMaxWidth().padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            Text("词库导入", fontWeight = FontWeight.SemiBold)
+                            Text(importJob.homeStatusText())
+                        }
+                    }
+                }
+            }
         }
         Button(
             onClick = onStartStudy,
@@ -140,6 +167,17 @@ fun V21LearningHomeScreen(
             )
         }
         Spacer(Modifier.height(18.dp))
+    }
+}
+
+private fun ImportJobEntity.homeStatusText(): String = when (status) {
+    ImportJobStatus.AWAITING_MAPPING.name -> "需要确认文件列"
+    ImportJobStatus.AWAITING_CONFIRMATION.name -> "校验完成，等待确认"
+    ImportJobStatus.COMMITTING.name -> "正在保存词库…"
+    else -> if (totalRows > 0) {
+        "正在校验第 $processedRows/$totalRows 个词…"
+    } else {
+        "正在读取 $originalFileName…"
     }
 }
 

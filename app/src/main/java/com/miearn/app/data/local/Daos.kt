@@ -10,101 +10,40 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WordDao {
-    @Upsert
-    suspend fun upsertAll(words: List<WordEntity>)
+    @Upsert suspend fun upsertAll(words: List<WordEntity>)
+    @Upsert suspend fun upsert(word: WordEntity)
+    @Query("SELECT * FROM words WHERE id = :id") suspend fun getById(id: String): WordEntity?
+    @Query("SELECT * FROM words WHERE id IN (:ids)") suspend fun getByIds(ids: List<String>): List<WordEntity>
 
-    @Query("SELECT * FROM words WHERE id = :id")
-    suspend fun getById(id: String): WordEntity?
+    @Query("""SELECT w.* FROM words w WHERE (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId)) AND (:query = '' OR INSTR(LOWER(w.english), LOWER(:query)) > 0 OR INSTR(w.chinese, :query) > 0) ORDER BY COALESCE((SELECT x.importOrder FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId), w.sourceIndex)""")
+    fun search(sourceId: String, query: String): Flow<List<WordEntity>>
 
-    @Query("SELECT * FROM words WHERE id IN (:ids)")
-    suspend fun getByIds(ids: List<String>): List<WordEntity>
-
-    @Query(
-        """
-        SELECT * FROM words
-        WHERE category = :category
-          AND (:query = '' OR INSTR(LOWER(english), LOWER(:query)) > 0
-               OR INSTR(chinese, :query) > 0)
-        ORDER BY sourceIndex
-        """,
-    )
-    fun search(category: String, query: String): Flow<List<WordEntity>>
-
-    @Query(
-        """
-        SELECT * FROM words
-        WHERE :query != ''
-          AND (INSTR(LOWER(english), LOWER(:query)) > 0
-               OR INSTR(chinese, :query) > 0)
-        ORDER BY rowid
-        """,
-    )
+    @Query("""SELECT * FROM words WHERE :query != '' AND (INSTR(LOWER(english), LOWER(:query)) > 0 OR INSTR(chinese, :query) > 0) ORDER BY rowid""")
     fun searchAll(query: String): Flow<List<WordEntity>>
 
-    @Query("SELECT COUNT(*) FROM words")
-    suspend fun count(): Int
+    @Query("SELECT COUNT(*) FROM words") suspend fun count(): Int
+    @Query("SELECT COUNT(*) FROM words WHERE isCustom = 0") suspend fun builtInCount(): Int
 
-    @Query("SELECT * FROM words WHERE category = :category ORDER BY sourceIndex LIMIT :limit")
-    suspend fun categoryWords(category: String, limit: Int): List<WordEntity>
+    @Query("""SELECT w.* FROM words w WHERE w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId) ORDER BY COALESCE((SELECT x.importOrder FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId), w.sourceIndex) LIMIT :limit""")
+    suspend fun categoryWords(sourceId: String, limit: Int): List<WordEntity>
 
-    @Query(
-        """
-        SELECT w.* FROM words w
-        JOIN progress p ON p.wordId = w.id
-        WHERE w.category = :category
-          AND p.firstLearnedEpochDay IS NOT NULL
-        ORDER BY w.sourceIndex
-        LIMIT :limit
-        """,
-    )
-    suspend fun learnedWords(category: String, limit: Int): List<WordEntity>
+    @Query("""SELECT w.* FROM words w JOIN progress p ON p.wordId = w.id WHERE (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId)) AND p.firstLearnedEpochDay IS NOT NULL ORDER BY COALESCE((SELECT x.importOrder FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId), w.sourceIndex) LIMIT :limit""")
+    suspend fun learnedWords(sourceId: String, limit: Int): List<WordEntity>
 
-    @Query(
-        """
-        SELECT w.category AS category,
-               w.categoryLabel AS categoryLabel,
-               COUNT(*) AS total,
-               SUM(CASE WHEN p.firstLearnedEpochDay IS NOT NULL THEN 1 ELSE 0 END) AS learned,
-               SUM(CASE WHEN p.mastered = 1 THEN 1 ELSE 0 END) AS mastered
-        FROM words w
-        LEFT JOIN progress p ON p.wordId = w.id
-        GROUP BY w.category, w.categoryLabel
-        ORDER BY MIN(w.rowid)
-        """,
-    )
+    @Query("""SELECT s.sourceId AS category, s.displayName AS categoryLabel, COUNT(x.wordId) AS total, SUM(CASE WHEN p.firstLearnedEpochDay IS NOT NULL THEN 1 ELSE 0 END) AS learned, SUM(CASE WHEN p.mastered = 1 THEN 1 ELSE 0 END) AS mastered FROM sources s LEFT JOIN word_source x ON x.sourceId = s.sourceId LEFT JOIN progress p ON p.wordId = x.wordId GROUP BY s.sourceId, s.displayName ORDER BY CASE s.type WHEN 'BUILTIN' THEN 0 ELSE 1 END, s.createdAtEpochMillis, s.displayName""")
     fun observeCategoryStats(): Flow<List<CategoryStats>>
 
-    @Query(
-        """
-        SELECT w.* FROM words w
-        JOIN progress p ON p.wordId = w.id
-        WHERE p.isFavorite = 1
-        ORDER BY w.category, w.sourceIndex
-        """,
-    )
+    @Query("""SELECT w.* FROM words w JOIN progress p ON p.wordId = w.id WHERE p.isFavorite = 1 ORDER BY w.category, w.sourceIndex""")
     fun favorites(): Flow<List<WordEntity>>
-
-    @Query(
-        """
-        SELECT w.* FROM words w
-        JOIN progress p ON p.wordId = w.id
-        WHERE p.wrongCount > 0
-        ORDER BY p.wrongCount DESC, w.category, w.sourceIndex
-        """,
-    )
+    @Query("""SELECT w.* FROM words w JOIN progress p ON p.wordId = w.id WHERE p.wrongCount > 0 ORDER BY p.wrongCount DESC, w.category, w.sourceIndex""")
     fun wrongWords(): Flow<List<WordEntity>>
-
-    @Query(
-        """
-        SELECT w.* FROM words w
-        JOIN progress p ON p.wordId = w.id
-        WHERE p.mastered = 1
-        ORDER BY w.category, w.sourceIndex
-        """,
-    )
+    @Query("""SELECT w.* FROM words w JOIN progress p ON p.wordId = w.id WHERE p.mastered = 1 ORDER BY w.category, w.sourceIndex""")
     fun masteredWords(): Flow<List<WordEntity>>
-}
 
+    @Query("""SELECT * FROM words WHERE LOWER(TRIM(english)) = :normalizedEnglish ORDER BY isCustom, rowid LIMIT 1""")
+    suspend fun findCanonicalWord(normalizedEnglish: String): WordEntity?
+    @Query("DELETE FROM words WHERE id = :wordId AND isCustom = 1") suspend fun deleteCustomWord(wordId: String): Int
+}
 @Dao
 interface ProgressDao {
     @Upsert
@@ -175,54 +114,18 @@ interface ProgressDao {
 
 @Dao
 interface StudyDao {
-    @Query(
-        """
-        SELECT w.id FROM words w
-        JOIN progress p ON p.wordId = w.id
-        WHERE w.category = :category
-          AND p.firstLearnedEpochDay IS NOT NULL
-          AND p.mastered = 0
-          AND p.nextReviewEpochDay <= :today
-        ORDER BY p.wrongCount DESC, p.nextReviewEpochDay, w.sourceIndex
-        """,
-    )
-    suspend fun dueWordIds(category: String, today: Long): List<String>
+    @Query("""SELECT w.id FROM words w JOIN progress p ON p.wordId = w.id WHERE (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId)) AND p.firstLearnedEpochDay IS NOT NULL AND p.mastered = 0 AND p.nextReviewEpochDay <= :today ORDER BY p.wrongCount DESC, p.nextReviewEpochDay, COALESCE((SELECT x.importOrder FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId), w.sourceIndex)""")
+    suspend fun dueWordIds(sourceId: String, today: Long): List<String>
 
-    @Query(
-        """
-        SELECT w.id FROM words w
-        LEFT JOIN progress p ON p.wordId = w.id
-        WHERE w.category = :category
-          AND p.firstLearnedEpochDay IS NULL
-        ORDER BY w.sourceIndex
-        LIMIT :limit
-        """,
-    )
-    suspend fun newWordIds(category: String, limit: Int): List<String>
+    @Query("""SELECT w.id FROM words w LEFT JOIN progress p ON p.wordId = w.id WHERE (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId)) AND p.firstLearnedEpochDay IS NULL ORDER BY COALESCE((SELECT x.importOrder FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId), w.sourceIndex) LIMIT :limit""")
+    suspend fun newWordIds(sourceId: String, limit: Int): List<String>
 
-    @Query(
-        """
-        SELECT COUNT(*) FROM progress p
-        JOIN words w ON w.id = p.wordId
-        WHERE w.category = :category
-          AND p.firstLearnedEpochDay IS NOT NULL
-          AND p.mastered = 0
-          AND p.nextReviewEpochDay <= :today
-        """,
-    )
-    fun observeDueCount(category: String, today: Long): Flow<Int>
+    @Query("""SELECT COUNT(*) FROM progress p JOIN words w ON w.id = p.wordId WHERE (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId)) AND p.firstLearnedEpochDay IS NOT NULL AND p.mastered = 0 AND p.nextReviewEpochDay <= :today""")
+    fun observeDueCount(sourceId: String, today: Long): Flow<Int>
 
-    @Query(
-        """
-        SELECT COUNT(*) FROM words w
-        LEFT JOIN progress p ON p.wordId = w.id
-        WHERE w.category = :category
-          AND p.firstLearnedEpochDay IS NULL
-        """,
-    )
-    fun observeUnseenCount(category: String): Flow<Int>
+    @Query("""SELECT COUNT(*) FROM words w LEFT JOIN progress p ON p.wordId = w.id WHERE (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId)) AND p.firstLearnedEpochDay IS NULL""")
+    fun observeUnseenCount(sourceId: String): Flow<Int>
 }
-
 @Dao
 interface ActivityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

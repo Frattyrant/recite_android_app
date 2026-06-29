@@ -44,7 +44,7 @@ class Migration1To2Test {
         createVersion1Database()
 
         database = Room.databaseBuilder(context, AppDatabase::class.java, databaseName)
-            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
             .allowMainThreadQueries()
             .build()
 
@@ -61,6 +61,15 @@ class Migration1To2Test {
         assertEquals(20_000L, migrated.lastStudiedEpochDay)
         assertEquals(20_000L, migrated.lastReviewedEpochDay)
         assertEquals(20_000L, migrated.firstLearnedEpochDay)
+        assertFalse(database!!.wordDao().getById("one")!!.isCustom)
+        assertEquals(
+            "mechanical",
+            database!!.sourceDao().getById("mechanical")?.sourceId,
+        )
+        assertEquals(
+            listOf("one"),
+            database!!.sourceDao().wordIds("mechanical"),
+        )
 
         val progressColumns = database!!.openHelper.readableDatabase
             .query("PRAGMA table_info(`progress`)")

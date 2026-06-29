@@ -18,8 +18,14 @@ build/
 **/build/
 # Output
 output/
+tmp/
 # Logs
 *.log
 # OS
 .DS_Store
 Thumbs.db
+
+tools/.piper-models/
+tools/vendor/ecdict.csv
+__pycache__/
+*.pyc

@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.miearn.app.data.local.WordEntity
+import com.miearn.app.domain.LearningContentPolicy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -116,8 +117,13 @@ fun WordBrowserScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 EnglishVariants(word, onPlayVariant)
-                Text(word.phonetic, color = MaterialTheme.colorScheme.primary)
-                Text(word.chinese, style = MaterialTheme.typography.titleLarge)
+                if (word.phonetic.isNotBlank()) {
+                    Text(word.phonetic, color = MaterialTheme.colorScheme.primary)
+                }
+                Text(
+                    LearningContentPolicy.displayChinese(word.chinese),
+                    style = MaterialTheme.typography.titleLarge,
+                )
                 Row {
                     IconButton(onClick = { onPlay(word) }) {
                         Icon(Icons.Default.PlayArrow, contentDescription = "播放完整发音")
@@ -126,12 +132,16 @@ fun WordBrowserScreen(
                         Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
                     }
                 }
-                Text(word.exampleEn, modifier = Modifier.fillMaxWidth())
-                Text(
-                    word.exampleZh,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                if (word.exampleEn.isNotBlank()) {
+                    Text(word.exampleEn, modifier = Modifier.fillMaxWidth())
+                    if (word.exampleZh.isNotBlank()) {
+                        Text(
+                            word.exampleZh,
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
                 if (word.note.isNotBlank()) {
                     Text("备注：${word.note}", modifier = Modifier.fillMaxWidth())
                 }
@@ -164,7 +174,7 @@ private fun WordBrowserRow(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    word.chinese,
+                    LearningContentPolicy.displayChinese(word.chinese),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,

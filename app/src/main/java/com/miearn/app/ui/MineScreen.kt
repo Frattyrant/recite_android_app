@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +28,7 @@ fun MineScreen(
     onFavorites: () -> Unit,
     onWrong: () -> Unit,
     onInsights: () -> Unit,
+    onSources: () -> Unit,
 ) {
     Column(
         modifier.fillMaxSize().padding(16.dp),
@@ -38,6 +38,7 @@ fun MineScreen(
         MineEntry("收藏", Icons.Default.FavoriteBorder, onFavorites)
         MineEntry("错题", Icons.Default.Info, onWrong)
         MineEntry("学习数据", Icons.Default.Info, onInsights)
+        MineEntry("自定义词库", Icons.Default.Info, onSources)
     }
 }
 

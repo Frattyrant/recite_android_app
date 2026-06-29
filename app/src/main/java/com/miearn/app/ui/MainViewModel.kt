@@ -3,6 +3,7 @@ package com.miearn.app.ui
 import android.app.Application
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.provider.Settings
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,8 +14,13 @@ import com.miearn.app.audio.TtsInstallIntent
 import com.miearn.app.data.MIearnRepository
 import com.miearn.app.data.SavedLearningSession
 import com.miearn.app.data.local.WordEntity
+import com.miearn.app.data.local.ImportConflictPolicy
+import com.miearn.app.data.local.ImportJobEntity
+import com.miearn.app.data.local.SourceEntity
+import com.miearn.app.importing.ImportColumnMapping
 import com.miearn.app.data.settings.UserSettings
 import com.miearn.app.domain.LearningPhase
+import com.miearn.app.domain.LearningContentPolicy
 import com.miearn.app.domain.LearningSession
 import com.miearn.app.domain.QuizEngine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,6 +29,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -39,6 +46,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val showSettings = MutableStateFlow(false)
     val showReminderPrompt = MutableStateFlow(false)
     val showInsights = MutableStateFlow(false)
+    val showImport = MutableStateFlow(false)
+    val importUiError = MutableStateFlow<String?>(null)
+    val showSourceManager = MutableStateFlow(false)
+    val sources: StateFlow<List<SourceEntity>> = container.database.sourceDao().observeAll()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    private val activeImportJobId = MutableStateFlow<String?>(null)
+    val importJob: StateFlow<ImportJobEntity?> = activeImportJobId
+        .flatMapLatest { jobId ->
+            if (jobId == null) flowOf(null) else container.importCoordinator.observeJob(jobId)
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
     val insightsState = MutableStateFlow<InsightsUiState>(InsightsUiState.Loading)
 
     val settings = settingsRepository.settings.stateIn(
@@ -160,6 +178,69 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun openSourceManager() {
+        container.audio.stop()
+        showSourceManager.value = true
+    }
+
+    fun closeSourceManager() {
+        showSourceManager.value = false
+    }
+
+    fun renameSource(sourceId: String, name: String) {
+        viewModelScope.launch { container.importRepository.renameSource(sourceId, name) }
+    }
+
+    fun deleteSource(sourceId: String) {
+        viewModelScope.launch {
+            if (container.importRepository.deleteSource(sourceId) && settings.value.activeCategory == sourceId) {
+                settingsRepository.setActiveCategory("mechanical")
+            }
+        }
+    }
+    fun openImport() {
+        container.audio.stop()
+        importUiError.value = null
+        showImport.value = true
+    }
+
+    fun closeImport() {
+        showImport.value = false
+        val job = importJob.value
+        if (job?.status == com.miearn.app.data.local.ImportJobStatus.COMPLETED.name) {
+            activeImportJobId.value = null
+        }
+    }
+
+    fun startImport(uri: Uri, sourceName: String) {
+        viewModelScope.launch {
+            runCatching { container.importCoordinator.createAndPrepare(uri, sourceName) }
+                .onSuccess {
+                    importUiError.value = null
+                    activeImportJobId.value = it
+                }
+                .onFailure {
+                    importUiError.value = it.message ?: "无法读取所选文件"
+                }
+        }
+    }
+
+    fun resumeImportWithMapping(mapping: ImportColumnMapping) {
+        val jobId = activeImportJobId.value ?: return
+        viewModelScope.launch {
+            runCatching { container.importCoordinator.resumeWithMapping(jobId, mapping) }
+                .onFailure { importUiError.value = it.message ?: "列映射保存失败" }
+        }
+    }
+
+    fun clearImportError() {
+        importUiError.value = null
+    }
+
+    fun commitImport(policy: ImportConflictPolicy) {
+        val jobId = activeImportJobId.value ?: return
+        viewModelScope.launch { container.importCoordinator.commit(jobId, policy) }
+    }
     fun selectTab(tab: MainTab) {
         container.audio.stop()
         selectedTab.value = tab
@@ -303,7 +384,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val session = learningSession ?: return
         val active = studyState.value as? StudyUiState.Active ?: return
         if (session.pendingFirstCorrect != null || active.options.isEmpty()) return
-        val firstCorrect = answer == active.word.chinese
+        val firstCorrect = answer == LearningContentPolicy.displayChinese(active.word.chinese)
         container.audio.stop()
         container.answerFeedback.play(if (firstCorrect) AnswerFeedback.CORRECT else AnswerFeedback.WRONG)
         val answered = session.submitAnswer(firstCorrect)
@@ -454,8 +535,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             emptyList()
         } else {
             QuizEngine.chineseOptions(
-                answer = word.chinese,
-                candidates = sessionChoicePool.map(WordEntity::chinese),
+                answer = LearningContentPolicy.displayChinese(word.chinese),
+                candidates = sessionChoicePool
+                    .map(WordEntity::chinese)
+                    .filter(LearningContentPolicy::hasChineseTranslation),
                 seed = word.id.hashCode() xor session.phase.ordinal,
             )
         }
@@ -499,7 +582,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 learnedOnly,
                 maxOf(count, 30),
             )
-            quizPool = requestedPool
+            quizPool = requestedPool.filter { word ->
+                when (mode) {
+                    QuizMode.EN_TO_ZH, QuizMode.ZH_TO_EN, QuizMode.SPELLING ->
+                        LearningContentPolicy.hasChineseTranslation(word.chinese)
+                    QuizMode.FILL_BLANK ->
+                        LearningContentPolicy.canFillBlank(word.exampleEn, word.primaryEnglish)
+                    QuizMode.LISTENING -> word.primaryEnglish.isNotBlank()
+                }
+            }
             quizItems = quizPool.shuffled().take(count)
             quizIndex = 0
             quizCorrect = 0
@@ -571,17 +662,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 word,
                 quizMode,
                 word.english,
-                word.chinese,
+                LearningContentPolicy.displayChinese(word.chinese),
                 QuizEngine.choiceOptions(
-                    answer = word.chinese,
-                    candidates = distractors.map(WordEntity::chinese),
+                    answer = LearningContentPolicy.displayChinese(word.chinese),
+                    candidates = distractors
+                        .map(WordEntity::chinese)
+                        .filter(LearningContentPolicy::hasChineseTranslation),
                     seed = word.id.hashCode() xor quizIndex,
                 ),
             )
             QuizMode.ZH_TO_EN -> QuizQuestion(
                 word,
                 quizMode,
-                word.chinese,
+                LearningContentPolicy.displayChinese(word.chinese),
                 word.primaryEnglish,
                 QuizEngine.choiceOptions(
                     answer = word.primaryEnglish,
@@ -603,7 +696,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             QuizMode.SPELLING -> QuizQuestion(
                 word,
                 quizMode,
-                word.chinese,
+                LearningContentPolicy.displayChinese(word.chinese),
                 word.primaryEnglish,
                 emptyList(),
             )

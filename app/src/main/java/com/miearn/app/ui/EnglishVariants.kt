@@ -23,7 +23,7 @@ fun EnglishVariants(
     onPlayVariant: (WordEntity, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val variants = EnglishVariantParser.parse(word.english)
+    val variants = EnglishVariantParser.parse(word.english, word.kind)
     FlowRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),

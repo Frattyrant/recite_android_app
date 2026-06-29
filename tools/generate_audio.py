@@ -39,6 +39,7 @@ _CJK = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
 _PARENTHETICAL = re.compile(r"\([^()]*\)")
 _UNSAFE = re.compile(r"[^A-Za-z0-9\s.,;:!?&'()/+\-=]")
 _WHITESPACE = re.compile(r"\s+")
+_SLASHES = re.compile(r"[/\\]+")
 _SEPARATOR_SPACING = re.compile(r"\s*([,;:/])\s*")
 _MEANINGFUL_TOKEN = re.compile(
     r"(?<![A-Za-z0-9])(?=[A-Za-z0-9]*[A-Za-z])[A-Za-z0-9]{2,}"
@@ -75,6 +76,7 @@ def spoken_text(word: dict) -> str:
         text = cleaned
     text = _CJK.sub(" ", text)
     text = _UNSAFE.sub(" ", text)
+    text = _SLASHES.sub(" ", text)
     text = _SEPARATOR_SPACING.sub(r"\1 ", text)
     text = re.sub(r"([!?.,;:])\1+", r"\1", text)
     text = re.sub(r"\s*[-=]{2,}\s*", ", ", text)
@@ -85,6 +87,7 @@ def spoken_text(word: dict) -> str:
         )
         fallback = _CJK.sub(" ", fallback)
         fallback = _UNSAFE.sub(" ", fallback)
+        fallback = _SLASHES.sub(" ", fallback)
         text = _WHITESPACE.sub(" ", fallback).strip(" ,;:/-=")
     if not _MEANINGFUL_TOKEN.search(text):
         raise ValueError(

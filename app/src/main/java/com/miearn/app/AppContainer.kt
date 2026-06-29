@@ -8,6 +8,10 @@ import com.miearn.app.data.local.AppDatabase
 import com.miearn.app.data.seed.ContentSeeder
 import com.miearn.app.data.settings.SettingsRepository
 import com.miearn.app.reminder.ReminderScheduler
+import com.miearn.app.importing.CompactDictionary
+import com.miearn.app.importing.ImportRepository
+import com.miearn.app.importing.ImportWorkCoordinator
+import com.miearn.app.importing.VocabularyFileReader
 
 class AppContainer(context: Context) {
     val database = AppDatabase.create(context)
@@ -17,4 +21,8 @@ class AppContainer(context: Context) {
     val reminderScheduler = ReminderScheduler(context)
     val audio = AudioPronouncer(context)
     val answerFeedback = AnswerFeedbackPlayer(context)
+    val compactDictionary = CompactDictionary(context)
+    val vocabularyFileReader = VocabularyFileReader()
+    val importRepository = ImportRepository(database, compactDictionary)
+    val importCoordinator = ImportWorkCoordinator(context, database)
 }

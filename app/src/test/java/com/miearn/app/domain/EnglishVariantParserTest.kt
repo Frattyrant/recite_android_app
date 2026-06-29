@@ -23,4 +23,60 @@ class EnglishVariantParserTest {
             EnglishVariantParser.parse("； first ;; second ；"),
         )
     }
+
+    @Test
+    fun phraseKeepsWordsTogetherAndSplitsCompleteSentences() {
+        assertEquals(
+            listOf(
+                "For all robots, use only 300mm/s for gluing.",
+                "With 600mm/s, the quality will not be fine.",
+                "We have to reduce the speed.",
+            ),
+            EnglishVariantParser.parse(
+                "For all robots, use only 300mm/s for gluing. " +
+                    "With 600mm/s, the quality will not be fine. We have to reduce the speed.",
+                kind = "PHRASE",
+            ),
+        )
+    }
+
+    @Test
+    fun phraseSplitsSlashSeparatedSentenceAlternativesButNotUnits() {
+        assertEquals(
+            listOf(
+                "Sorry, come again?",
+                "I didn't follow you, could you repeat?",
+                "Read at 300mm/s.",
+            ),
+            EnglishVariantParser.parse(
+                "Sorry, come again?/I didn't follow you, could you repeat?/Read at 300mm/s.",
+                kind = "PHRASE",
+            ),
+        )
+    }
+
+    @Test
+    fun speechTextNeverContainsSpokenSlashCharacters() {
+        assertEquals("300mm s", EnglishVariantParser.toSpeechText("300mm/s"))
+        assertEquals("gun gripper", EnglishVariantParser.toSpeechText("gun\\gripper"))
+    }
+
+    @Test
+    fun termDropsAnnotationOnlyAndPunctuationOnlyFragments() {
+        assertEquals(
+            listOf("fixture", "jig", "242"),
+            EnglishVariantParser.parse("fixture / （中文注释） / - / jig / 242"),
+        )
+    }
+
+    @Test
+    fun infersImportedSentencesWithoutTreatingMultiwordTermsAsSentences() {
+        assertEquals("TERM", EnglishVariantParser.inferKind("fixture"))
+        assertEquals("TERM", EnglishVariantParser.inferKind("support and clamp block"))
+        assertEquals("PHRASE", EnglishVariantParser.inferKind("Can you repeat that?"))
+        assertEquals(
+            "PHRASE",
+            EnglishVariantParser.inferKind("We need to inspect the fixture before production"),
+        )
+    }
 }

@@ -176,7 +176,7 @@ class MIearnRepository(private val database: AppDatabase) {
             database.eventDao().insert(
                 ReviewEventEntity(
                     wordId = word.id,
-                    category = word.category,
+                    category = saved?.category ?: word.category,
                     epochMillis = epochMillis,
                     epochDay = today,
                     phase = phase.name,
@@ -195,7 +195,7 @@ class MIearnRepository(private val database: AppDatabase) {
                     activity.copy(newCount = activity.newCount + 1)
                 },
             )
-            database.sessionDao().upsert(session.toEntity(today, word.category))
+            database.sessionDao().upsert(session.toEntity(today, saved?.category ?: word.category))
         }
     }
 

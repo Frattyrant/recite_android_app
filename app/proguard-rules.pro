@@ -1,2 +1,1 @@
 -keepattributes Signature,InnerClasses,EnclosingMethod
--dontwarn org.apache.commons.compress.**

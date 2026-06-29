@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "source": "https://github.com/skywind3000/ECDICT",
+  "sourceRevision": "bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b",
+  "sourceCsvSha256": "1a6947e04785db63613a92e14903cdae7954f7e84860b10e68e5c7cbb3f9c3cf",
+  "license": "MIT",
+  "entryCount": 120000,
+  "logicalSha256": "da4c0f36f3a58c6177265ba94b3d387146a0555f876e9eceff881b3d7004b0c6",
+  "databaseBytes": 8228864,
+  "databaseSha256": "51d7bd936e786e2260e65e0e9f76ecad258855a0199147ec095df00b6ead73ba",
+  "gzipBytes": 3954452,
+  "gzipSha256": "f5d5d26f350883dbfd663051fd429260172523be128e18b42fd3f1d04807d85d"
+}

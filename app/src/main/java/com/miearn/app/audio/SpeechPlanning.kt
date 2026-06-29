@@ -10,14 +10,14 @@ data class SpeechSegment(
 
 object SpeechRequestFactory {
     fun full(word: WordEntity): SpeechRequest {
-        val variants = EnglishVariantParser.parse(word.english)
+        val variants = EnglishVariantParser.parse(word.english, word.kind)
         return SpeechRequest(
             id = word.id,
-            text = word.audioText,
+            text = EnglishVariantParser.toSpeechText(word.audioText),
             assetPath = word.audioAsset,
             segments = variants.mapIndexed { index, text ->
                 SpeechSegment(
-                    text = text,
+                    text = EnglishVariantParser.toSpeechText(text),
                     assetPath = if (variants.size == 1) {
                         word.audioAsset
                     } else {
@@ -29,7 +29,7 @@ object SpeechRequestFactory {
     }
 
     fun variant(word: WordEntity, index: Int): SpeechRequest {
-        val variants = EnglishVariantParser.parse(word.english)
+        val variants = EnglishVariantParser.parse(word.english, word.kind)
         val text = variants.getOrElse(index) {
             throw IndexOutOfBoundsException("No English variant $index for ${word.id}")
         }
@@ -40,9 +40,11 @@ object SpeechRequestFactory {
         }
         return SpeechRequest(
             id = "${word.id}#$index",
-            text = text,
+            text = EnglishVariantParser.toSpeechText(text),
             assetPath = assetPath,
-            segments = listOf(SpeechSegment(text, assetPath)),
+            segments = listOf(
+                SpeechSegment(EnglishVariantParser.toSpeechText(text), assetPath),
+            ),
         )
     }
 

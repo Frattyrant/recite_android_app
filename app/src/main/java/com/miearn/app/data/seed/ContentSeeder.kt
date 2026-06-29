@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.withTransaction
 import com.miearn.app.data.local.AppDatabase
 import com.miearn.app.data.local.ContentMetadataEntity
+import com.miearn.app.data.local.SourceEntity
+import com.miearn.app.data.local.SourceType
+import com.miearn.app.data.local.WordSourceCrossRef
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -15,14 +18,30 @@ class ContentSeeder(
         val json = context.assets.open(CONTENT_ASSET).bufferedReader().use { it.readText() }
         val seed = SeedJsonParser.parse(json)
         val installedVersion = database.metadataDao().get(CONTENT_VERSION_KEY)
-        if (installedVersion == seed.contentVersion && database.wordDao().count() == seed.words.size) {
-            return@withContext seed.words.size
-        }
         database.withTransaction {
-            seed.words.chunked(250).forEach { database.wordDao().upsertAll(it) }
-            database.metadataDao().put(
-                ContentMetadataEntity(CONTENT_VERSION_KEY, seed.contentVersion),
+            if (
+                installedVersion != seed.contentVersion ||
+                database.wordDao().builtInCount() != seed.words.size
+            ) {
+                seed.words.chunked(250).forEach { database.wordDao().upsertAll(it) }
+                database.metadataDao().put(ContentMetadataEntity(CONTENT_VERSION_KEY, seed.contentVersion))
+            }
+            val grouped = seed.words.groupBy { it.category }
+            database.sourceDao().upsertAll(
+                grouped.map { (sourceId, words) ->
+                    SourceEntity(
+                        sourceId = sourceId,
+                        displayName = words.first().categoryLabel,
+                        type = SourceType.BUILTIN.name,
+                        wordCount = words.size,
+                    )
+                },
             )
+            grouped.forEach { (sourceId, words) ->
+                database.sourceDao().upsertLinks(
+                    words.map { WordSourceCrossRef(sourceId, it.id, it.sourceIndex) },
+                )
+            }
         }
         seed.words.size
     }
@@ -32,4 +51,3 @@ class ContentSeeder(
         const val CONTENT_VERSION_KEY = "content_version"
     }
 }
-

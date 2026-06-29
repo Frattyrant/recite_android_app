@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.miearn.app.audio.PronunciationStatus
 import com.miearn.app.data.local.WordEntity
 import com.miearn.app.domain.LearningPhase
+import com.miearn.app.domain.LearningContentPolicy
 import com.miearn.app.ui.theme.Danger
 import com.miearn.app.ui.theme.Success
 import com.miearn.app.ui.theme.Sunset
@@ -301,28 +302,34 @@ private fun BrowseCard(
                 }
             }
             if (state.expanded) {
+                if (state.word.phonetic.isNotBlank()) {
+                    Text(
+                        state.word.phonetic,
+                        color = MaterialTheme.colorScheme.primary,
+                        textAlign = TextAlign.Center,
+                    )
+                    Spacer(Modifier.height(14.dp))
+                }
                 Text(
-                    state.word.phonetic,
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(Modifier.height(14.dp))
-                Text(
-                    state.word.chinese,
+                    LearningContentPolicy.displayChinese(state.word.chinese),
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center,
                 )
-                Spacer(Modifier.height(20.dp))
-                Text(
-                    state.word.exampleEn,
-                    modifier = Modifier.fillMaxWidth(),
-                    fontStyle = FontStyle.Italic,
-                )
-                Text(
-                    state.word.exampleZh,
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = .68f),
-                )
+                if (state.word.exampleEn.isNotBlank()) {
+                    Spacer(Modifier.height(20.dp))
+                    Text(
+                        state.word.exampleEn,
+                        modifier = Modifier.fillMaxWidth(),
+                        fontStyle = FontStyle.Italic,
+                    )
+                    if (state.word.exampleZh.isNotBlank()) {
+                        Text(
+                            state.word.exampleZh,
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = .68f),
+                        )
+                    }
+                }
                 if (state.word.note.isNotBlank()) {
                     Text(
                         "备注：${state.word.note}",
@@ -377,12 +384,14 @@ private fun ChoiceCard(
                     word = state.word,
                     onPlayVariant = onPlayVariant,
                 )
-                Text(
-                    state.word.phonetic,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = 8.dp),
-                    textAlign = TextAlign.Center,
-                )
+                if (state.word.phonetic.isNotBlank()) {
+                    Text(
+                        state.word.phonetic,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(top = 8.dp),
+                        textAlign = TextAlign.Center,
+                    )
+                }
                 Row {
                     IconButton(onClick = { onPlay(state.word) }) {
                         Icon(Icons.Default.PlayArrow, contentDescription = "播放发音")
@@ -396,7 +405,8 @@ private fun ChoiceCard(
         Spacer(Modifier.height(14.dp))
         state.options.forEach { option ->
             val answered = state.firstCorrect != null
-            val isCorrectOption = option == state.word.chinese
+            val isCorrectOption =
+                option == LearningContentPolicy.displayChinese(state.word.chinese)
             val isSelectedWrong = state.selectedAnswer == option && !isCorrectOption
             val container = when {
                 answered && isCorrectOption -> Success.copy(alpha = .16f)
@@ -418,9 +428,9 @@ private fun ChoiceCard(
                 if (state.firstCorrect) {
                     "回答正确"
                 } else if (state.phase == LearningPhase.REINFORCEMENT) {
-                    "正确答案：${state.word.chinese}"
+                    "正确答案：${LearningContentPolicy.displayChinese(state.word.chinese)}"
                 } else {
-                    "正确答案：${state.word.chinese} · 已加入本轮强化"
+                    "正确答案：${LearningContentPolicy.displayChinese(state.word.chinese)} · 已加入本轮强化"
                 },
                 color = if (state.firstCorrect) Success else Sunset,
                 fontWeight = FontWeight.SemiBold,

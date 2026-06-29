@@ -1,4 +1,4 @@
-"""Generate semicolon-delimited MIearn variant clips and paused full clips."""
+"""Generate type-aware MIearn segment clips and paused full clips."""
 
 from __future__ import annotations
 
@@ -24,15 +24,80 @@ from tools.generate_audio import (
 )
 
 PAUSE_MS = 500
-VARIANT_SEPARATOR = re.compile(r"[;；]")
+TERM_SEPARATOR = re.compile(r"(?:[;；/\\]|\s)+")
+PHRASE_SEMICOLON = re.compile(r"[;；]+")
+SENTENCE_BOUNDARY = re.compile(r"(?<=[.!?])(?:\s+(?=[\"']?[A-Z])|(?=[\"']?[A-Z]))")
+ENGLISH_WORD = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
+ENGLISH_OR_NUMBER = re.compile(r"[A-Za-z0-9]")
+SLASHES = re.compile(r"[/\\]+")
+UNIT_LEFT = re.compile(r"\d+(?:\.\d+)?[A-Za-z]*$")
+UNIT_RIGHT = re.compile(r"^[smh](?:\b|$)", re.IGNORECASE)
 
 
-def raw_variants(english: str) -> list[str]:
-    return [part.strip() for part in VARIANT_SEPARATOR.split(english) if part.strip()]
+def raw_variants(english: str, kind: str = "TERM") -> list[str]:
+    if kind.upper() != "PHRASE":
+        return [
+            part.strip()
+            for part in TERM_SEPARATOR.split(english)
+            if ENGLISH_OR_NUMBER.search(part)
+        ]
+    result: list[str] = []
+    for semicolon_part in PHRASE_SEMICOLON.split(english):
+        for slash_part in _split_phrase_slashes(semicolon_part):
+            result.extend(
+                part.strip()
+                for part in SENTENCE_BOUNDARY.split(slash_part)
+                if ENGLISH_WORD.search(part)
+            )
+    return result
+
+
+def _split_phrase_slashes(text: str) -> list[str]:
+    result: list[str] = []
+    current: list[str] = []
+    for index, character in enumerate(text):
+        if character not in "/\\":
+            current.append(character)
+            continue
+        previous = text[index - 1] if index > 0 else ""
+        following = text[index + 1] if index + 1 < len(text) else ""
+        left_clause = re.split(r"[.!?]", "".join(current))[-1]
+        right_clause = re.split(r"[/\\.!?]", text[index + 1 :], maxsplit=1)[0]
+        unit_slash = bool(
+            UNIT_LEFT.search(text[:index]) and UNIT_RIGHT.search(text[index + 1 :])
+        )
+        is_boundary = not unit_slash and (
+            previous.isspace()
+            or following.isspace()
+            or previous in ".!?"
+            or (
+                len(ENGLISH_WORD.findall(left_clause)) >= 3
+                and len(ENGLISH_WORD.findall(right_clause)) >= 3
+            )
+        )
+        if is_boundary:
+            segment = "".join(current).strip()
+            if segment:
+                result.append(segment)
+            current.clear()
+        else:
+            current.append(character)
+    segment = "".join(current).strip()
+    if segment:
+        result.append(segment)
+    return result
 
 
 def pronounceable_variant(text: str) -> str:
-    return spoken_text({"audioText": text, "primaryEnglish": text, "id": "variant"})
+    try:
+        return spoken_text(
+            {"audioText": text, "primaryEnglish": text, "id": "variant"}
+        )
+    except ValueError:
+        single = re.sub(r"[^A-Za-z0-9]+", " ", SLASHES.sub(" ", text)).strip()
+        if re.fullmatch(r"[A-Za-z0-9]+", single):
+            return single
+        raise
 
 
 def encode_ogg(ffmpeg: Path, source: Path, target_part: Path, stable_key: str) -> None:
@@ -80,8 +145,11 @@ def generate(args: argparse.Namespace) -> None:
 
     content = json.loads(args.content.read_text(encoding="utf-8"))
     words = content["words"]
-    multi = [(word, raw_variants(word["english"])) for word in words]
-    multi = [(word, variants) for word, variants in multi if len(variants) > 1]
+    plans = [
+        (word, raw_variants(word["english"], word.get("kind", "TERM")))
+        for word in words
+    ]
+    multi = [(word, variants) for word, variants in plans if len(variants) > 1]
     config = Path(f"{args.model}.json")
     if not args.model.is_file() or not config.is_file() or not args.ffmpeg.is_file():
         raise FileNotFoundError("Piper model/config or ffmpeg is missing")
@@ -96,6 +164,12 @@ def generate(args: argparse.Namespace) -> None:
     manifest["pauseBetweenSegmentsMs"] = PAUSE_MS
     manifest["provenance"] = current_provenance(args.model, config, args.ffmpeg)
     entries = manifest.setdefault("entries", {})
+    for word, variants in plans:
+        if len(variants) <= 1:
+            entry = entries.get(word["id"])
+            if isinstance(entry, dict):
+                entry.pop("segments", None)
+                entry.pop("pauseBetweenSegmentsMs", None)
 
     voice = PiperVoice.load(str(args.model), config_path=str(config))
     synthesis = SynthesisConfig(
@@ -111,6 +185,12 @@ def generate(args: argparse.Namespace) -> None:
             len(existing_segments) == len(variants)
             and valid_existing(args.output / f"{word['id']}.ogg")
             and all(valid_existing(path) for path in existing_files)
+            and all(
+                segment.get("text") == raw_text
+                and segment.get("textSha256")
+                == hashlib.sha256(raw_text.encode("utf-8")).hexdigest()
+                for segment, raw_text in zip(existing_segments, variants)
+            )
         ):
             if number % 10 == 0:
                 print(f"variant progress {number}/{len(multi)} (resumed)", flush=True)
@@ -168,6 +248,16 @@ def generate(args: argparse.Namespace) -> None:
             manifest["entries"] = dict(sorted(entries.items()))
             write_manifest_atomic(args.manifest, manifest)
             print(f"variant progress {number}/{len(multi)}", flush=True)
+    expected_variant_paths = {
+        variants_dir / f"{word['id']}_{index:02d}.ogg"
+        for word, variants in multi
+        for index in range(len(variants))
+    }
+    for stale_path in variants_dir.glob("*.ogg"):
+        if stale_path not in expected_variant_paths:
+            stale_path.unlink()
+    manifest["entries"] = dict(sorted(entries.items()))
+    write_manifest_atomic(args.manifest, manifest)
     print(
         f"complete multi={len(multi)} variants={sum(len(v) for _, v in multi)} "
         f"pauses={sum(len(v) - 1 for _, v in multi)}",

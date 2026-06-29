@@ -22,6 +22,7 @@ try:
         valid_existing,
         write_manifest_atomic,
     )
+    from tools.generate_variant_audio import raw_variants
 except ModuleNotFoundError:
     from generate_audio import (  # type: ignore[no-redef]
         ENCODING_PARAMS,
@@ -34,6 +35,7 @@ except ModuleNotFoundError:
         valid_existing,
         write_manifest_atomic,
     )
+    from generate_variant_audio import raw_variants  # type: ignore[no-redef]
 
 EXPECTED_COUNT = 2704
 EXPECTED_PIPER_VERSION = "1.4.2"
@@ -220,11 +222,7 @@ def validate(
         if any(entry.get(key) != value for key, value in expected_entry.items()):
             raise RuntimeError(f"audio manifest binding mismatch for {word['id']}")
 
-        variants = [
-            part.strip()
-            for part in re.split(r"[;；]", word["english"])
-            if part.strip()
-        ]
+        variants = raw_variants(word["english"], word.get("kind", "TERM"))
         if len(variants) > 1:
             if entry.get("pauseBetweenSegmentsMs") != 500:
                 raise RuntimeError(f"missing 500 ms pause for {word['id']}")
@@ -245,6 +243,8 @@ def validate(
                     raise RuntimeError(
                         f"variant manifest binding mismatch for {word['id']}:{index}"
                     )
+        elif entry.get("segments"):
+            raise RuntimeError(f"unexpected stale variants for {word['id']}")
 
     ordered = [audio_dir / name for name in sorted(expected)]
     if probe_all:

@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.miearn.app.ui.importing.ImportWizardScreen
 
 @Composable
 fun MIearnApp(viewModel: MainViewModel) {
@@ -91,6 +92,32 @@ fun MIearnApp(viewModel: MainViewModel) {
         return
     }
 
+    val showSourceManager by viewModel.showSourceManager.collectAsStateWithLifecycle()
+    val sources by viewModel.sources.collectAsStateWithLifecycle()
+    if (showSourceManager) {
+        SourceManagerScreen(
+            sources = sources,
+            onBack = viewModel::closeSourceManager,
+            onRename = viewModel::renameSource,
+            onDelete = viewModel::deleteSource,
+        )
+        return
+    }
+    val showImport by viewModel.showImport.collectAsStateWithLifecycle()
+    val importJob by viewModel.importJob.collectAsStateWithLifecycle()
+    val importUiError by viewModel.importUiError.collectAsStateWithLifecycle()
+    if (showImport) {
+        ImportWizardScreen(
+            job = importJob,
+            localError = importUiError,
+            onBack = viewModel::closeImport,
+            onFileSelected = viewModel::startImport,
+            onMapping = viewModel::resumeImportWithMapping,
+            onCommit = viewModel::commitImport,
+            onClearError = viewModel::clearImportError,
+        )
+        return
+    }
     val context = LocalContext.current
     var permissionForPrompt by remember { mutableStateOf(false) }
     var reminderPermissionMessage by remember { mutableStateOf<String?>(null) }
@@ -166,6 +193,8 @@ fun MIearnApp(viewModel: MainViewModel) {
                 onOpenSearch = {
                     viewModel.openWordBrowser(WordBrowserDestination.SEARCH)
                 },
+                onImportVocabulary = viewModel::openImport,
+                importJob = importJob,
             )
 
             MainTab.QUIZ -> QuizScreen(
@@ -188,6 +217,7 @@ fun MIearnApp(viewModel: MainViewModel) {
                     viewModel.openWordBrowser(WordBrowserDestination.WRONG)
                 },
                 onInsights = viewModel::openInsights,
+                onSources = viewModel::openSourceManager,
             )
         }
     }

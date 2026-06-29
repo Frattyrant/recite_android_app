@@ -12,6 +12,16 @@ Maven artifacts:
   2.0.
 - Robolectric — Robolectric contributors, MIT License.
 - JUnit 4 — Eclipse Foundation and contributors, Eclipse Public License 1.0.
+MIearn packages a reduced derivative of ECDICT for offline phonetic and
+Chinese-definition completion:
+
+- Project: https://github.com/skywind3000/ECDICT
+- License: MIT
+- Pinned source revision: `bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b`
+- Source CSV SHA-256:
+  `1a6947e04785db63613a92e14903cdae7954f7e84860b10e68e5c7cbb3f9c3cf`
+- The packaged derivative contains 120,000 selected entries and omits the
+  upstream definition, detail, audio, ranking and tag fields.
 
 The generated launcher foreground uses the user-provided illustration as its
 visual source.

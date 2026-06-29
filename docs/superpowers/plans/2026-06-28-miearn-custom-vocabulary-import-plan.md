@@ -224,7 +224,7 @@ Commit message if Git exists: `build: prepare import dependencies and apk size g
 
 - Create: `tools/build_compact_ecdict.py`
 - Create: `tools/tests/test_build_compact_ecdict.py`
-- Create during build: `app/src/main/assets/dictionaries/ecdict_compact.db.gz`
+- Create during build: `app/src/main/assets/dictionaries/ecdict_compact.db.gz.bin`
 - Create during build: `app/src/main/assets/dictionaries/ecdict_compact_manifest.json`
 - Modify: `THIRD_PARTY_NOTICES.md`
 
@@ -325,7 +325,7 @@ Run:
 ```powershell
 python tools/build_compact_ecdict.py `
   --source tools/vendor/ecdict.csv `
-  --output app/src/main/assets/dictionaries/ecdict_compact.db.gz `
+  --output app/src/main/assets/dictionaries/ecdict_compact.db.gz.bin `
   --manifest app/src/main/assets/dictionaries/ecdict_compact_manifest.json `
   --limit 120000
 ```
