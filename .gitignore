@@ -13,6 +13,17 @@
 .kotlin/
 # Local config
 local.properties
+key.properties
+keystore.properties
+.env
+.env.*
+
+# Signing secrets
+.signing/
+*.jks
+*.keystore
+*.p12
+*.pem
 # Build output
 build/
 **/build/
@@ -26,6 +37,7 @@ tmp/
 Thumbs.db
 
 tools/.piper-models/
+tools/.venv/
 tools/vendor/ecdict.csv
 __pycache__/
 *.pyc

@@ -1,0 +1,9 @@
+# Recreates the local audio-generation environment.
+# Install into a virtual environment outside the repository when possible.
+flatbuffers==25.12.19
+numpy==2.5.0
+onnxruntime==1.27.0
+packaging==26.2
+pathvalidate==3.3.1
+piper-tts==1.4.2
+protobuf==7.35.1

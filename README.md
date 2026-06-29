@@ -47,3 +47,13 @@ fixture,夹具,/ˈfɪkstʃər/,制造业术语,Inspect the fixture.,检查夹具
 ## 安装
 
 点击release页下载MIearn(v2.1),目前仅支持APK
+
+## Release signing
+
+The repository does not store release keys or passwords. Copy
+`keystore.properties.example` to `keystore.properties`, then provide the local
+path and credentials for a newly generated key. Git ignores that file and
+`*.jks`. Without local signing properties, the Release APK remains unsigned.
+
+Recreate the audio toolchain from `tools/requirements-audio.txt`. Do not commit
+`tools/.venv` or `tools/.piper-models`.

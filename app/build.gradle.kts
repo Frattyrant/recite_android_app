@@ -1,7 +1,37 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
+}
+
+val releaseSigningPropertiesFile = rootProject.file("key.properties")
+val releaseSigningProperties = Properties().apply {
+    if (releaseSigningPropertiesFile.isFile) {
+        releaseSigningPropertiesFile.inputStream().use(::load)
+    }
+}
+
+fun releaseSigningValue(propertyName: String, environmentName: String): String? =
+    releaseSigningProperties.getProperty(propertyName)
+        ?.trim()
+        ?.takeIf(String::isNotEmpty)
+        ?: System.getenv(environmentName)?.trim()?.takeIf(String::isNotEmpty)
+
+val releaseStoreFile = releaseSigningValue("storeFile", "MIEARN_KEYSTORE_PATH")
+val releaseStorePassword = releaseSigningValue("storePassword", "MIEARN_KEYSTORE_PASSWORD")
+val releaseKeyAlias = releaseSigningValue("keyAlias", "MIEARN_KEY_ALIAS")
+val releaseKeyPassword = releaseSigningValue("keyPassword", "MIEARN_KEY_PASSWORD")
+val releaseSigningValues = listOf(
+    releaseStoreFile,
+    releaseStorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword,
+)
+val releaseSigningConfigured = releaseSigningValues.all { !it.isNullOrBlank() }
+check(releaseSigningValues.all { it.isNullOrBlank() } || releaseSigningConfigured) {
+    "Release signing is partially configured. Provide all MIEARN signing values."
 }
 
 android {
@@ -33,13 +63,15 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 
-    signingConfigs {
-        create("release") {
-            storeFile = file("../milearn-release.jks")
-            storePassword = "milearn123"
-            keyAlias = "milearn"
-            keyPassword = "milearn123"
+    val releaseSigningConfig = if (releaseSigningConfigured) {
+        signingConfigs.create("release") {
+            storeFile = rootProject.file(checkNotNull(releaseStoreFile))
+            storePassword = checkNotNull(releaseStorePassword)
+            keyAlias = checkNotNull(releaseKeyAlias)
+            keyPassword = checkNotNull(releaseKeyPassword)
         }
+    } else {
+        null
     }
 
     buildTypes {
@@ -54,7 +86,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
+            releaseSigningConfig?.let { signingConfig = it }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -131,6 +163,10 @@ registerApkSizeGate(
 registerApkSizeGate(
     "verifyReleaseApkSize",
     "assembleRelease",
-    "outputs/apk/release/app-release.apk",
+    if (releaseSigningConfigured) {
+        "outputs/apk/release/app-release.apk"
+    } else {
+        "outputs/apk/release/app-release-unsigned.apk"
+    },
     55_000_000L,
 )

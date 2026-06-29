@@ -1,0 +1,6 @@
+# Copy this file to keystore.properties and keep the real file local.
+# Use a newly generated key; the previously committed key must be treated as exposed.
+storeFile=C:/secure/path/milearn-release.jks
+storePassword=replace-with-a-strong-local-secret
+keyAlias=milearn
+keyPassword=replace-with-a-strong-local-secret
