@@ -1,0 +1,96 @@
+name: Android Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Validate signing secrets
+        env:
+          MIEARN_KEYSTORE_BASE64: ${{ secrets.MIEARN_KEYSTORE_BASE64 }}
+          MIEARN_KEYSTORE_PASSWORD: ${{ secrets.MIEARN_KEYSTORE_PASSWORD }}
+          MIEARN_KEY_ALIAS: ${{ secrets.MIEARN_KEY_ALIAS }}
+          MIEARN_KEY_PASSWORD: ${{ secrets.MIEARN_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          missing=0
+          for name in \
+            MIEARN_KEYSTORE_BASE64 \
+            MIEARN_KEYSTORE_PASSWORD \
+            MIEARN_KEY_ALIAS \
+            MIEARN_KEY_PASSWORD
+          do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::$name is not configured"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Restore temporary keystore
+        env:
+          MIEARN_KEYSTORE_BASE64: ${{ secrets.MIEARN_KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$MIEARN_KEYSTORE_BASE64" \
+            | base64 --decode \
+            > "${{ runner.temp }}/miearn-release.jks"
+          chmod 600 "${{ runner.temp }}/miearn-release.jks"
+
+      - name: Build signed Release APK
+        env:
+          MIEARN_KEYSTORE_PATH: ${{ runner.temp }}/miearn-release.jks
+          MIEARN_KEYSTORE_PASSWORD: ${{ secrets.MIEARN_KEYSTORE_PASSWORD }}
+          MIEARN_KEY_ALIAS: ${{ secrets.MIEARN_KEY_ALIAS }}
+          MIEARN_KEY_PASSWORD: ${{ secrets.MIEARN_KEY_PASSWORD }}
+        run: ./gradlew verifyReleaseApkSize
+
+      - name: apksigner verify
+        run: |
+          set -euo pipefail
+          apksigner_path="$(
+            find "$ANDROID_HOME/build-tools" -type f -name apksigner \
+              | sort -V \
+              | tail -n 1
+          )"
+          test -n "$apksigner_path"
+          "$apksigner_path" verify --verbose \
+            app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload signed Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: miearn-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Remove temporary keystore
+        if: always()
+        run: rm -f "${{ runner.temp }}/miearn-release.jks"

@@ -48,12 +48,34 @@ fixture,夹具,/ˈfɪkstʃər/,制造业术语,Inspect the fixture.,检查夹具
 
 点击release页下载MIearn(v2.1),目前仅支持APK
 
-## Release signing
+## Release 签名
 
-The repository does not store release keys or passwords. Copy
-`keystore.properties.example` to `keystore.properties`, then provide the local
-path and credentials for a newly generated key. Git ignores that file and
-`*.jks`. Without local signing properties, the Release APK remains unsigned.
+仓库不会保存发布私钥或密码。Copy `key.properties.example` to `key.properties`，
+并填写新生成密钥的本地路径和凭据。Git 已忽略该文件、
+`.signing/` 和 `*.jks`；没有本地签名配置时，Release APK 会保持未签名。
 
+本地发布密钥默认放在 `.signing/miearn-release.jks`。不要提交 keystore、
+`key.properties`、密码、私钥内容或 keystore 的 Base64，也不要把它们粘贴到
+终端输出、Issue、Actions 日志或聊天记录中。
+
+GitHub Actions 的签名发布工作流需要在仓库 Secrets 中配置：
+
+- `MIEARN_KEYSTORE_BASE64`
+- `MIEARN_KEYSTORE_PASSWORD`
+- `MIEARN_KEY_ALIAS`
+- `MIEARN_KEY_PASSWORD`
+
+在 Windows 上可将 keystore 的 Base64 直接复制到剪贴板，避免写入中间文件：
+
+```powershell
+[Convert]::ToBase64String(
+    [IO.File]::ReadAllBytes(".signing/miearn-release.jks")
+) | Set-Clipboard
+```
+
+将剪贴板内容保存为 `MIEARN_KEYSTORE_BASE64` Secret；其余三个 Secret 从本地
+`key.properties` 手动复制。配置时不要共享或截图 Secret 值。普通 Push/PR 只
+执行测试、lint 和 Debug 构建；`v*` 标签或手动触发才会使用 Secrets 构建签名
+Release APK。
 Recreate the audio toolchain from `tools/requirements-audio.txt`. Do not commit
 `tools/.venv` or `tools/.piper-models`.
