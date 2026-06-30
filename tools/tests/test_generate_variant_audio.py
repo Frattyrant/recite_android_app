@@ -18,6 +18,16 @@ class VariantAudioTest(unittest.TestCase):
             raw_variants("fixture； jig/support\\clamp", "TERM"),
         )
 
+    def test_terms_keep_multiword_variants_and_units_together(self):
+        self.assertEqual(
+            ["support and clamp block", "NC block"],
+            raw_variants("support and clamp block; NC block", "TERM"),
+        )
+        self.assertEqual(["clamp arm"], raw_variants("clamp arm", "TERM"))
+        self.assertEqual(
+            ["Read at 300mm/s"],
+            raw_variants("Read at 300mm/s", "TERM"),
+        )
     def test_phrases_split_sentences_but_keep_words_and_units_together(self):
         self.assertEqual(
             ["Read at 300mm/s.", "Then inspect the result."],

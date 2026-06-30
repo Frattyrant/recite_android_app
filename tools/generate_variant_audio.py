@@ -24,7 +24,7 @@ from tools.generate_audio import (
 )
 
 PAUSE_MS = 500
-TERM_SEPARATOR = re.compile(r"(?:[;；/\\]|\s)+")
+TERM_SEMICOLON = re.compile(r"[;\uFF1B]+")
 PHRASE_SEMICOLON = re.compile(r"[;；]+")
 SENTENCE_BOUNDARY = re.compile(r"(?<=[.!?])(?:\s+(?=[\"']?[A-Z])|(?=[\"']?[A-Z]))")
 ENGLISH_WORD = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
@@ -38,7 +38,8 @@ def raw_variants(english: str, kind: str = "TERM") -> list[str]:
     if kind.upper() != "PHRASE":
         return [
             part.strip()
-            for part in TERM_SEPARATOR.split(english)
+            for semicolon_part in TERM_SEMICOLON.split(english)
+            for part in _split_term_slashes(semicolon_part)
             if ENGLISH_OR_NUMBER.search(part)
         ]
     result: list[str] = []
@@ -49,6 +50,30 @@ def raw_variants(english: str, kind: str = "TERM") -> list[str]:
                 for part in SENTENCE_BOUNDARY.split(slash_part)
                 if ENGLISH_WORD.search(part)
             )
+    return result
+
+
+def _split_term_slashes(text: str) -> list[str]:
+    result: list[str] = []
+    current: list[str] = []
+    for index, character in enumerate(text):
+        if character not in "/\\":
+            current.append(character)
+            continue
+        unit_slash = bool(
+            UNIT_LEFT.search("".join(current))
+            and UNIT_RIGHT.search(text[index + 1 :])
+        )
+        if unit_slash:
+            current.append(character)
+        else:
+            segment = "".join(current).strip()
+            if segment:
+                result.append(segment)
+            current.clear()
+    segment = "".join(current).strip()
+    if segment:
+        result.append(segment)
     return result
 
 

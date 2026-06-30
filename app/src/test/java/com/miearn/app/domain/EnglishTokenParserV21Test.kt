@@ -5,9 +5,9 @@ import org.junit.Test
 
 class EnglishTokenParserV21Test {
     @Test
-    fun splitsSemicolonsSlashesBackslashesAndWhitespace() {
+    fun splitsExplicitDelimitersButKeepsWhitespaceInsideTerms() {
         assertEquals(
-            listOf("fixture", "jig", "support", "clamp", "block", "NC", "block"),
+            listOf("fixture", "jig", "support", "clamp block", "NC block"),
             EnglishVariantParser.parse(
                 " fixture；jig / support\\clamp block; NC block ",
             ),
@@ -17,7 +17,7 @@ class EnglishTokenParserV21Test {
     @Test
     fun keepsCommaJoinedTextAndDropsEmptySegments() {
         assertEquals(
-            listOf("support,", "pad"),
+            listOf("support,   pad"),
             EnglishVariantParser.parse(" / support,   pad \\\\ "),
         )
     }
