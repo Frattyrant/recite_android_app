@@ -145,6 +145,30 @@ class ContentPipelineTest(unittest.TestCase):
         }
         self.assertEqual(CATEGORY_COUNTS, counts)
 
+        reviewed_corrections = {
+            ("mechanical", 13): (
+                "mec_0013_542c54a6baa49f2e",
+                "inductive proximity switch",
+            ),
+            ("mechanical", 14): (
+                "mec_0014_c4159d2bcb9fc2a8",
+                "capacitive proximity switch",
+            ),
+            ("electrical", 151): (
+                "ele_0151_035136b5579de84c",
+                "comprise/compose/consist of/constitute",
+            ),
+        }
+        for identity, (stable_id, corrected_english) in reviewed_corrections.items():
+            item = next(
+                record
+                for record in records
+                if (record["category"], record["sourceIndex"]) == identity
+            )
+            self.assertEqual(stable_id, item["id"])
+            for field in ("english", "primaryEnglish", "exampleEn", "audioText"):
+                self.assertEqual(corrected_english, item[field], (identity, field))
+
         ids = {item["id"] for item in records}
         self.assertEqual(2704, len(ids))
         for item in records:
@@ -264,6 +288,11 @@ class ContentPipelineTest(unittest.TestCase):
         audit = json.loads(report.read_text(encoding="utf-8"))
         self.assertEqual(2704, audit["total"])
         self.assertEqual(CATEGORY_COUNTS, audit["counts"])
+        self.assertEqual("2026.06.29", on_disk["contentVersion"])
+        self.assertEqual(3, len(audit["reviewedTermCorrections"]))
+        self.assertTrue(
+            all(item["evidence"] for item in audit["reviewedTermCorrections"])
+        )
         self.assertIn("phraseFooterAudit", audit)
         self.assertEqual(0, audit["phraseFooterAudit"]["count"])
         self.assertEqual([], audit["phraseFooterAudit"]["issues"])

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.06.27",
+  "contentVersion": "2026.06.29",
   "sourceFiles": [
     "专业英语.xlsx",
     "专业英语全内容_中英文音标版.pdf"
@@ -217,14 +217,14 @@
       "sourceIndex": 13,
       "kind": "TERM",
       "section": "",
-      "english": "inductance proximity switch",
-      "primaryEnglish": "inductance proximity switch",
+      "english": "inductive proximity switch",
+      "primaryEnglish": "inductive proximity switch",
       "phonetic": "/ˌɪndˈʌktəns pɹɑksˈɪmətiː swˈɪtʃ/",
       "chinese": "电感式接近开关",
       "note": "机械设计",
-      "exampleEn": "The technician checked the inductance proximity switch before the production trial.",
+      "exampleEn": "inductive proximity switch",
       "exampleZh": "技术员在生产试运行前检查了电感式接近开关。",
-      "audioText": "inductance proximity switch",
+      "audioText": "inductive proximity switch",
       "audioAsset": "audio/mec_0013_542c54a6baa49f2e.ogg"
     },
     {
@@ -234,14 +234,14 @@
       "sourceIndex": 14,
       "kind": "TERM",
       "section": "",
-      "english": "capacity proximity switch",
-      "primaryEnglish": "capacity proximity switch",
+      "english": "capacitive proximity switch",
+      "primaryEnglish": "capacitive proximity switch",
       "phonetic": "/kəpˈæsətiː pɹɑksˈɪmətiː swˈɪtʃ/",
       "chinese": "电容式接近开关",
       "note": "机械设计",
-      "exampleEn": "The technician checked the capacity proximity switch before the production trial.",
+      "exampleEn": "capacitive proximity switch",
       "exampleZh": "技术员在生产试运行前检查了电容式接近开关。",
-      "audioText": "capacity proximity switch",
+      "audioText": "capacitive proximity switch",
       "audioAsset": "audio/mec_0014_c4159d2bcb9fc2a8.ogg"
     },
     {
@@ -23422,14 +23422,14 @@
       "sourceIndex": 151,
       "kind": "TERM",
       "section": "",
-      "english": "comprise/compose/consistent of/constitute",
-      "primaryEnglish": "comprise",
+      "english": "comprise/compose/consist of/constitute",
+      "primaryEnglish": "comprise/compose/consist of/constitute",
       "phonetic": "/kəmpɹˈaɪz/； /kəmp ˈoʊz/； /kənsˈɪstənt ˈʌv/； /kˈɑnstətˌuːt/",
       "chinese": "构成，组成 ",
       "note": "",
-      "exampleEn": "The engineer verified the comprise during system commissioning.",
+      "exampleEn": "comprise/compose/consist of/constitute",
       "exampleZh": "工程师在系统调试期间确认了构成，组成 。",
-      "audioText": "comprise/compose/consistent of/constitute",
+      "audioText": "comprise/compose/consist of/constitute",
       "audioAsset": "audio/ele_0151_035136b5579de84c.ogg"
     },
     {

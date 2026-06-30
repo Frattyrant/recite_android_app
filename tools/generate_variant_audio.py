@@ -11,17 +11,30 @@ import subprocess
 import wave
 from pathlib import Path
 
-from tools.generate_audio import (
-    MODEL_SHA256,
-    SYNTHESIS_PARAMS,
-    current_provenance,
-    normalize_ogg_serial,
-    sha256,
-    spoken_text,
-    spoken_text_sha256,
-    valid_existing,
-    write_manifest_atomic,
-)
+try:
+    from tools.generate_audio import (
+        MODEL_SHA256,
+        SYNTHESIS_PARAMS,
+        current_provenance,
+        normalize_ogg_serial,
+        sha256,
+        spoken_text,
+        spoken_text_sha256,
+        valid_existing,
+        write_manifest_atomic,
+    )
+except ModuleNotFoundError:
+    from generate_audio import (
+        MODEL_SHA256,
+        SYNTHESIS_PARAMS,
+        current_provenance,
+        normalize_ogg_serial,
+        sha256,
+        spoken_text,
+        spoken_text_sha256,
+        valid_existing,
+        write_manifest_atomic,
+    )
 
 PAUSE_MS = 500
 TERM_SEMICOLON = re.compile(r"[;\uFF1B]+")
