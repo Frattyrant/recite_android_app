@@ -7,7 +7,10 @@ import json
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from tools.validate_audio import probe_audio
+try:
+    from tools.validate_audio import probe_audio
+except ModuleNotFoundError:
+    from validate_audio import probe_audio
 
 
 def pause_tolerance(segment_count: int) -> float:

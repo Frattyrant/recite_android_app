@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "corrections": [
+    {
+      "category": "mechanical",
+      "sourceIndex": 13,
+      "originalEnglish": "inductance proximity switch",
+      "correctedEnglish": "inductive proximity switch",
+      "reason": "Use the established adjective for an inductive sensing principle.",
+      "evidence": [
+        {
+          "organization": "OMRON",
+          "url": "https://www.ia.omron.com/data_pdf/guide/41/proximity_tg_e_6_2.pdf",
+          "accessedOn": "2026-06-29"
+        },
+        {
+          "organization": "SICK",
+          "url": "https://www.sick.com/cz/en/products/detection-sensors/inductive-proximity-sensors/c/g253054",
+          "accessedOn": "2026-06-29"
+        }
+      ]
+    },
+    {
+      "category": "mechanical",
+      "sourceIndex": 14,
+      "originalEnglish": "capacity proximity switch",
+      "correctedEnglish": "capacitive proximity switch",
+      "reason": "Use the established adjective for a capacitive sensing principle.",
+      "evidence": [
+        {
+          "organization": "OMRON",
+          "url": "https://www.ia.omron.com/data_pdf/guide/41/proximity_tg_e_6_2.pdf",
+          "accessedOn": "2026-06-29"
+        },
+        {
+          "organization": "SICK",
+          "url": "https://www.sick.com/us/en/glossary/capacitive-proximity-sensors/g/p657729",
+          "accessedOn": "2026-06-29"
+        }
+      ]
+    },
+    {
+      "category": "electrical",
+      "sourceIndex": 151,
+      "originalEnglish": "comprise/compose/consistent of/constitute",
+      "correctedEnglish": "comprise/compose/consist of/constitute",
+      "reason": "Replace the adjective 'consistent' with the phrasal verb 'consist of'.",
+      "evidence": [
+        {
+          "organization": "Merriam-Webster",
+          "url": "https://www.merriam-webster.com/dictionary/consist%20of",
+          "accessedOn": "2026-06-29"
+        },
+        {
+          "organization": "Cambridge Dictionary",
+          "url": "https://dictionary.cambridge.org/dictionary/english/consist-of",
+          "accessedOn": "2026-06-29"
+        }
+      ]
+    }
+  ]
+}

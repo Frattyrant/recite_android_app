@@ -12,6 +12,11 @@ import pdfplumber
 from openpyxl import load_workbook
 from pypdf import PdfReader
 
+try:
+    from tools.term_corrections import apply_correction, load_corrections
+except ModuleNotFoundError:
+    from term_corrections import apply_correction, load_corrections
+
 
 CATEGORY_COUNTS = {
     "mechanical": 1227,
@@ -20,6 +25,8 @@ CATEGORY_COUNTS = {
     "meeting": 58,
     "business": 198,
 }
+
+TERM_CORRECTIONS_PATH = Path(__file__).resolve().parent / "data" / "term_corrections.json"
 
 CATEGORY_LABELS = {
     "mechanical": "机械专业词汇",
@@ -389,6 +396,8 @@ def build_content(source_dir: Path, output_path: Path, report_path: Path) -> lis
     mechanical_pdf, electrical_pdf = _extract_term_tables(pdf_path)
     mechanical_xlsx = _xlsx_terms(workbook_path, 2, 1227)
     electrical_xlsx = _xlsx_terms(workbook_path, 3, 970)
+    reviewed_corrections = load_corrections(TERM_CORRECTIONS_PATH)
+    unmatched_corrections = set(reviewed_corrections)
 
     records: list[dict[str, Any]] = []
     for category, table, workbook_terms in (
@@ -430,7 +439,16 @@ def build_content(source_dir: Path, output_path: Path, report_path: Path) -> lis
                         "audioText": repaired_english,
                     }
                 )
+            correction_identity = (category, number)
+            if correction := reviewed_corrections.get(correction_identity):
+                record = apply_correction(record, correction)
+                unmatched_corrections.remove(correction_identity)
             records.append(record)
+
+    if unmatched_corrections:
+        raise ValueError(
+            f"reviewed corrections did not match content: {sorted(unmatched_corrections)}"
+        )
 
     customer, meeting, business = _extract_phrase_sections(pdf_path)
     for category, cards in (
@@ -524,7 +542,7 @@ def build_content(source_dir: Path, output_path: Path, report_path: Path) -> lis
 
     payload = {
         "schemaVersion": 1,
-        "contentVersion": "2026.06.27",
+        "contentVersion": "2026.06.29",
         "sourceFiles": [workbook_path.name, pdf_path.name],
         "words": records,
     }
@@ -537,6 +555,25 @@ def build_content(source_dir: Path, output_path: Path, report_path: Path) -> lis
         "total": len(records),
         "counts": dict(counts),
         "uniqueIds": len({item["id"] for item in records}),
+        "reviewedTermCorrections": [
+            {
+                "category": correction.category,
+                "sourceIndex": correction.source_index,
+                "originalEnglish": correction.original_english,
+                "correctedEnglish": correction.corrected_english,
+                "reason": correction.reason,
+                "stableIdPreserved": True,
+                "evidence": [
+                    {
+                        "organization": evidence.organization,
+                        "url": evidence.url,
+                        "accessedOn": evidence.accessed_on,
+                    }
+                    for evidence in correction.evidence
+                ],
+            }
+            for correction in reviewed_corrections.values()
+        ],
         "phraseFooterAudit": {
             "count": len(phrase_footer_issues),
             "issues": phrase_footer_issues,

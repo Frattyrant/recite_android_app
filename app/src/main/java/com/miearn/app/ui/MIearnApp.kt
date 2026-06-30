@@ -3,6 +3,7 @@ package com.miearn.app.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
@@ -45,6 +46,11 @@ fun MIearnApp(viewModel: MainViewModel) {
         }
         return
     }
+
+    BackHandler(
+        enabled = shouldHandleStudyBack(studyState),
+        onBack = viewModel::closeStudy,
+    )
 
     if (studyState !is StudyUiState.Idle) {
         StudyScreen(
@@ -252,6 +258,9 @@ fun MIearnApp(viewModel: MainViewModel) {
         )
     }
 }
+
+internal fun shouldHandleStudyBack(state: StudyUiState): Boolean =
+    state !is StudyUiState.Idle
 
 @Composable
 private fun LoadingScreen() {

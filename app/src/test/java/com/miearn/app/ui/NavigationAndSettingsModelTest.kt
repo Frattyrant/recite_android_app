@@ -21,4 +21,16 @@ class NavigationAndSettingsModelTest {
         assertEquals(10, DailyGoalScale.snap(8))
         assertEquals(200, DailyGoalScale.snap(205))
     }
+    @Test
+    fun studyBackInterceptsEveryNonIdleStudyState() {
+        assertEquals(
+            listOf(false, true, true, true),
+            listOf(
+                shouldHandleStudyBack(StudyUiState.Idle),
+                shouldHandleStudyBack(StudyUiState.Loading),
+                shouldHandleStudyBack(StudyUiState.ResumePrompt(1L, "mechanical")),
+                shouldHandleStudyBack(StudyUiState.Complete(1, 1, 1, 1)),
+            ),
+        )
+    }
 }

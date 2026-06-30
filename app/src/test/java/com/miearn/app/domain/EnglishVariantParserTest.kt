@@ -7,15 +7,24 @@ class EnglishVariantParserTest {
     @Test
     fun splitsAllConfiguredSeparators() {
         assertEquals(
-            listOf("fixture", "jig", "checking", "fixture"),
+            listOf("fixture", "jig", "checking fixture"),
             EnglishVariantParser.parse(" fixture；jig; checking fixture "),
         )
         assertEquals(
-            listOf("support,", "pad", "net"),
+            listOf("support, pad", "net"),
             EnglishVariantParser.parse("support, pad/net"),
         )
     }
 
+    @Test
+    fun termKeepsMultiwordVariantsAndUnitsTogether() {
+        assertEquals(
+            listOf("support and clamp block", "NC block"),
+            EnglishVariantParser.parse("support and clamp block; NC block"),
+        )
+        assertEquals(listOf("clamp arm"), EnglishVariantParser.parse("clamp arm"))
+        assertEquals(listOf("Read at 300mm/s"), EnglishVariantParser.parse("Read at 300mm/s"))
+    }
     @Test
     fun removesEmptySegmentsAndPreservesOrder() {
         assertEquals(

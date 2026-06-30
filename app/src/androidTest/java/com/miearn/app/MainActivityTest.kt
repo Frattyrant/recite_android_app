@@ -2,6 +2,7 @@ package com.miearn.app
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -115,5 +116,25 @@ class MainActivityTest {
             .performClick()
         composeRule.onNodeWithContentDescription("播放发音").assertIsDisplayed()
         composeRule.onNodeWithContentDescription("收藏").assertIsDisplayed()
+    }
+    @Test
+    fun systemBackFromStudyReturnsToLearningHome() {
+        composeRule.waitUntil(timeoutMillis = 30_000) {
+            composeRule.onAllNodesWithTag("primary-study-action")
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
+        composeRule.onNodeWithTag("primary-study-action").performClick()
+        composeRule.waitUntil(timeoutMillis = 10_000) {
+            composeRule.onAllNodesWithTag("primary-study-action")
+                .fetchSemanticsNodes()
+                .isEmpty()
+        }
+
+        composeRule.activityRule.scenario.onActivity {
+            it.onBackPressedDispatcher.onBackPressed()
+        }
+
+        composeRule.onNodeWithTag("primary-study-action").assertIsDisplayed()
     }
 }

@@ -56,4 +56,29 @@ class SpeechRequestFactoryTest {
             request.segments.map { it.text },
         )
     }
+
+    @Test
+    fun multiwordTermIsOneContinuousSegment() {
+        val bodyInWhite = fixture.copy(
+            id = "mec_0001",
+            english = "Body in White (BIW)",
+            primaryEnglish = "Body in White",
+            audioText = "Body in White (BIW)",
+            audioAsset = "audio/mec_0001.ogg",
+        )
+
+        val request = SpeechRequestFactory.full(bodyInWhite)
+
+        assertEquals(listOf("Body in White (BIW)"), request.segments.map { it.text })
+        assertEquals(
+            listOf(
+                TtsQueueItem.Speak(
+                    "Body in White (BIW)",
+                    isFirst = true,
+                    isFinal = true,
+                ),
+            ),
+            TtsQueuePlan.create(request.segments.map { it.text }),
+        )
+    }
 }

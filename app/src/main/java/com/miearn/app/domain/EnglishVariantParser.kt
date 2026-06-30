@@ -1,7 +1,7 @@
 package com.miearn.app.domain
 
 object EnglishVariantParser {
-    private val termSeparators = Regex("""(?:[;；/\\]|\s)+""")
+    private val termSemicolons = Regex("""[;\uFF1B]+""")
     private val phraseSemicolons = Regex("""[;；]+""")
     private val sentenceBoundary = Regex("""(?<=[.!?])(?:\s+(?=["']?[A-Z])|(?=["']?[A-Z]))""")
     private val englishWord = Regex("""[A-Za-z]+(?:'[A-Za-z]+)?""")
@@ -45,10 +45,31 @@ object EnglishVariantParser {
 
     private fun parseTerm(english: String): List<String> =
         english
-            .split(termSeparators)
+            .split(termSemicolons)
+            .asSequence()
+            .flatMap(::splitTermSlashes)
             .map(String::trim)
             .filter(englishOrNumber::containsMatchIn)
+            .toList()
 
+    private fun splitTermSlashes(text: String): Sequence<String> = sequence {
+        val current = StringBuilder()
+        text.forEachIndexed { index, char ->
+            if (char != '/' && char != '\\') {
+                current.append(char)
+                return@forEachIndexed
+            }
+            val unitSlash = unitLeft.containsMatchIn(current.toString()) &&
+                unitRight.containsMatchIn(text.substring(index + 1))
+            if (unitSlash) {
+                current.append(char)
+            } else {
+                current.toString().trim().takeIf(String::isNotEmpty)?.let { yield(it) }
+                current.setLength(0)
+            }
+        }
+        current.toString().trim().takeIf(String::isNotEmpty)?.let { yield(it) }
+    }
     private fun parsePhrase(english: String): List<String> =
         english
             .split(phraseSemicolons)
