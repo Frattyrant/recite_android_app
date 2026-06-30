@@ -3,6 +3,11 @@ import unittest
 from pathlib import Path
 
 from tools.generate_audio import sha256, spoken_text_sha256
+from tools.generate_variant_audio import (
+    legacy_term_variants,
+    raw_variants,
+    segment_plan_sha256,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -42,8 +47,33 @@ class AudioManifestTest(unittest.TestCase):
             self.assertEqual(word["id"], entry["id"])
             self.assertEqual(word["audioAsset"], entry["path"])
             self.assertEqual(spoken_text_sha256(word), entry["spokenTextSha256"])
+            self.assertEqual(
+                segment_plan_sha256(
+                    raw_variants(word["english"], word.get("kind", "TERM"))
+                ),
+                entry["segmentPlanSha256"],
+            )
             self.assertEqual(path.stat().st_size, entry["bytes"])
             self.assertEqual(sha256(path), entry["audioSha256"])
+
+
+    def test_legacy_whitespace_migration_covers_all_affected_terms(self):
+        words = json.loads(
+            (
+                PROJECT_ROOT / "app/src/main/assets/content/words_v1.json"
+            ).read_text(encoding="utf-8")
+        )["words"]
+        affected = {
+            word["id"]
+            for word in words
+            if word.get("kind") == "TERM"
+            and len(raw_variants(word["english"], "TERM")) == 1
+            and len(legacy_term_variants(word["english"])) > 1
+        }
+
+        self.assertEqual(1413, len(affected))
+        self.assertIn("mec_0001_0bc593b6bd35f925", affected)
+        self.assertIn("ele_0001_bbb7b92b27e75187", affected)
 
 
 if __name__ == "__main__":

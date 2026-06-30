@@ -6,8 +6,11 @@ from pathlib import Path
 from tools.generate_variant_audio import (
     PAUSE_MS,
     combine_wavs,
+    legacy_term_variants,
+    segment_plan_sha256,
     pronounceable_variant,
     raw_variants,
+    requires_contiguous_regeneration,
 )
 
 
@@ -28,6 +31,42 @@ class VariantAudioTest(unittest.TestCase):
             ["Read at 300mm/s"],
             raw_variants("Read at 300mm/s", "TERM"),
         )
+    def test_segment_plan_distinguishes_contiguous_phrase_from_legacy_word_splits(self):
+        current = raw_variants("Body in White (BIW)", "TERM")
+        legacy = legacy_term_variants("Body in White (BIW)")
+
+        self.assertEqual(["Body in White (BIW)"], current)
+        self.assertEqual(["Body", "in", "White", "(BIW)"], legacy)
+        self.assertNotEqual(
+            segment_plan_sha256(current),
+            segment_plan_sha256(legacy),
+        )
+
+    def test_segment_plan_is_deterministic_and_includes_pause_policy(self):
+        variants = ["fixture", "jig"]
+
+        self.assertEqual(
+            segment_plan_sha256(variants),
+            segment_plan_sha256(list(variants)),
+        )
+        self.assertNotEqual(
+            segment_plan_sha256(variants, pause_ms=500),
+            segment_plan_sha256(variants, pause_ms=0),
+        )
+
+    def test_legacy_single_phrase_requires_one_contiguous_regeneration(self):
+        word = {"kind": "TERM", "english": "Body in White (BIW)"}
+        variants = raw_variants(word["english"], word["kind"])
+
+        self.assertTrue(requires_contiguous_regeneration(word, variants, {}))
+        self.assertFalse(
+            requires_contiguous_regeneration(
+                word,
+                variants,
+                {"segmentPlanSha256": segment_plan_sha256(variants)},
+            )
+        )
+
     def test_phrases_split_sentences_but_keep_words_and_units_together(self):
         self.assertEqual(
             ["Read at 300mm/s.", "Then inspect the result."],
