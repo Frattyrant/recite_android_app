@@ -10,13 +10,18 @@ enum class AnswerFeedback {
     WRONG,
 }
 
+
+internal object AnswerFeedbackAudioPolicy {
+    const val usage = AudioAttributes.USAGE_MEDIA
+    const val contentType = AudioAttributes.CONTENT_TYPE_SONIFICATION
+}
 class AnswerFeedbackPlayer(context: Context) {
     private val soundPool = SoundPool.Builder()
         .setMaxStreams(1)
         .setAudioAttributes(
             AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AnswerFeedbackAudioPolicy.usage)
+                .setContentType(AnswerFeedbackAudioPolicy.contentType)
                 .build(),
         )
         .build()

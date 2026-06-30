@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -111,7 +112,7 @@ fun V21LearningHomeScreen(
                         ) {
                             HomeMetric("新学", state.todayNew)
                             HomeMetric("复习", state.todayReview)
-                            HomeMetric("连续", state.streak, "天")
+                            StreakHomeMetric(state.streak)
                         }
                         val progress = if (active == null || active.total == 0) {
                             0f
@@ -194,5 +195,30 @@ private fun HomeMetric(
             fontWeight = FontWeight.SemiBold,
         )
         Text(label, style = MaterialTheme.typography.bodySmall)
+    }
+}
+@Composable
+private fun StreakHomeMetric(days: Int) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                "$days 天",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+            )
+            val flameSize = when (StreakFlameLevel.fromDays(days)) {
+                StreakFlameLevel.NONE -> 0.dp
+                StreakFlameLevel.SMALL -> 16.dp
+                StreakFlameLevel.MEDIUM -> 20.dp
+                StreakFlameLevel.LARGE -> 24.dp
+            }
+            StreakFlame(
+                days = days,
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .size(flameSize),
+            )
+        }
+        Text("连续", style = MaterialTheme.typography.bodySmall)
     }
 }

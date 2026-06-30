@@ -1,7 +1,5 @@
 package com.miearn.app.ui
 
-import android.app.TimePickerDialog
-import android.text.format.DateFormat
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +27,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -50,7 +47,6 @@ fun V21SettingsDialog(
     onReminderTime: (Int, Int) -> Unit,
     reminderPermissionMessage: String? = null,
 ) {
-    val context = LocalContext.current
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("学习设置") },
@@ -86,30 +82,11 @@ fun V21SettingsDialog(
                         },
                     )
                 }
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            TimePickerDialog(
-                                context,
-                                { _, hour, minute -> onReminderTime(hour, minute) },
-                                settings.reminderHour,
-                                settings.reminderMinute,
-                                DateFormat.is24HourFormat(context),
-                            ).show()
-                        }
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text("提醒时间")
-                    Text(
-                        "%02d:%02d".format(
-                            settings.reminderHour,
-                            settings.reminderMinute,
-                        ),
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
+                ReminderTimeWheelPicker(
+                    hour = settings.reminderHour,
+                    minute = settings.reminderMinute,
+                    onTime = onReminderTime,
+                )
                 reminderPermissionMessage?.let {
                     Text(
                         it,
