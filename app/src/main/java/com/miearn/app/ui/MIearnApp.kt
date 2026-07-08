@@ -72,6 +72,7 @@ fun MIearnApp(viewModel: MainViewModel) {
 
     val browserDestination by viewModel.wordBrowserDestination.collectAsStateWithLifecycle()
     if (browserDestination != null) {
+        BackHandler(onBack = viewModel::closeWordBrowser)
         val browserWords by viewModel.wordBrowserWords.collectAsStateWithLifecycle()
         val browserQuery by viewModel.wordBrowserQuery.collectAsStateWithLifecycle()
         WordBrowserScreen(
@@ -90,6 +91,7 @@ fun MIearnApp(viewModel: MainViewModel) {
     val showInsights by viewModel.showInsights.collectAsStateWithLifecycle()
     val insightsState by viewModel.insightsState.collectAsStateWithLifecycle()
     if (showInsights) {
+        BackHandler(onBack = viewModel::closeInsights)
         InsightsScreen(
             state = insightsState,
             onClose = viewModel::closeInsights,
@@ -101,6 +103,7 @@ fun MIearnApp(viewModel: MainViewModel) {
     val showSourceManager by viewModel.showSourceManager.collectAsStateWithLifecycle()
     val sources by viewModel.sources.collectAsStateWithLifecycle()
     if (showSourceManager) {
+        BackHandler(onBack = viewModel::closeSourceManager)
         SourceManagerScreen(
             sources = sources,
             onBack = viewModel::closeSourceManager,
@@ -113,6 +116,7 @@ fun MIearnApp(viewModel: MainViewModel) {
     val importJob by viewModel.importJob.collectAsStateWithLifecycle()
     val importUiError by viewModel.importUiError.collectAsStateWithLifecycle()
     if (showImport) {
+        BackHandler(onBack = viewModel::closeImport)
         ImportWizardScreen(
             job = importJob,
             localError = importUiError,
