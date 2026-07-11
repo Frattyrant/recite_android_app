@@ -50,7 +50,8 @@ fun InsightsScreen(
     onClose: () -> Unit,
     onRetry: () -> Unit,
 ) {
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(16.dp)) {
+    SoftPageBackground {
+        Column(Modifier.fillMaxSize().statusBarsPadding().padding(16.dp)) {
         Row(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -83,6 +84,7 @@ fun InsightsScreen(
 
             is InsightsUiState.Ready -> InsightsContent(state.snapshot)
         }
+        }
     }
 }
 
@@ -102,6 +104,12 @@ private fun InsightsContent(snapshot: InsightsSnapshot) {
                 )
             }
         }
+        if (days.none { it.newCount + it.reviewCount > 0 }) {
+            SoftEmptyState(
+                title = "\u8FD9\u6BB5\u65F6\u95F4\u8FD8\u6CA1\u6709\u5B66\u4E60\u8BB0\u5F55",
+                message = "\u5B8C\u6210\u4E00\u6B21\u5B66\u4E60\u540E\uFF0C\u8D8B\u52BF\u4F1A\u4ECE\u8FD9\u91CC\u6162\u6162\u51FA\u73B0\u3002",
+            )
+        }
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -117,6 +125,13 @@ private fun InsightsContent(snapshot: InsightsSnapshot) {
                     days = days,
                     modifier = Modifier.fillMaxWidth().height(150.dp).padding(top = 12.dp),
                 )
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text("${days.size}\u5929\u524D", style = MaterialTheme.typography.labelSmall)
+                    Text("\u4ECA\u5929", style = MaterialTheme.typography.labelSmall)
+                }
                 Text(
                     "紫色为新学，橙色为复习",
                     style = MaterialTheme.typography.bodySmall,
@@ -144,6 +159,13 @@ private fun InsightsContent(snapshot: InsightsSnapshot) {
                     values = snapshot.retentionCurve,
                     modifier = Modifier.fillMaxWidth().height(140.dp).padding(top = 10.dp),
                 )
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text("\u4ECA\u5929", style = MaterialTheme.typography.labelSmall)
+                    Text("30 \u5929\u540E", style = MaterialTheme.typography.labelSmall)
+                }
                 Text(
                     "根据当前 SM-2 间隔估算未来 30 天趋势",
                     style = MaterialTheme.typography.bodySmall,

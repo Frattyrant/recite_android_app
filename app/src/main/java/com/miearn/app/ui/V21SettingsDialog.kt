@@ -1,19 +1,28 @@
 package com.miearn.app.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -37,6 +46,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun V21SettingsDialog(
     settings: UserSettings,
@@ -47,41 +57,34 @@ fun V21SettingsDialog(
     onReminderTime: (Int, Int) -> Unit,
     reminderPermissionMessage: String? = null,
 ) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("学习设置") },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                Text("每日新词")
+    ModalBottomSheet(onDismissRequest = onDismiss) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            SoftPageHeader(
+                title = "\u5B66\u4E60\u8BBE\u7F6E",
+                subtitle = "\u8C03\u6574\u6BCF\u5929\u7684\u8282\u594F\u4E0E\u63D0\u9192",
+            )
+            SettingsGroup(title = "\u6BCF\u65E5\u65B0\u8BCD") {
                 DailyGoalRuler(settings.dailyGoal, onGoal)
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text("卡片自动发音")
-                    Switch(
-                        checked = settings.autoPlay,
-                        onCheckedChange = onAutoPlay,
-                        modifier = Modifier.semantics {
-                            contentDescription = "卡片自动发音"
-                        },
-                    )
-                }
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text("学习任务提醒")
-                    Switch(
-                        checked = settings.reminderEnabled,
-                        onCheckedChange = onReminderEnabled,
-                        modifier = Modifier.semantics {
-                            contentDescription = "学习任务提醒"
-                        },
-                    )
-                }
+            }
+            SettingsGroup(title = "\u53D1\u97F3") {
+                SettingSwitchRow(
+                    label = "\u5361\u7247\u81EA\u52A8\u53D1\u97F3",
+                    checked = settings.autoPlay,
+                    onCheckedChange = onAutoPlay,
+                )
+            }
+            SettingsGroup(title = "\u5B66\u4E60\u63D0\u9192") {
+                SettingSwitchRow(
+                    label = "\u5B66\u4E60\u4EFB\u52A1\u63D0\u9192",
+                    checked = settings.reminderEnabled,
+                    onCheckedChange = onReminderEnabled,
+                )
                 ReminderTimeWheelPicker(
                     hour = settings.reminderHour,
                     minute = settings.reminderMinute,
@@ -95,13 +98,58 @@ fun V21SettingsDialog(
                     )
                 }
             }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text("完成") }
-        },
-    )
+            Button(
+                onClick = onDismiss,
+                modifier = Modifier.fillMaxWidth().height(54.dp),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Text("\u5B8C\u6210")
+            }
+        }
+    }
 }
 
+@Composable
+private fun SettingsGroup(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Card(
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.88f),
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+    ) {
+        Column(
+            Modifier.fillMaxWidth().padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(title, style = MaterialTheme.typography.titleMedium)
+            content()
+        }
+    }
+}
+
+@Composable
+private fun SettingSwitchRow(
+    label: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(label)
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            modifier = Modifier.semantics { contentDescription = label },
+        )
+    }
+}
 @Composable
 private fun DailyGoalRuler(
     selectedGoal: Int,

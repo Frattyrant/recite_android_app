@@ -53,7 +53,8 @@ fun V21LearningHomeScreen(
 ) {
     var categoryMenu by rememberSaveable { mutableStateOf(false) }
     val active = state.activeStats
-    Column(modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+    SoftPageBackground(modifier) {
+        Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(top = 16.dp, bottom = 12.dp),
@@ -168,6 +169,7 @@ fun V21LearningHomeScreen(
             )
         }
         Spacer(Modifier.height(18.dp))
+        }
     }
 }
 

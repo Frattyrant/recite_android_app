@@ -2,6 +2,8 @@ package com.miearn.app.ui
 
 import com.miearn.app.audio.PronunciationStatus
 import com.miearn.app.data.InsightsSnapshot
+import com.miearn.app.data.MineSnapshot
+import com.miearn.app.domain.CalendarDaySummary
 import com.miearn.app.data.local.CategoryStats
 import com.miearn.app.data.local.WordEntity
 import com.miearn.app.data.settings.UserSettings
@@ -81,6 +83,14 @@ sealed interface StudyUiState {
     ) : StudyUiState
 }
 
+sealed interface MineUiState {
+    data object Loading : MineUiState
+    data class Ready(
+        val snapshot: MineSnapshot,
+        val selectedDay: CalendarDaySummary? = null,
+    ) : MineUiState
+    data class Error(val message: String) : MineUiState
+}
 sealed interface InsightsUiState {
     data object Loading : InsightsUiState
     data class Ready(val snapshot: InsightsSnapshot) : InsightsUiState

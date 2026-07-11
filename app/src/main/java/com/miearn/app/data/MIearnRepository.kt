@@ -8,14 +8,20 @@ import com.miearn.app.data.local.ReviewEventEntity
 import com.miearn.app.data.local.StudySessionEntity
 import com.miearn.app.data.local.WordEntity
 import com.miearn.app.domain.LearningPhase
+import com.miearn.app.domain.CalendarDaySummary
+import com.miearn.app.domain.CalendarMonthUi
+import com.miearn.app.domain.LearningCalendar
 import com.miearn.app.domain.LearningInsights
 import com.miearn.app.domain.LearningSession
 import com.miearn.app.domain.RetentionInput
 import com.miearn.app.domain.ReviewScheduler
 import com.miearn.app.domain.StudyProgress
+import com.miearn.app.domain.WeeklyLearningSummary
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import org.json.JSONArray
 import java.time.LocalDate
+import java.time.YearMonth
 
 class MIearnRepository(private val database: AppDatabase) {
     val categoryStats = database.wordDao().observeCategoryStats()
@@ -121,6 +127,60 @@ class MIearnRepository(private val database: AppDatabase) {
         )
     }
 
+    suspend fun mineSnapshot(
+        month: YearMonth,
+        today: Long,
+    ): MineSnapshot {
+        val todayDate = LocalDate.ofEpochDay(today)
+        val monthStart = month.atDay(1).toEpochDay()
+        val monthEnd = month.atEndOfMonth().toEpochDay()
+        val weekStart = todayDate
+            .minusDays((todayDate.dayOfWeek.value - 1).toLong())
+            .toEpochDay()
+        val monthSummaries = daySummaries(
+            activities = database.activityDao().getByEpochDayRange(monthStart, monthEnd),
+            events = database.eventDao().getByEpochDayRange(monthStart, monthEnd),
+        )
+        val weekSummaries = daySummaries(
+            activities = database.activityDao().getByEpochDayRange(weekStart, today),
+            events = database.eventDao().getByEpochDayRange(weekStart, today),
+        )
+        val streak = calculateStreak(activities.first(), today)
+        return MineSnapshot(
+            calendar = LearningCalendar.month(
+                month = month,
+                today = todayDate,
+                earliestEpochDay = database.activityDao().earliestActiveEpochDay(),
+                summaries = monthSummaries,
+            ),
+            weekly = LearningCalendar.weekly(
+                today = todayDate,
+                summaries = weekSummaries,
+                streak = streak,
+            ),
+        )
+    }
+
+    private fun daySummaries(
+        activities: List<DailyActivityEntity>,
+        events: List<ReviewEventEntity>,
+    ): List<CalendarDaySummary> {
+        val activityByDay = activities.associateBy(DailyActivityEntity::epochDay)
+        val eventsByDay = events.groupBy(ReviewEventEntity::epochDay)
+        return (activityByDay.keys + eventsByDay.keys)
+            .sorted()
+            .map { epochDay ->
+                val activity = activityByDay[epochDay]
+                val dayEvents = eventsByDay[epochDay].orEmpty()
+                CalendarDaySummary(
+                    epochDay = epochDay,
+                    newCount = activity?.newCount ?: 0,
+                    reviewCount = activity?.reviewCount ?: 0,
+                    correctFirstTry = dayEvents.count(ReviewEventEntity::firstCorrect),
+                    answeredFirstTry = dayEvents.size,
+                )
+            }
+    }
     suspend fun recordFirstAnswer(
         word: WordEntity,
         phase: LearningPhase,
@@ -290,6 +350,10 @@ data class InsightsSnapshot(
     val averageRetention: Double,
     val retentionCurve: List<Double>,
     val futureDue: Map<Long, Int>,
+)
+data class MineSnapshot(
+    val calendar: CalendarMonthUi,
+    val weekly: WeeklyLearningSummary,
 )
 
 private fun LearningSession.toEntity(

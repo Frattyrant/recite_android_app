@@ -20,6 +20,7 @@ import com.miearn.app.data.local.SourceEntity
 import com.miearn.app.importing.ImportColumnMapping
 import com.miearn.app.data.settings.UserSettings
 import com.miearn.app.domain.LearningPhase
+import com.miearn.app.domain.CalendarDaySummary
 import com.miearn.app.domain.LearningContentPolicy
 import com.miearn.app.domain.LearningSession
 import com.miearn.app.domain.QuizEngine
@@ -33,6 +34,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.YearMonth
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -40,6 +43,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = container.repository
     private val settingsRepository = container.settings
     private val launchEpochDay = MIearnRepository.todayEpochDay()
+    private val currentMineMonth = YearMonth.from(LocalDate.ofEpochDay(launchEpochDay))
+    private var selectedMineMonth = currentMineMonth
 
     val seedState = MutableStateFlow<SeedUiState>(SeedUiState.Loading)
     val selectedTab = MutableStateFlow(MainTab.LEARNING)
@@ -58,6 +63,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
     val insightsState = MutableStateFlow<InsightsUiState>(InsightsUiState.Loading)
+    val mineState = MutableStateFlow<MineUiState>(MineUiState.Loading)
 
     val settings = settingsRepository.settings.stateIn(
         viewModelScope,
@@ -243,7 +249,63 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun selectTab(tab: MainTab) {
         container.audio.stop()
+        val enteringMine = tab == MainTab.MINE && selectedTab.value != MainTab.MINE
         selectedTab.value = tab
+        if (enteringMine) {
+            selectedMineMonth = currentMineMonth
+            refreshMine()
+        }
+    }
+
+    fun previousMineMonth() {
+        val ready = mineState.value as? MineUiState.Ready ?: return
+        if (!ready.snapshot.calendar.canGoPrevious) return
+        selectedMineMonth = selectedMineMonth.minusMonths(1)
+        refreshMine()
+    }
+
+    fun nextMineMonth() {
+        val ready = mineState.value as? MineUiState.Ready ?: return
+        if (!ready.snapshot.calendar.canGoNext) return
+        selectedMineMonth = selectedMineMonth.plusMonths(1)
+        refreshMine()
+    }
+
+    fun selectMineDay(epochDay: Long) {
+        val ready = mineState.value as? MineUiState.Ready ?: return
+        val cell = ready.snapshot.calendar.days.firstOrNull {
+            it.date?.toEpochDay() == epochDay && !it.isFuture
+        } ?: return
+        mineState.value = ready.copy(
+            selectedDay = cell.summary ?: CalendarDaySummary(
+                epochDay = epochDay,
+                newCount = 0,
+                reviewCount = 0,
+                correctFirstTry = 0,
+                answeredFirstTry = 0,
+            ),
+        )
+    }
+
+    fun closeMineDay() {
+        val ready = mineState.value as? MineUiState.Ready ?: return
+        mineState.value = ready.copy(selectedDay = null)
+    }
+
+    fun refreshMine() {
+        viewModelScope.launch {
+            mineState.value = MineUiState.Loading
+            mineState.value = runCatching {
+                repository.mineSnapshot(selectedMineMonth, MIearnRepository.todayEpochDay())
+            }.fold(
+                onSuccess = { MineUiState.Ready(it) },
+                onFailure = {
+                    MineUiState.Error(
+                        it.message ?: "\u5B66\u4E60\u8BB0\u5F55\u8BFB\u53D6\u5931\u8D25",
+                    )
+                },
+            )
+        }
     }
 
     fun stopAudio() {

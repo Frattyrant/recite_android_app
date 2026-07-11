@@ -8,6 +8,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -27,6 +30,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -170,28 +176,41 @@ fun MIearnApp(viewModel: MainViewModel) {
 
     val tab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val dashboard by viewModel.dashboard.collectAsStateWithLifecycle()
+    val mineState by viewModel.mineState.collectAsStateWithLifecycle()
     val quizState by viewModel.quizState.collectAsStateWithLifecycle()
     val showSettings by viewModel.showSettings.collectAsStateWithLifecycle()
     val showReminderPrompt by viewModel.showReminderPrompt.collectAsStateWithLifecycle()
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                MainTab.entries.forEach { item ->
-                    val icon = when (item) {
-                        MainTab.LEARNING -> Icons.Default.Home
-                        MainTab.QUIZ -> Icons.Default.Check
-                        MainTab.MINE -> Icons.Default.AccountCircle
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+            ) {
+                NavigationBar(
+                    modifier = Modifier.clip(RoundedCornerShape(24.dp)),
+                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.94f),
+                    tonalElevation = 3.dp,
+                ) {
+                    MainTab.entries.forEach { item ->
+                        val icon = when (item) {
+                            MainTab.LEARNING -> Icons.Default.Home
+                            MainTab.QUIZ -> Icons.Default.Check
+                            MainTab.MINE -> Icons.Default.AccountCircle
+                        }
+                        NavigationBarItem(
+                            selected = tab == item,
+                            onClick = { viewModel.selectTab(item) },
+                            icon = { Icon(icon, contentDescription = item.label) },
+                            label = { Text(item.label) },
+                        )
                     }
-                    NavigationBarItem(
-                        selected = tab == item,
-                        onClick = { viewModel.selectTab(item) },
-                        icon = { Icon(icon, contentDescription = item.label) },
-                        label = { Text(item.label) },
-                    )
                 }
             }
         },
+        containerColor = MaterialTheme.colorScheme.background,
     ) { padding ->
         when (tab) {
             MainTab.LEARNING -> V21LearningHomeScreen(
@@ -219,7 +238,13 @@ fun MIearnApp(viewModel: MainViewModel) {
             )
 
             MainTab.MINE -> MineScreen(
+                state = mineState,
                 modifier = Modifier.padding(padding),
+                onPreviousMonth = viewModel::previousMineMonth,
+                onNextMonth = viewModel::nextMineMonth,
+                onSelectDay = viewModel::selectMineDay,
+                onDismissDay = viewModel::closeMineDay,
+                onRetry = viewModel::refreshMine,
                 onFavorites = {
                     viewModel.openWordBrowser(WordBrowserDestination.FAVORITES)
                 },
@@ -268,7 +293,9 @@ internal fun shouldHandleStudyBack(state: StudyUiState): Boolean =
 
 @Composable
 private fun LoadingScreen() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
+    SoftPageBackground {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
     }
 }
