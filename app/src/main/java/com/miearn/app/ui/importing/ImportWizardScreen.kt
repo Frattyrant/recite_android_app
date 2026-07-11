@@ -74,6 +74,7 @@ fun ImportWizardScreen(
                 .padding(horizontal = 20.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            ImportStepIndicator(job)
             if (localError != null) {
                 Text(localError, color = MaterialTheme.colorScheme.error)
                 TextButton(onClick = onClearError) { Text("知道了") }

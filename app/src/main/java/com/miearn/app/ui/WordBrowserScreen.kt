@@ -56,7 +56,8 @@ fun WordBrowserScreen(
 ) {
     var selectedWord by remember { mutableStateOf<WordEntity?>(null) }
     val focusRequester = remember { FocusRequester() }
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(16.dp)) {
+    SoftPageBackground {
+        Column(Modifier.fillMaxSize().statusBarsPadding().padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
@@ -105,6 +106,7 @@ fun WordBrowserScreen(
                     )
                 }
             }
+        }
         }
     }
     LaunchedEffect(destination) {

@@ -134,6 +134,17 @@ interface ActivityDao {
     @Query("SELECT * FROM daily_activity WHERE epochDay = :epochDay")
     suspend fun get(epochDay: Long): DailyActivityEntity?
 
+    @Query(
+        "SELECT * FROM daily_activity WHERE epochDay BETWEEN :startEpochDay AND :endEpochDay ORDER BY epochDay",
+    )
+    suspend fun getByEpochDayRange(
+        startEpochDay: Long,
+        endEpochDay: Long,
+    ): List<DailyActivityEntity>
+
+    @Query("SELECT MIN(epochDay) FROM daily_activity WHERE newCount + reviewCount > 0")
+    suspend fun earliestActiveEpochDay(): Long?
+
     @Query("SELECT * FROM daily_activity ORDER BY epochDay DESC")
     fun observeAll(): Flow<List<DailyActivityEntity>>
 }
