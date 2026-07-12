@@ -1,4 +1,4 @@
-# MIearn
+﻿# MIearn
 
 一款面向制造业专业英语的 Android 离线背词应用。
 
@@ -82,3 +82,15 @@ app/build/outputs/apk/debug/app-debug.apk
 项目使用 Kotlin、Jetpack Compose、Room、MVVM、DataStore、Media3 和 WorkManager。
 
 第三方资源与许可信息见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+## 安全发布
+
+本地签名时，Copy `key.properties.example` to `key.properties`，并仅在本机填写真实签名信息；不要提交 `key.properties`、keystore 或任何密码。
+
+GitHub Actions 发布使用以下 GitHub Secrets，仅填写在仓库 Secrets 设置中：
+
+- `MIEARN_KEYSTORE_BASE64`
+- `MIEARN_KEYSTORE_PASSWORD`
+- `MIEARN_KEY_ALIAS`
+- `MIEARN_KEY_PASSWORD`
+
+`MIEARN_KEYSTORE_BASE64` 保存 Base64 编码后的新 keystore。不要在 README、工作流、提交记录或日志中写入任何 Secret 的真实值。
