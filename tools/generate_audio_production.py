@@ -85,12 +85,13 @@ def _can_resume(
     if entry.get("id") != plan.word_id or not _metadata_matches(output, entry, probe):
         return False
     segments = entry.get("segments", [])
-    if len(segments) != len(plan.segments):
+    expected_segments = plan.segments if len(plan.segments) > 1 else ()
+    if len(segments) != len(expected_segments):
         return False
-    for expected, actual in zip(plan.segments, segments):
+    for expected, actual in zip(expected_segments, segments):
         if (
             actual.get("index") != expected.index
-            or actual.get("displayText") != expected.display_text
+            or actual.get("text") != expected.display_text
             or actual.get("spokenText") != expected.spoken_text
             or actual.get("overrideKey") != expected.override_key
             or not _metadata_matches(output, actual, probe)
@@ -133,7 +134,10 @@ def _audit(words: Sequence[dict], entries: dict) -> dict:
                 "chinese": word.get("chinese", ""),
                 "category": word.get("category", ""),
                 "completePath": entries[word["id"]]["path"],
-                "variantPaths": [item["path"] for item in entries[word["id"]]["segments"]],
+                "variantPaths": [
+                    item["path"]
+                    for item in entries[word["id"]].get("segments", [])
+                ],
             }
             for word in selected
         ],
@@ -185,20 +189,21 @@ def generate_staged_pack(
                 wav = word_temp / f"{segment.index:02d}.wav"
                 synthesize(segment.spoken_text, wav)
                 wavs.append(wav)
-                target = variants / f"{plan.word_id}_{segment.index:02d}.ogg"
-                part = word_temp / f"{segment.index:02d}.ogg.part"
-                encode(wav, part, f"{plan.word_id}:{segment.index}")
-                os.replace(part, target)
-                segment_entries.append(
-                    {
-                        "index": segment.index,
-                        "displayText": segment.display_text,
-                        "spokenText": segment.spoken_text,
-                        "overrideKey": segment.override_key,
-                        "textSha256": hashlib.sha256(segment.display_text.encode("utf-8")).hexdigest(),
-                        **_file_metadata(target, output, probe),
-                    }
-                )
+                if len(plan.segments) > 1:
+                    target = variants / f"{plan.word_id}_{segment.index:02d}.ogg"
+                    part = word_temp / f"{segment.index:02d}.ogg.part"
+                    encode(wav, part, f"{plan.word_id}:{segment.index}")
+                    os.replace(part, target)
+                    segment_entries.append(
+                        {
+                            "index": segment.index,
+                            "text": segment.display_text,
+                            "spokenText": segment.spoken_text,
+                            "overrideKey": segment.override_key,
+                            "textSha256": hashlib.sha256(segment.display_text.encode("utf-8")).hexdigest(),
+                            **_file_metadata(target, output, probe),
+                        }
+                    )
             complete_wav = wavs[0]
             if len(wavs) > 1:
                 complete_wav = word_temp / "combined.wav"
@@ -208,15 +213,17 @@ def generate_staged_pack(
             encode(complete_wav, complete_part, plan.word_id)
             os.replace(complete_part, complete)
             complete_meta = _file_metadata(complete, output, probe)
-            entries[plan.word_id] = {
+            entry = {
                 "id": plan.word_id,
                 **complete_meta,
                 "segmentPlanSha256": segment_plan_sha256(
                     [segment.display_text for segment in plan.segments]
                 ),
-                "pauseBetweenSegmentsMs": 500 if len(plan.segments) > 1 else 0,
-                "segments": segment_entries,
             }
+            if len(plan.segments) > 1:
+                entry["pauseBetweenSegmentsMs"] = 500
+                entry["segments"] = segment_entries
+            entries[plan.word_id] = entry
             manifest = {
                 "schemaVersion": 2,
                 "contentSha256": content_hash,
@@ -231,6 +238,16 @@ def generate_staged_pack(
     finally:
         if temporary.exists():
             shutil.rmtree(temporary)
+
+    expected_variant_paths = {
+        variants / f"{plan.word_id}_{segment.index:02d}.ogg"
+        for plan in plans
+        if len(plan.segments) > 1
+        for segment in plan.segments
+    }
+    for stale_path in variants.glob("*.ogg"):
+        if stale_path not in expected_variant_paths:
+            stale_path.unlink()
 
     audit = _audit(words, entries)
     write_manifest_atomic(output / "release_audit.json", audit)

@@ -33,21 +33,16 @@ def build_pack(root: Path) -> tuple[list[dict], dict[str, dict]]:
         {"id": "two", "english": "PLC", "kind": "TERM"},
     ]
     one_segments = [
-        {"index": 0, "displayText": "fixture", "spokenText": "fixture", "overrideKey": None,
+        {"index": 0, "text": "fixture", "spokenText": "fixture", "overrideKey": None,
          **audio_metadata(root, "audio/variants/one_00.ogg", 0.6)},
-        {"index": 1, "displayText": "jig", "spokenText": "jig", "overrideKey": None,
+        {"index": 1, "text": "jig", "spokenText": "jig", "overrideKey": None,
          **audio_metadata(root, "audio/variants/one_01.ogg", 0.5)},
-    ]
-    two_segments = [
-        {"index": 0, "displayText": "PLC", "spokenText": "P L C", "overrideKey": "exactText:PLC",
-         **audio_metadata(root, "audio/variants/two_00.ogg", 0.7)},
     ]
     entries = {
         "one": {"id": "one", **audio_metadata(root, "audio/one.ogg", 1.6),
                 "pauseBetweenSegmentsMs": 500, "segments": one_segments,
                 "segmentPlanSha256": segment_plan_sha256(["fixture", "jig"])},
         "two": {"id": "two", **audio_metadata(root, "audio/two.ogg", 0.7),
-                "pauseBetweenSegmentsMs": 0, "segments": two_segments,
                 "segmentPlanSha256": segment_plan_sha256(["PLC"])},
     }
     manifest = {

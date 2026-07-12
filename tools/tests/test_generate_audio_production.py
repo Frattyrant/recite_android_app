@@ -35,6 +35,31 @@ def probe_fixture(path: Path) -> dict:
 
 
 class GenerateAudioProductionTest(unittest.TestCase):
+    def test_single_expression_uses_only_complete_audio(self):
+        words = [{
+            "id": "mee_0001_x",
+            "category": "meeting",
+            "kind": "PHRASE",
+            "english": "Can you repeat that?",
+        }]
+        plans = plan_production(words, PronunciationOverrides.empty())
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "audio-production-v2.3"
+            report = generate_staged_pack(
+                plans=plans,
+                words=words,
+                output=root,
+                content_hash="content-hash",
+                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                synthesize=write_fixture_wav,
+                encode=write_fixture_ogg,
+                probe=probe_fixture,
+            )
+
+            self.assertNotIn("segments", report["entries"]["mee_0001_x"])
+            self.assertFalse((root / "audio/variants/mee_0001_x_00.ogg").exists())
+
     def test_writes_complete_variants_manifest_and_audit(self):
         words = [
             {
@@ -70,7 +95,7 @@ class GenerateAudioProductionTest(unittest.TestCase):
             self.assertEqual(2, report["entryCount"])
             entry = report["entries"]["mec_0001_x"]
             self.assertEqual(500, entry["pauseBetweenSegmentsMs"])
-            self.assertEqual(["fixture", "jig"], [item["displayText"] for item in entry["segments"]])
+            self.assertEqual(["fixture", "jig"], [item["text"] for item in entry["segments"]])
             self.assertTrue((root / "audio/mec_0001_x.ogg").is_file())
             self.assertTrue((root / "audio/variants/mec_0001_x_01.ogg").is_file())
             manifest = json.loads((root / "audio_manifest_v1.json").read_text(encoding="utf-8"))

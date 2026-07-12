@@ -113,18 +113,19 @@ def validate_production(
             continue
         complete_metrics = _validate_file(root, entry, probe, f"{word_id}:complete", errors)
         variants = raw_variants(str(word.get("english", "")), str(word.get("kind", "TERM")))
+        expected_segment_texts = variants if len(variants) > 1 else []
         segments = entry.get("segments", [])
-        if len(segments) != len(variants):
+        if len(segments) != len(expected_segment_texts):
             errors.append(f"{word_id}: segment count mismatch")
             segments = segments if isinstance(segments, list) else []
         if entry.get("segmentPlanSha256") != segment_plan_sha256(variants):
             errors.append(f"{word_id}: segment plan hash mismatch")
-        expected_pause_ms = 500 if len(variants) > 1 else 0
+        expected_pause_ms = 500 if len(variants) > 1 else None
         if entry.get("pauseBetweenSegmentsMs") != expected_pause_ms:
             errors.append(f"{word_id}: pause metadata mismatch")
         segment_metrics: list[dict] = []
-        for index, (display_text, segment) in enumerate(zip(variants, segments)):
-            if segment.get("index") != index or segment.get("displayText") != display_text:
+        for index, (display_text, segment) in enumerate(zip(expected_segment_texts, segments)):
+            if segment.get("index") != index or segment.get("text") != display_text:
                 errors.append(f"{word_id}: segment {index} text or index mismatch")
             metrics = _validate_file(root, segment, probe, f"{word_id}:segment:{index}", errors)
             if metrics is not None:
