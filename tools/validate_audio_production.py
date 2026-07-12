@@ -16,6 +16,7 @@ from tools.generate_variant_audio import raw_variants, segment_plan_sha256
 
 
 Probe = Callable[[Path], dict]
+HIGH_MODEL_SHA256 = "4cabf7c3a638017137f34a1516522032d4fe3f38228a843cc9b764ddcbcd9e09"
 
 
 def _sha256(path: Path) -> str:
@@ -93,6 +94,8 @@ def validate_production(
     }
     if any(profile.get(key) != value for key, value in expected_profile.items()):
         errors.append("production profile does not match Lessac High 40k audio")
+    if profile.get("modelSha256") != HIGH_MODEL_SHA256:
+        errors.append("production model SHA-256 does not match approved Lessac High")
     entries = payload.get("entries", {})
     if not isinstance(entries, dict):
         errors.append("manifest entries must be an object")

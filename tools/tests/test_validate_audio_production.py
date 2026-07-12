@@ -7,6 +7,8 @@ from pathlib import Path
 from tools.validate_audio_production import validate_production
 from tools.generate_variant_audio import segment_plan_sha256
 
+HIGH_MODEL_SHA256 = "4cabf7c3a638017137f34a1516522032d4fe3f38228a843cc9b764ddcbcd9e09"
+
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -50,7 +52,7 @@ def build_pack(root: Path) -> tuple[list[dict], dict[str, dict]]:
         "contentSha256": "content",
         "entryCount": 2,
         "profile": {
-            "name": "en_US-lessac-high", "modelSha256": "model", "bitRateKbps": 40,
+            "name": "en_US-lessac-high", "modelSha256": HIGH_MODEL_SHA256, "bitRateKbps": 40,
             "application": "audio", "channels": 1, "encodedSampleRate": 48_000,
         },
         "entries": entries,
@@ -72,6 +74,20 @@ def probe(path: Path) -> dict:
 
 
 class ValidateAudioProductionTest(unittest.TestCase):
+    def test_wrong_model_hash_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            words, _ = build_pack(root)
+            manifest_path = root / "audio_manifest_v1.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["profile"]["modelSha256"] = "wrong"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = validate_production(root, words, probe, expected_count=2)
+
+            self.assertFalse(report["passed"])
+            self.assertTrue(any("model SHA-256" in error for error in report["errors"]))
+
     def test_valid_pack_passes_every_gate(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
