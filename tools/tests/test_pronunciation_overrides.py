@@ -10,8 +10,24 @@ from tools.audio_profiles import (
     resolve_spoken_text,
 )
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 
 class PronunciationOverridesTest(unittest.TestCase):
+    def test_single_letter_i_uses_dictionary_pronunciation(self):
+        overrides = load_pronunciation_overrides(
+            PROJECT_ROOT / "tools/audio/pronunciation_overrides.json"
+        )
+
+        spoken, key = resolve_spoken_text(
+            {"id": "mec_io#00", "audioText": "I", "primaryEnglish": "I"},
+            "I",
+            overrides,
+        )
+
+        self.assertEqual("eye", spoken)
+        self.assertEqual("exactText:I", key)
+
     def test_lessac_high_profile_uses_40k_audio(self):
         self.assertEqual("en_US-lessac-high", LESSAC_HIGH.name)
         self.assertEqual(40, LESSAC_HIGH.bit_rate_kbps)

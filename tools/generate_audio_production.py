@@ -54,6 +54,53 @@ def _file_metadata(path: Path, output: Path, probe: Probe) -> dict:
     }
 
 
+def _metadata_matches(output: Path, metadata: dict, probe: Probe) -> bool:
+    relative = str(metadata.get("path", ""))
+    path = output / relative
+    if not relative or not path.is_file():
+        return False
+    if path.stat().st_size != metadata.get("bytes"):
+        return False
+    if sha256(path) != metadata.get("audioSha256"):
+        return False
+    try:
+        metrics = probe(path)
+    except Exception:
+        return False
+    return (
+        metrics.get("codec", "opus") == metadata.get("codec")
+        and int(metrics.get("channels", 1)) == metadata.get("channels")
+        and int(metrics.get("sampleRate", 48_000)) == metadata.get("sampleRate")
+        and abs(float(metrics["durationSeconds"]) - float(metadata["durationSeconds"]))
+        < 0.001
+    )
+
+
+def _can_resume(
+    plan: ProductionEntryPlan,
+    entry: dict,
+    output: Path,
+    probe: Probe,
+) -> bool:
+    if entry.get("id") != plan.word_id or not _metadata_matches(output, entry, probe):
+        return False
+    segments = entry.get("segments", [])
+    if len(segments) != len(plan.segments):
+        return False
+    for expected, actual in zip(plan.segments, segments):
+        if (
+            actual.get("index") != expected.index
+            or actual.get("displayText") != expected.display_text
+            or actual.get("spokenText") != expected.spoken_text
+            or actual.get("overrideKey") != expected.override_key
+            or not _metadata_matches(output, actual, probe)
+        ):
+            return False
+    return entry.get("segmentPlanSha256") == segment_plan_sha256(
+        [segment.display_text for segment in plan.segments]
+    )
+
+
 def _audit(words: Sequence[dict], entries: dict) -> dict:
     requested = ("fixture", "jig", "GD&T", "PLC", "mylar")
     selected: list[dict] = []
@@ -113,8 +160,23 @@ def generate_staged_pack(
 
     manifest_path = output / "audio_manifest_v1.json"
     entries: dict[str, dict] = {}
+    if manifest_path.is_file():
+        existing = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if (
+            existing.get("schemaVersion") == 2
+            and existing.get("contentSha256") == content_hash
+            and existing.get("profile") == profile
+        ):
+            entries = dict(existing.get("entries", {}))
     try:
         for number, plan in enumerate(plans, 1):
+            if _can_resume(plan, entries.get(plan.word_id, {}), output, probe):
+                if number % 25 == 0 or number == len(plans):
+                    print(
+                        f"production progress {number}/{len(plans)} (resumed)",
+                        flush=True,
+                    )
+                continue
             word_temp = temporary / plan.word_id
             word_temp.mkdir(parents=True, exist_ok=True)
             wavs: list[Path] = []

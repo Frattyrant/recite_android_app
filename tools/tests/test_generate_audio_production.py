@@ -79,6 +79,38 @@ class GenerateAudioProductionTest(unittest.TestCase):
             audit = json.loads((root / "release_audit.json").read_text(encoding="utf-8"))
             self.assertIn("mec_0001_x", {item["id"] for item in audit["samples"]})
 
+    def test_second_run_reuses_hash_verified_staged_entries(self):
+        words = [{
+            "id": "mec_0001_x",
+            "category": "mechanical",
+            "kind": "TERM",
+            "english": "fixture",
+        }]
+        plans = plan_production(words, PronunciationOverrides.empty())
+        encode_calls = []
+
+        def tracked_encode(source: Path, target: Path, stable_key: str) -> None:
+            encode_calls.append(stable_key)
+            write_fixture_ogg(source, target, stable_key)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "audio-production-v2.3"
+            arguments = dict(
+                plans=plans,
+                words=words,
+                output=root,
+                content_hash="content-hash",
+                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                synthesize=write_fixture_wav,
+                encode=tracked_encode,
+                probe=probe_fixture,
+            )
+            generate_staged_pack(**arguments)
+            first_run_calls = len(encode_calls)
+            generate_staged_pack(**arguments)
+
+            self.assertEqual(first_run_calls, len(encode_calls))
+
 
 if __name__ == "__main__":
     unittest.main()

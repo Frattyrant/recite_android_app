@@ -2,6 +2,11 @@
   "schemaVersion": 1,
   "wordId": {},
   "exactText": {
+    "I": {
+      "spokenText": "eye",
+      "type": "singleLetter",
+      "note": "Pronounce the input-side token from split I/O expressions."
+    },
     "GD&T": {
       "spokenText": "G D and T",
       "type": "symbolExpansion",
