@@ -1,4 +1,4 @@
-"""Generate MIearn's deterministic offline Opus voice pack with Piper."""
+﻿"""Generate MIearn's deterministic offline Opus voice pack with Piper."""
 
 from __future__ import annotations
 
@@ -13,8 +13,10 @@ import unicodedata
 import wave
 from pathlib import Path
 
-MODEL_NAME = "en_US-lessac-medium"
-MODEL_SHA256 = "5efe09e69902187827af646e1a6e9d269dee769f9877d17b16b1b46eeaaf019f"
+from tools.audio_profiles import AudioProfile, LESSAC_MEDIUM
+
+MODEL_NAME = LESSAC_MEDIUM.name
+MODEL_SHA256 = LESSAC_MEDIUM.model_sha256
 MANIFEST_SCHEMA_VERSION = 1
 SYNTHESIS_PARAMS = {
     "noiseScale": 0.0,
@@ -24,11 +26,11 @@ SYNTHESIS_PARAMS = {
 }
 ENCODING_PARAMS = {
     "codec": "libopus",
-    "targetBitrateKbps": 32,
+    "targetBitrateKbps": LESSAC_MEDIUM.bit_rate_kbps,
     "channels": 1,
     "filter": "aresample=22050",
     "encodedSampleRate": 48000,
-    "application": "voip",
+    "application": LESSAC_MEDIUM.application,
     "fflags": "+bitexact",
     "audioFlags": "+bitexact",
     "metadata": "stripped",
@@ -135,6 +137,42 @@ def can_skip(
         return False
     return entry.get("audioSha256") == sha256(target)
 
+
+def ffmpeg_encode_args(
+    profile: AudioProfile,
+    source: Path,
+    target: Path,
+) -> list[str]:
+    return [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-fflags",
+        "+bitexact",
+        "-y",
+        "-i",
+        str(source),
+        "-vn",
+        "-ac",
+        "1",
+        "-af",
+        f"aresample={profile.source_sample_rate}",
+        "-ar",
+        str(profile.encoded_sample_rate),
+        "-c:a",
+        "libopus",
+        "-b:a",
+        f"{profile.bit_rate_kbps}k",
+        "-application",
+        profile.application,
+        "-flags:a",
+        "+bitexact",
+        "-map_metadata",
+        "-1",
+        "-f",
+        "ogg",
+        str(target),
+    ]
 
 def current_provenance(model: Path, config: Path, ffmpeg: Path) -> dict:
     version = subprocess.run(
@@ -308,34 +346,7 @@ def generate(args: argparse.Namespace) -> None:
                 subprocess.run(
                     [
                         str(args.ffmpeg),
-                        "-hide_banner",
-                        "-loglevel",
-                        "error",
-                        "-fflags",
-                        "+bitexact",
-                        "-y",
-                        "-i",
-                        str(wav_path),
-                        "-vn",
-                        "-ac",
-                        "1",
-                        "-af",
-                        "aresample=22050",
-                        "-ar",
-                        "48000",
-                        "-c:a",
-                        "libopus",
-                        "-b:a",
-                        "32k",
-                        "-application",
-                        "voip",
-                        "-flags:a",
-                        "+bitexact",
-                        "-map_metadata",
-                        "-1",
-                        "-f",
-                        "ogg",
-                        str(ogg_part),
+                        *ffmpeg_encode_args(LESSAC_MEDIUM, wav_path, ogg_part),
                     ],
                     check=True,
                 )

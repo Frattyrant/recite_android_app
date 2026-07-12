@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "wordId": {},
+  "exactText": {
+    "GD&T": {
+      "spokenText": "G D and T",
+      "type": "symbolExpansion",
+      "note": "Read the abbreviation, not the ampersand."
+    },
+    "CMM": {
+      "spokenText": "C M M",
+      "type": "initialism",
+      "note": "Coordinate measuring machine."
+    },
+    "PLC": {
+      "spokenText": "P L C",
+      "type": "initialism",
+      "note": "Programmable logic controller."
+    }
+  }
+}
