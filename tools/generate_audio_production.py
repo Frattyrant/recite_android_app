@@ -123,7 +123,14 @@ def _audit(words: Sequence[dict], entries: dict) -> dict:
         else:
             add(match)
     for category in sorted({str(word.get("category", "")) for word in words}):
-        match = next(word for word in words if str(word.get("category", "")) == category)
+        category_words = [
+            word for word in words
+            if str(word.get("category", "")) == category
+        ]
+        if category in {"meeting", "business"}:
+            match = max(category_words, key=lambda word: len(str(word.get("english", ""))))
+        else:
+            match = category_words[0]
         add(match)
     return {
         "schemaVersion": 1,

@@ -6,7 +6,7 @@ from pathlib import Path
 
 from tools.audio_profiles import PronunciationOverrides
 from tools.audio_production import plan_production
-from tools.generate_audio_production import generate_staged_pack
+from tools.generate_audio_production import _audit, generate_staged_pack
 
 
 def write_fixture_wav(text: str, target: Path) -> None:
@@ -35,6 +35,24 @@ def probe_fixture(path: Path) -> dict:
 
 
 class GenerateAudioProductionTest(unittest.TestCase):
+    def test_audit_prefers_long_meeting_and_business_sentences(self):
+        words = [
+            {"id": "meet-short", "category": "meeting", "english": "Thanks."},
+            {"id": "meet-long", "category": "meeting", "english": "Could you explain the inspection result again?"},
+            {"id": "bus-short", "category": "business", "english": "Approved."},
+            {"id": "bus-long", "category": "business", "english": "Please confirm the commercial terms before Friday."},
+        ]
+        entries = {
+            word["id"]: {"path": f"audio/{word['id']}.ogg"}
+            for word in words
+        }
+
+        audit = _audit(words, entries)
+        sample_ids = {item["id"] for item in audit["samples"]}
+
+        self.assertIn("meet-long", sample_ids)
+        self.assertIn("bus-long", sample_ids)
+
     def test_single_expression_uses_only_complete_audio(self):
         words = [{
             "id": "mee_0001_x",
