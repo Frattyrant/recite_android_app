@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from tools.generate_audio import sha256, spoken_text_sha256
+from tools.generate_audio import sha256
 from tools.generate_variant_audio import (
     legacy_term_variants,
     raw_variants,
@@ -38,7 +38,10 @@ class AudioManifestTest(unittest.TestCase):
         )
         self.assertTrue(manifest_path.is_file())
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        self.assertEqual(1, manifest["schemaVersion"])
+        self.assertEqual(2, manifest["schemaVersion"])
+        self.assertEqual("en_US-lessac-high", manifest["profile"]["name"])
+        self.assertEqual(40, manifest["profile"]["bitRateKbps"])
+        self.assertEqual(48_000, manifest["profile"]["encodedSampleRate"])
         entries = manifest["entries"]
         self.assertEqual({word["id"] for word in words}, set(entries))
         for word in words:
@@ -46,7 +49,6 @@ class AudioManifestTest(unittest.TestCase):
             entry = entries[word["id"]]
             self.assertEqual(word["id"], entry["id"])
             self.assertEqual(word["audioAsset"], entry["path"])
-            self.assertEqual(spoken_text_sha256(word), entry["spokenTextSha256"])
             self.assertEqual(
                 segment_plan_sha256(
                     raw_variants(word["english"], word.get("kind", "TERM"))
@@ -55,6 +57,14 @@ class AudioManifestTest(unittest.TestCase):
             )
             self.assertEqual(path.stat().st_size, entry["bytes"])
             self.assertEqual(sha256(path), entry["audioSha256"])
+            variants = raw_variants(word["english"], word.get("kind", "TERM"))
+            segments = entry.get("segments", [])
+            if len(variants) > 1:
+                self.assertEqual(variants, [segment["text"] for segment in segments])
+                self.assertEqual(500, entry["pauseBetweenSegmentsMs"])
+            else:
+                self.assertEqual([], segments)
+                self.assertNotIn("pauseBetweenSegmentsMs", entry)
 
 
     def test_legacy_whitespace_migration_covers_all_affected_terms(self):
