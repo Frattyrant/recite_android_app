@@ -1,4 +1,4 @@
-package com.miearn.app.ui
+﻿package com.miearn.app.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,6 +52,7 @@ fun WordBrowserScreen(
     onQuery: (String) -> Unit,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
 ) {
     var selectedWord by remember { mutableStateOf<WordEntity?>(null) }
@@ -119,7 +120,17 @@ fun WordBrowserScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                EnglishVariants(word, onPlayVariant)
+                EnglishVariants(
+                    word = word,
+                    onPlayVariant = onPlayVariant,
+                    onOpenVariant = { selected, index ->
+                        val variantCount = com.miearn.app.domain.EnglishVariantParser.parse(
+                            selected.english,
+                            selected.kind,
+                        ).size
+                        onOpenWordDetail(selected, index.takeIf { variantCount > 1 })
+                    },
+                )
                 if (word.phonetic.isNotBlank()) {
                     Text(word.phonetic, color = MaterialTheme.colorScheme.primary)
                 }

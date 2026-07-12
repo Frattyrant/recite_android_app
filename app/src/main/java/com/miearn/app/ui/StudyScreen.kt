@@ -1,4 +1,4 @@
-package com.miearn.app.ui
+﻿package com.miearn.app.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,6 +57,7 @@ fun StudyScreen(
     onClose: () -> Unit,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
     onToggleCard: () -> Unit,
     onPreviousBrowse: () -> Unit,
@@ -88,6 +89,7 @@ fun StudyScreen(
             onClose = onClose,
             onPlay = onPlay,
             onPlayVariant = onPlayVariant,
+            onOpenWordDetail = onOpenWordDetail,
             onFavorite = onFavorite,
             onToggleCard = onToggleCard,
             onPreviousBrowse = onPreviousBrowse,
@@ -160,6 +162,7 @@ private fun ActiveStudy(
     onClose: () -> Unit,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
     onToggleCard: () -> Unit,
     onPreviousBrowse: () -> Unit,
@@ -183,6 +186,7 @@ private fun ActiveStudy(
                 state = state,
                 onPlay = onPlay,
                 onPlayVariant = onPlayVariant,
+                onOpenWordDetail = onOpenWordDetail,
                 onFavorite = onFavorite,
                 onToggleCard = onToggleCard,
                 onPrevious = onPreviousBrowse,
@@ -194,6 +198,7 @@ private fun ActiveStudy(
                 state = state,
                 onPlay = onPlay,
                 onPlayVariant = onPlayVariant,
+                onOpenWordDetail = onOpenWordDetail,
                 onFavorite = onFavorite,
                 onAnswer = onAnswer,
                 onContinue = onContinue,
@@ -251,6 +256,7 @@ private fun BrowseCard(
     state: StudyUiState.Active,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
     onToggleCard: () -> Unit,
     onPrevious: () -> Unit,
@@ -291,6 +297,17 @@ private fun BrowseCard(
             EnglishVariants(
                 word = state.word,
                 onPlayVariant = onPlayVariant,
+                onOpenVariant = { word, index ->
+                    onOpenWordDetail(
+                        word,
+                        index.takeIf {
+                            com.miearn.app.domain.EnglishVariantParser.parse(
+                                word.english,
+                                word.kind,
+                            ).size > 1
+                        },
+                    )
+                },
             )
             Spacer(Modifier.height(14.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -363,6 +380,7 @@ private fun ChoiceCard(
     state: StudyUiState.Active,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
     onAnswer: (String) -> Unit,
     onContinue: () -> Unit,
@@ -383,6 +401,17 @@ private fun ChoiceCard(
                 EnglishVariants(
                     word = state.word,
                     onPlayVariant = onPlayVariant,
+                    onOpenVariant = { word, index ->
+                        onOpenWordDetail(
+                            word,
+                            index.takeIf {
+                                com.miearn.app.domain.EnglishVariantParser.parse(
+                                    word.english,
+                                    word.kind,
+                                ).size > 1
+                            },
+                        )
+                    },
                 )
                 if (state.word.phonetic.isNotBlank()) {
                     Text(

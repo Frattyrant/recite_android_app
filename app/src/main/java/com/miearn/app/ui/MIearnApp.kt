@@ -1,4 +1,4 @@
-package com.miearn.app.ui
+﻿package com.miearn.app.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -53,6 +53,19 @@ fun MIearnApp(viewModel: MainViewModel) {
         return
     }
 
+    val wordDetail by viewModel.wordDetailRequest.collectAsStateWithLifecycle()
+    if (wordDetail != null) {
+        val request = checkNotNull(wordDetail)
+        BackHandler(onBack = viewModel::closeWordDetail)
+        WordDetailScreen(
+            request = request,
+            phonetic = resolveVariantPhonetic(request.word, request.variantIndex),
+            onBack = viewModel::closeWordDetail,
+            onPlay = viewModel::playWordDetail,
+            onFavorite = { viewModel.toggleFavorite(request.word.id) },
+        )
+        return
+    }
     BackHandler(
         enabled = shouldHandleStudyBack(studyState),
         onBack = viewModel::closeStudy,
@@ -64,6 +77,7 @@ fun MIearnApp(viewModel: MainViewModel) {
             onClose = viewModel::closeStudy,
             onPlay = viewModel::pronounce,
             onPlayVariant = viewModel::pronounceVariant,
+            onOpenWordDetail = viewModel::openWordDetail,
             onFavorite = viewModel::toggleFavorite,
             onToggleCard = viewModel::toggleStudyCard,
             onPreviousBrowse = viewModel::previousBrowseWord,
@@ -89,6 +103,7 @@ fun MIearnApp(viewModel: MainViewModel) {
             onQuery = { viewModel.wordBrowserQuery.value = it },
             onPlay = viewModel::pronounce,
             onPlayVariant = viewModel::pronounceVariant,
+            onOpenWordDetail = viewModel::openWordDetail,
             onFavorite = viewModel::toggleFavorite,
         )
         return
