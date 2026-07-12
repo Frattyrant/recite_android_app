@@ -1,4 +1,4 @@
-# Third-party notices
+﻿# Third-party notices
 
 MIearn uses open-source Android libraries distributed through their respective
 Maven artifacts:
@@ -41,6 +41,12 @@ the `en_US-lessac-medium` voice:
   its research license:
   https://www.cstr.ed.ac.uk/projects/blizzard/2013/lessac_blizzard2013/license.html.
 
+The optional MIearn audio listening trial also uses the `en_US-lessac-high`
+voice from the same Piper voice repository. Its ONNX SHA-256 is
+`4cabf7c3a638017137f34a1516522032d4fe3f38228a843cc9b764ddcbcd9e09`.
+The model is stored outside the repository, used only at build time, and is
+not packaged in the application unless a later release explicitly adopts the
+generated candidate audio.
 These notices identify the generation tool, model provenance, and upstream
 licenses; they do not relicense upstream recordings, the model, or generated
 audio.

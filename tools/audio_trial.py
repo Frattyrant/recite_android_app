@@ -1,4 +1,4 @@
-"""Select and later generate MIearn's isolated 50-entry audio trial."""
+﻿"""Select and later generate MIearn's isolated 50-entry audio trial."""
 
 from __future__ import annotations
 
@@ -140,3 +140,43 @@ def write_trial_selection(output: Path, selection: TrialSelection) -> Path:
         encoding="utf-8",
     )
     return path
+
+def plan_trial_entry(word: dict, overrides) -> dict:
+    from tools.audio_profiles import resolve_spoken_text
+    from tools.generate_variant_audio import PAUSE_MS, raw_variants
+
+    variants = raw_variants(
+        str(word.get("english", "")),
+        str(word.get("kind", "TERM")),
+    )
+    if not variants:
+        variants = [str(word.get("english", "")).strip()]
+    segments = []
+    for index, display_text in enumerate(variants):
+        override_word = word
+        if len(variants) > 1:
+            override_word = dict(word)
+            override_word["id"] = f"{word['id']}#{index:02d}"
+        spoken, override_key = resolve_spoken_text(
+            override_word,
+            display_text,
+            overrides,
+        )
+        segments.append(
+            {
+                "index": index,
+                "displayText": display_text,
+                "spokenText": spoken,
+                "overrideKey": override_key,
+            }
+        )
+    return {
+        "id": word["id"],
+        "category": word.get("category", ""),
+        "kind": word.get("kind", ""),
+        "english": word.get("english", ""),
+        "phonetic": word.get("phonetic", ""),
+        "chinese": word.get("chinese", ""),
+        "segments": segments,
+        "pauseBetweenSegmentsMs": PAUSE_MS if len(segments) > 1 else 0,
+    }
