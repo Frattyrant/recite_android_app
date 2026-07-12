@@ -27,13 +27,13 @@ The generated launcher foreground uses the user-provided illustration as its
 visual source.
 
 The packaged offline Ogg files were synthesized with `piper-tts` 1.4.2 using
-the `en_US-lessac-medium` voice:
+the `en_US-lessac-high` voice at 40 kbps Opus:
 
 - Piper generation tool: https://github.com/OHF-Voice/piper1-gpl,
   GPL-3.0-or-later. The tool is used during asset generation and is not
   packaged in the application.
 - Voice model source:
-  https://huggingface.co/rhasspy/piper-voices/tree/main/en/en_US/lessac/medium.
+  https://huggingface.co/rhasspy/piper-voices/tree/main/en/en_US/lessac/high.
   The `rhasspy/piper-voices` repository declares the MIT License. The ONNX
   model and its JSON configuration are generation inputs and are not packaged
   in the application.
@@ -41,12 +41,12 @@ the `en_US-lessac-medium` voice:
   its research license:
   https://www.cstr.ed.ac.uk/projects/blizzard/2013/lessac_blizzard2013/license.html.
 
-The optional MIearn audio listening trial also uses the `en_US-lessac-high`
-voice from the same Piper voice repository. Its ONNX SHA-256 is
+The adopted production voice uses the `en_US-lessac-high` model from the same
+Piper voice repository. Its ONNX SHA-256 is
 `4cabf7c3a638017137f34a1516522032d4fe3f38228a843cc9b764ddcbcd9e09`.
 The model is stored outside the repository, used only at build time, and is
-not packaged in the application unless a later release explicitly adopts the
-generated candidate audio.
+not packaged in the application. MIearn packages only the generated Ogg/Opus
+audio assets.
 These notices identify the generation tool, model provenance, and upstream
 licenses; they do not relicense upstream recordings, the model, or generated
 audio.

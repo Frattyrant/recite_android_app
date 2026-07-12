@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "samples": [
+    {
+      "id": "mec_0002_0efd63c6c17db5a6",
+      "english": "fixture；jig",
+      "chinese": "夹具",
+      "category": "mechanical",
+      "completePath": "audio/mec_0002_0efd63c6c17db5a6.ogg",
+      "variantPaths": [
+        "audio/variants/mec_0002_0efd63c6c17db5a6_00.ogg",
+        "audio/variants/mec_0002_0efd63c6c17db5a6_01.ogg"
+      ]
+    },
+    {
+      "id": "mec_0034_569241f4a0f078fa",
+      "english": "GD&T-Geometric Dimensioning and Tolerancing",
+      "chinese": "几何尺寸与公差（是一种机械图纸设计的通用工程语言之一）",
+      "category": "mechanical",
+      "completePath": "audio/mec_0034_569241f4a0f078fa.ogg",
+      "variantPaths": []
+    },
+    {
+      "id": "mec_0422_b3d57f027d799de7",
+      "english": "PLC",
+      "chinese": "控制逻辑",
+      "category": "mechanical",
+      "completePath": "audio/mec_0422_b3d57f027d799de7.ogg",
+      "variantPaths": []
+    },
+    {
+      "id": "mec_0005_ab04caf0864bb3a9",
+      "english": "support and clamp block；NC block；rest and clamp block；mylar",
+      "chinese": "托压块（之所以也叫NC block，是因为托压块的面不规则，需要通过CNC设备加工，CNC=Computer Numerical Control数控）",
+      "category": "mechanical",
+      "completePath": "audio/mec_0005_ab04caf0864bb3a9.ogg",
+      "variantPaths": [
+        "audio/variants/mec_0005_ab04caf0864bb3a9_00.ogg",
+        "audio/variants/mec_0005_ab04caf0864bb3a9_01.ogg",
+        "audio/variants/mec_0005_ab04caf0864bb3a9_02.ogg",
+        "audio/variants/mec_0005_ab04caf0864bb3a9_03.ogg"
+      ]
+    },
+    {
+      "id": "bus_0072_bcfb771813f48296",
+      "english": "Our companies have complementary strengths. We can work together to achieve greater success",
+      "chinese": "我们公司有互补的优势。我们可以一起合作取得更大的成功。",
+      "category": "business",
+      "completePath": "audio/bus_0072_bcfb771813f48296.ogg",
+      "variantPaths": [
+        "audio/variants/bus_0072_bcfb771813f48296_00.ogg",
+        "audio/variants/bus_0072_bcfb771813f48296_01.ogg"
+      ]
+    },
+    {
+      "id": "cus_0001_890b23180db34abe",
+      "english": "It'll end up wearing out the pin and the pin will just wear and lose the location",
+      "chinese": "销子会受磨损，从而失去定位功能",
+      "category": "customer_review",
+      "completePath": "audio/cus_0001_890b23180db34abe.ogg",
+      "variantPaths": []
+    },
+    {
+      "id": "ele_0001_bbb7b92b27e75187",
+      "english": "Body in White (BIW)",
+      "chinese": "白车身",
+      "category": "electrical",
+      "completePath": "audio/ele_0001_bbb7b92b27e75187.ogg",
+      "variantPaths": []
+    },
+    {
+      "id": "mec_0001_0bc593b6bd35f925",
+      "english": "Body in White (BIW)",
+      "chinese": "白车身",
+      "category": "mechanical",
+      "completePath": "audio/mec_0001_0bc593b6bd35f925.ogg",
+      "variantPaths": []
+    },
+    {
+      "id": "mee_0004_852101c0ff311b71",
+      "english": "Is there anybody else from your side who will attend the meeting?/Should we wait for somebody else from your side to join the meeting before we start?/Are we waiting for anybody else?",
+      "chinese": "您那边还有其他人参加本次会议的吗？",
+      "category": "meeting",
+      "completePath": "audio/mee_0004_852101c0ff311b71.ogg",
+      "variantPaths": [
+        "audio/variants/mee_0004_852101c0ff311b71_00.ogg",
+        "audio/variants/mee_0004_852101c0ff311b71_01.ogg",
+        "audio/variants/mee_0004_852101c0ff311b71_02.ogg"
+      ]
+    }
+  ],
+  "missingSuggestedSamples": []
+}
