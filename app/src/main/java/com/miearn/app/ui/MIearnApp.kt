@@ -83,7 +83,6 @@ fun MIearnApp(viewModel: MainViewModel) {
             onPreviousBrowse = viewModel::previousBrowseWord,
             onNextBrowse = viewModel::nextBrowseWord,
             onAnswer = viewModel::answerStudy,
-            onContinue = viewModel::continueStudy,
             onResolveSaved = viewModel::resolveSavedStudy,
             onOpenTtsSettings = viewModel::openTtsSettings,
         )

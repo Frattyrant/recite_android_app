@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "2026.07.13-v2.31",
+  "excludedIds": [
+    "cus_0062_07a08c0b923561b1",
+    "cus_0163_a40d31cdb0d5a0de",
+    "cus_0229_de530aaa4f6be358",
+    "cus_0238_b3cacf6bdd2166c2",
+    "cus_0248_ecbe12a415c1dd4f",
+    "mee_0001_846b9822ae4b458d"
+  ],
+  "repairs": [
+    {
+      "id": "mec_0129_134666b865199e1d",
+      "originalEnglish": "model beam",
+      "english": "model beam",
+      "chinese": "模型梁",
+      "note": "机械设计",
+      "reason": "The source English is valid; the missing Chinese field was reviewed and restored."
+    },
+    {
+      "id": "mec_0328_22c2d1c536376c91",
+      "originalEnglish": "Flange；adapter；robot connection（可指机器人法兰）连接法兰 （flange除了法兰，还有边缘，翻边的意思，具体看语境）",
+      "english": "Flange;adapter;robot connection",
+      "chinese": "连接法兰",
+      "note": "仿真；flange 也可表示边缘或翻边，需结合语境",
+      "reason": "Move Chinese explanation out of the English pronunciation field."
+    },
+    {
+      "id": "mec_0471_509596a758d037a3",
+      "originalEnglish": "C gun",
+      "english": "C gun",
+      "chinese": "C枪",
+      "note": "仿真",
+      "reason": "Normalize the Chinese display field while preserving the reviewed English repair."
+    },
+    {
+      "id": "mec_0472_b1fb9f4f2cdea5b4",
+      "originalEnglish": "X gun (P gun)",
+      "english": "X gun;P gun",
+      "chinese": "X枪;P枪",
+      "note": "仿真",
+      "reason": "Represent the two independently pronounceable gun types as variants."
+    },
+    {
+      "id": "mec_1006_22aeb9e28140ecbd",
+      "originalEnglish": "AGV - Automated Guided Vehicle",
+      "english": "AGV;Automated Guided Vehicle",
+      "chinese": "无人搬运车",
+      "note": "",
+      "reason": "Normalize the abbreviation and full form as two pronunciation variants."
+    },
+    {
+      "id": "mec_1008_39cb59949b96d924",
+      "originalEnglish": "FDS（焊枪，FDS是一种铆接工艺）;流钻螺钉/热融自攻丝：指代的是一种高速旋转、自攻丝最后拧紧的连接工艺",
+      "english": "FDS;flow drill screw",
+      "chinese": "流钻螺钉/热融自攻丝",
+      "note": "FDS 是一种铆接工艺，指高速旋转、自攻丝并最终拧紧的连接工艺",
+      "reason": "Remove Chinese annotation from synthesis input and restore the established English term."
+    },
+    {
+      "id": "ele_0284_07b13745c6da508a",
+      "originalEnglish": "C gun",
+      "english": "C gun",
+      "chinese": "C枪",
+      "note": "",
+      "reason": "Normalize the Chinese display field while preserving the reviewed English repair."
+    },
+    {
+      "id": "ele_0285_cf3b7712f33d1b72",
+      "originalEnglish": "X gun (P gun)",
+      "english": "X gun;P gun",
+      "chinese": "X枪;P枪",
+      "note": "",
+      "reason": "Represent the two independently pronounceable gun types as variants."
+    },
+    {
+      "id": "ele_0751_2c25950758107db7",
+      "originalEnglish": "AGV - Automated Guided Vehicle",
+      "english": "AGV;Automated Guided Vehicle",
+      "chinese": "无人搬运车",
+      "note": "",
+      "reason": "Normalize the abbreviation and full form as two pronunciation variants."
+    },
+    {
+      "id": "ele_0753_cc8337042b4391a4",
+      "originalEnglish": "FDS（焊枪，FDS是一种铆接工艺）;流钻螺钉/热融自攻丝：指代的是一种高速旋转、自攻丝最后拧紧的连接工艺",
+      "english": "FDS;flow drill screw",
+      "chinese": "流钻螺钉/热融自攻丝",
+      "note": "FDS 是一种铆接工艺，指高速旋转、自攻丝并最终拧紧的连接工艺",
+      "reason": "Remove Chinese annotation from synthesis input and restore the established English term."
+    }
+  ]
+}

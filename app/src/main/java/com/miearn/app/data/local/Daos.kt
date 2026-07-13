@@ -23,6 +23,9 @@ interface WordDao {
 
     @Query("SELECT COUNT(*) FROM words") suspend fun count(): Int
     @Query("SELECT COUNT(*) FROM words WHERE isCustom = 0") suspend fun builtInCount(): Int
+    @Query("SELECT id FROM words WHERE isCustom = 0") suspend fun builtInIds(): List<String>
+    @Query("DELETE FROM words WHERE isCustom = 0 AND id IN (:ids)")
+    suspend fun deleteBuiltInIds(ids: List<String>): Int
 
     @Query("""SELECT w.* FROM words w WHERE w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId) ORDER BY COALESCE((SELECT x.importOrder FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId), w.sourceIndex) LIMIT :limit""")
     suspend fun categoryWords(sourceId: String, limit: Int): List<WordEntity>

@@ -31,6 +31,13 @@ class VariantAudioTest(unittest.TestCase):
             ["Read at 300mm/s"],
             raw_variants("Read at 300mm/s", "TERM"),
         )
+
+    def test_terms_keep_initialism_slashes_inside_one_variant(self):
+        self.assertEqual(
+            ["the assignment of the I/O"],
+            raw_variants("the assignment of the I/O", "TERM"),
+        )
+
     def test_segment_plan_distinguishes_contiguous_phrase_from_legacy_word_splits(self):
         current = raw_variants("Body in White (BIW)", "TERM")
         legacy = legacy_term_variants("Body in White (BIW)")

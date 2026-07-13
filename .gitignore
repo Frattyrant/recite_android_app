@@ -31,6 +31,7 @@ build/
 **/build/
 # Output
 output/
+outputs/
 tmp/
 # Logs
 *.log

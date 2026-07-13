@@ -47,6 +47,25 @@ Piper voice repository. Its ONNX SHA-256 is
 The model is stored outside the repository, used only at build time, and is
 not packaged in the application. MIearn packages only the generated Ogg/Opus
 audio assets.
+
+General American IPA is generated from the pinned `en_US` data in
+`open-dict-data/ipa-dict`:
+
+- Project: https://github.com/open-dict-data/ipa-dict
+- License: MIT
+- Pinned revision: `43c3570eb3553bdd19fccd2bd0091534889af023`
+- Source file SHA-256:
+  `a20b0131b6e98d30fc4f40bc3f82184fe40105ee4a87525a7fe417ef67420f78`
+- The English US data is based on the CMU Pronouncing Dictionary conversion
+  credited by the upstream project. Terms absent from this snapshot use the
+  bundled eSpeak-ng en-US phonemizer and are recorded in the V2.31 IPA audit.
+
+Seven exact U.S.-English pronunciation recordings sourced from Wikimedia
+Commons are used for `bench`, `bin`, `flimsy`, `I`, `label`, `O`, and `thread`.
+Each source page declares the recording public domain. Source URL, description
+page, uploader, original file hash, and accent evidence are preserved in
+`app/src/main/assets/content/audio_attributions_v231.json`. All other bundled
+pronunciation audio uses the Piper fallback described above.
 These notices identify the generation tool, model provenance, and upstream
 licenses; they do not relicense upstream recordings, the model, or generated
 audio.

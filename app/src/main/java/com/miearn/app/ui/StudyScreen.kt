@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -63,7 +62,6 @@ fun StudyScreen(
     onPreviousBrowse: () -> Unit,
     onNextBrowse: () -> Unit,
     onAnswer: (String) -> Unit,
-    onContinue: () -> Unit,
     onResolveSaved: (Boolean) -> Unit,
     onOpenTtsSettings: () -> Unit,
 ) {
@@ -95,7 +93,6 @@ fun StudyScreen(
             onPreviousBrowse = onPreviousBrowse,
             onNextBrowse = onNextBrowse,
             onAnswer = onAnswer,
-            onContinue = onContinue,
             onOpenTtsSettings = onOpenTtsSettings,
         )
     }
@@ -168,7 +165,6 @@ private fun ActiveStudy(
     onPreviousBrowse: () -> Unit,
     onNextBrowse: () -> Unit,
     onAnswer: (String) -> Unit,
-    onContinue: () -> Unit,
     onOpenTtsSettings: () -> Unit,
 ) {
     Column(
@@ -201,7 +197,6 @@ private fun ActiveStudy(
                 onOpenWordDetail = onOpenWordDetail,
                 onFavorite = onFavorite,
                 onAnswer = onAnswer,
-                onContinue = onContinue,
                 modifier = Modifier.weight(1f),
             )
         }
@@ -383,7 +378,6 @@ private fun ChoiceCard(
     onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
     onAnswer: (String) -> Unit,
-    onContinue: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -466,15 +460,6 @@ private fun ChoiceCard(
                 modifier = Modifier.padding(vertical = 12.dp),
                 textAlign = TextAlign.Center,
             )
-            Button(
-                onClick = onContinue,
-                modifier = Modifier.fillMaxWidth().height(56.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ),
-            ) {
-                Text("继续")
-            }
         }
     }
 }

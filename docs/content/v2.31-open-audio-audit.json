@@ -1,0 +1,2938 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "2026.07.13-v2.31",
+  "queriedSingleWordCount": 484,
+  "candidateCount": 156,
+  "policyEligibleCount": 7,
+  "acceptedCount": 7,
+  "candidates": [
+    {
+      "title": "File:En-us-access.ogg",
+      "text": "access",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/34/En-us-access.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-access.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-accessory.ogg",
+      "text": "accessory",
+      "license": "CC BY-SA 4.0",
+      "uploader": "SneverdleSnavis",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c7/En-us-accessory.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-accessory.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-activate.ogg",
+      "text": "activate",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cf/En-us-activate.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-activate.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-adhesive.ogg",
+      "text": "adhesive",
+      "license": "CC BY-SA 4.0",
+      "uploader": "BirdHopper",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a4/En-us-adhesive.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-adhesive.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-advance.ogg",
+      "text": "advance",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5c/En-us-advance.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-advance.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-aisle.ogg",
+      "text": "aisle",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/04/En-us-aisle.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-aisle.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "Files with no machine-readable author",
+        "Files with no machine-readable source",
+        "License migration completed",
+        "Media missing infobox template"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-alignment.ogg",
+      "text": "alignment",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/99/En-us-alignment.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-alignment.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-anchor.ogg",
+      "text": "anchor",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/88/En-us-anchor.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-anchor.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-appearance.ogg",
+      "text": "appearance",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/En-us-appearance.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-appearance.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-applicable.ogg",
+      "text": "applicable",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/96/En-us-applicable.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-applicable.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-approach.ogg",
+      "text": "approach",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/16/En-us-approach.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-approach.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Audio files created with Shtooka Recorder"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-arc.ogg",
+      "text": "arc",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/04/En-us-arc.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-arc.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-assembly.ogg",
+      "text": "assembly",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/86/En-us-assembly.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-assembly.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-assess.ogg",
+      "text": "assess",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/39/En-us-assess.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-assess.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-authorize.ogg",
+      "text": "authorize",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/82/En-us-authorize.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-authorize.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-backlash.ogg",
+      "text": "backlash",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/88/En-us-backlash.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-backlash.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration completed",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-beam.ogg",
+      "text": "beam",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/En-us-beam.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-beam.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-bearing.ogg",
+      "text": "bearing",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5f/En-us-bearing.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bearing.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-bellow.ogg",
+      "text": "bellow",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/En-us-bellow.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bellow.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-bench.ogg",
+      "text": "bench",
+      "license": "Public domain",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3a/En-us-bench.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bench.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Benches",
+        "Files with no machine-readable source",
+        "Self-published work",
+        "PD-self",
+        "Assumed own work"
+      ],
+      "accepted": true,
+      "reasons": []
+    },
+    {
+      "title": "File:En-us-bin.ogg",
+      "text": "bin",
+      "license": "Public domain",
+      "uploader": "Muke",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/80/En-us-bin.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bin.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Files with no machine-readable author",
+        "Files with no machine-readable source",
+        "Media missing infobox template",
+        "Self-published work",
+        "PD-self"
+      ],
+      "accepted": true,
+      "reasons": []
+    },
+    {
+      "title": "File:En-us-biscuit.ogg",
+      "text": "biscuit",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5b/En-us-biscuit.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-biscuit.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Biscuits",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-bolt.ogg",
+      "text": "bolt",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/41/En-us-bolt.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bolt.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration completed",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-bond.ogg",
+      "text": "bond",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/00/En-us-bond.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bond.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-boundary.ogg",
+      "text": "boundary",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/63/En-us-boundary.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-boundary.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-brake.ogg",
+      "text": "brake",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5b/En-us-brake.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-brake.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-bridge.ogg",
+      "text": "bridge",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8f/En-us-bridge.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bridge.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Audio files about bridges"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-building.ogg",
+      "text": "building",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a3/En-us-building.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-building.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-bush.ogg",
+      "text": "bush",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/En-us-bush.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bush.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-cable.ogg",
+      "text": "cable",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/81/En-us-cable.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-cable.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-cage.ogg",
+      "text": "cage",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/61/En-us-cage.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-cage.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-casting.ogg",
+      "text": "casting",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1a/En-us-casting.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-casting.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-cell.ogg",
+      "text": "cell",
+      "license": "CC BY-SA 4.0",
+      "uploader": "BirdHopper",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4d/En-us-cell.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-cell.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-chamfer.ogg",
+      "text": "chamfer",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/76/En-us-chamfer.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-chamfer.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration completed",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-check.ogg",
+      "text": "check",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/En-us-check.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-check.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-clockwise.ogg",
+      "text": "clockwise",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d7/En-us-clockwise.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-clockwise.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-column.ogg",
+      "text": "column",
+      "license": "CC BY-SA 3.0",
+      "uploader": "EncycloPetey",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d1/En-us-column.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-column.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Files with no machine-readable author",
+        "License migration redundant",
+        "Media lacking author information",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-compose.ogg",
+      "text": "compose",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/72/En-us-compose.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-compose.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-comprise.ogg",
+      "text": "comprise",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/En-us-comprise.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-comprise.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-cone.ogg",
+      "text": "cone",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7c/En-us-cone.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-cone.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-config.ogg",
+      "text": "config",
+      "license": "CC BY-SA 4.0",
+      "uploader": "BirdHopper",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1b/En-us-config.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-config.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-confirm.ogg",
+      "text": "confirm",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b3/En-us-confirm.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-confirm.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-conformity.ogg",
+      "text": "conformity",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d9/En-us-conformity.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-conformity.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-consistency.ogg",
+      "text": "consistency",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d3/En-us-consistency.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-consistency.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-continuity.ogg",
+      "text": "continuity",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/de/En-us-continuity.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-continuity.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-control.ogg",
+      "text": "control",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f6/En-us-control.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-control.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-coordinate.ogg",
+      "text": "coordinate",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a9/En-us-coordinate.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-coordinate.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-coupon.ogg",
+      "text": "coupon",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ac/En-us-coupon.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-coupon.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-crank.ogg",
+      "text": "crank",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/En-us-crank.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-crank.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration completed",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-crash.ogg",
+      "text": "crash",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/58/En-us-crash.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-crash.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Audio files created with Shtooka Recorder"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-cylinder.ogg",
+      "text": "cylinder",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/En-us-cylinder.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-cylinder.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-dash.ogg",
+      "text": "dash",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/En-us-dash.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-dash.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-decimal.ogg",
+      "text": "decimal",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b0/En-us-decimal.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-decimal.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-depression.ogg",
+      "text": "depression",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/df/En-us-depression.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-depression.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-die.ogg",
+      "text": "die",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ed/En-us-die.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-die.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-dispense.ogg",
+      "text": "dispense",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f6/En-us-dispense.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-dispense.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Files with no machine-readable source",
+        "License migration redundant",
+        "Self-published work",
+        "Assumed own work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-distance.ogg",
+      "text": "distance",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2d/En-us-distance.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-distance.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-downside.ogg",
+      "text": "downside",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/En-us-downside.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-downside.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-elbow.ogg",
+      "text": "elbow",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/04/En-us-elbow.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-elbow.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Files with no machine-readable source",
+        "License migration redundant",
+        "Self-published work",
+        "Assumed own work",
+        "Human elbows"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-external.ogg",
+      "text": "external",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e4/En-us-external.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-external.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-finger.ogg",
+      "text": "finger",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d3/En-us-finger.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-finger.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Human fingers",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-fixture.ogg",
+      "text": "fixture",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/En-us-fixture.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-fixture.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-flimsy.ogg",
+      "text": "flimsy",
+      "license": "Public domain",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8c/En-us-flimsy.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-flimsy.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work",
+        "PD-self"
+      ],
+      "accepted": true,
+      "reasons": []
+    },
+    {
+      "title": "File:En-us-flip.ogg",
+      "text": "flip",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a5/En-us-flip.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-flip.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-foot.ogg",
+      "text": "foot",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/33/En-us-foot.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-foot.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Feet",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-footing.ogg",
+      "text": "footing",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c4/En-us-footing.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-footing.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-frame.ogg",
+      "text": "frame",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e8/En-us-frame.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-frame.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-function.ogg",
+      "text": "function",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cf/En-us-function.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-function.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-gap.ogg",
+      "text": "gap",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ae/En-us-gap.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-gap.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-gauge.ogg",
+      "text": "gauge",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/47/En-us-gauge.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-gauge.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-glue.ogg",
+      "text": "glue",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/05/En-us-glue.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-glue.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-grant.ogg",
+      "text": "grant",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/00/En-us-grant.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-grant.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-handle.ogg",
+      "text": "handle",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a0/En-us-handle.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-handle.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-header.ogg",
+      "text": "header",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/91/En-us-header.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-header.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Audio files created with Shtooka Recorder"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-hide.ogg",
+      "text": "hide",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/En-us-hide.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-hide.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-hoist.ogg",
+      "text": "hoist",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ae/En-us-hoist.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-hoist.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-horseshoe.ogg",
+      "text": "horseshoe",
+      "license": "CC BY-SA 3.0",
+      "uploader": "EncycloPetey",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/En-us-horseshoe.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-horseshoe.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Files with no machine-readable author",
+        "License migration redundant",
+        "Media lacking author information",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-I.ogg",
+      "text": "i",
+      "license": "Public domain",
+      "uploader": "Muke",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9f/En-us-I.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-I.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Files with no machine-readable author",
+        "Files with no machine-readable source",
+        "Media missing infobox template",
+        "Self-published work",
+        "PD-self",
+        "U.S. English pronunciation of letters"
+      ],
+      "accepted": true,
+      "reasons": []
+    },
+    {
+      "title": "File:En-us-implementation.ogg",
+      "text": "implementation",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/eb/En-us-implementation.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-implementation.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration completed"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-inspect.ogg",
+      "text": "inspect",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7e/En-us-inspect.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-inspect.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-knuckle.ogg",
+      "text": "knuckle",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f9/En-us-knuckle.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-knuckle.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-label.ogg",
+      "text": "label",
+      "license": "Public domain",
+      "uploader": "Derbeth",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cb/En-us-label.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-label.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "PD-user"
+      ],
+      "accepted": true,
+      "reasons": []
+    },
+    {
+      "title": "File:En-us-lamp.ogg",
+      "text": "lamp",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/En-us-lamp.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-lamp.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-lap.ogg",
+      "text": "lap",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/60/En-us-lap.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-lap.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Audio files created with Shtooka Recorder"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-manifold.ogg",
+      "text": "manifold",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c2/En-us-manifold.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-manifold.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Manifolds",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-manpower.ogg",
+      "text": "manpower",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/54/En-us-manpower.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-manpower.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-mast.ogg",
+      "text": "mast",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/16/En-us-mast.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-mast.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Masts (ship part)",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Masts (sailing)"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-master.ogg",
+      "text": "master",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5b/En-us-master.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-master.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-material.ogg",
+      "text": "material",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/60/En-us-material.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-material.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-matrix.ogg",
+      "text": "matrix",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/52/En-us-matrix.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-matrix.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-meter.ogg",
+      "text": "meter",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/En-us-meter.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-meter.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Files with derivative versions"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-motor.ogg",
+      "text": "motor",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/be/En-us-motor.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-motor.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-nest.ogg",
+      "text": "nest",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f1/En-us-nest.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-nest.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-net.ogg",
+      "text": "net",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/28/En-us-net.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-net.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-nut.ogg",
+      "text": "nut",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ce/En-us-nut.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-nut.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-O.ogg",
+      "text": "o",
+      "license": "Public domain",
+      "uploader": "Vanished user 58234729",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/En-us-O.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-O.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work",
+        "PD-self",
+        "U.S. English pronunciation of letters"
+      ],
+      "accepted": true,
+      "reasons": []
+    },
+    {
+      "title": "File:En-us-open.ogg",
+      "text": "open",
+      "license": "CC BY-SA 3.0",
+      "uploader": "TheDaveRoss",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/67/En-us-open.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-open.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Files with no machine-readable source",
+        "License migration redundant",
+        "Self-published work",
+        "Assumed own work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-overhang.ogg",
+      "text": "overhang",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/60/En-us-overhang.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-overhang.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-package.ogg",
+      "text": "package",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c9/En-us-package.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-package.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-path.ogg",
+      "text": "path",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/79/En-us-path.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-path.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-piercing.ogg",
+      "text": "piercing",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/68/En-us-piercing.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-piercing.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Body piercing",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-pillar.ogg",
+      "text": "pillar",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/78/En-us-pillar.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-pillar.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-pitch.ogg",
+      "text": "pitch",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/En-us-pitch.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-pitch.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-plate.ogg",
+      "text": "plate",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e1/En-us-plate.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-plate.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-platform.ogg",
+      "text": "platform",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/38/En-us-platform.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-platform.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-post.ogg",
+      "text": "post",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c1/En-us-post.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-post.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-pounce.ogg",
+      "text": "pounce",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/En-us-pounce.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-pounce.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration completed"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-programs.ogg",
+      "text": "programs",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Persent101",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f7/En-us-programs.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-programs.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration redundant",
+        "CC-BY-SA-4.0,3.0,2.5,2.0,1.0",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-PS.ogg",
+      "text": "ps",
+      "license": "CC BY 4.0",
+      "uploader": "Paul2520",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a5/En-us-PS.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-PS.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work",
+        "Creative Commons Attribution 4.0 missing SDC copyright license",
+        "Creative Commons Attribution missing SDC copyright status",
+        "Self-published work missing SDC copyright license"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-push.ogg",
+      "text": "push",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/66/En-us-push.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-push.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-rack.ogg",
+      "text": "rack",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/En-us-rack.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-rack.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-radius.ogg",
+      "text": "radius",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d5/En-us-radius.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-radius.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-rail.ogg",
+      "text": "rail",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e6/En-us-rail.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-rail.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Sounds of rail transport"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-ramp.ogg",
+      "text": "ramp",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/49/En-us-ramp.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-ramp.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Ramps",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-reader.ogg",
+      "text": "reader",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/76/En-us-reader.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-reader.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Audio files created with Shtooka Recorder"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-recess.ogg",
+      "text": "recess",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/25/En-us-recess.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-recess.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-reference.ogg",
+      "text": "reference",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f1/En-us-reference.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-reference.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-reserve.ogg",
+      "text": "reserve",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2c/En-us-reserve.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-reserve.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-review.ogg",
+      "text": "review",
+      "license": "CC BY 3.0",
+      "uploader": "Chaetodipus",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a2/En-us-review.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-review.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration redundant",
+        "Self-published work",
+        "Uploaded with Commonist",
+        "Created with Audacity"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-rigid.ogg",
+      "text": "rigid",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ae/En-us-rigid.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-rigid.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-rivet.ogg",
+      "text": "rivet",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/55/En-us-rivet.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-rivet.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-room.ogg",
+      "text": "room",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/67/En-us-room.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-room.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-rough.ogg",
+      "text": "rough",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/56/En-us-rough.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-rough.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration completed",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-scrape.ogg",
+      "text": "scrape",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/En-us-scrape.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-scrape.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "License migration completed"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-screw.ogg",
+      "text": "screw",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/En-us-screw.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-screw.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Pronunciation of the word screw"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-screwdriver.ogg",
+      "text": "screwdriver",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9b/En-us-screwdriver.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-screwdriver.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-seal.ogg",
+      "text": "seal",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2d/En-us-seal.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-seal.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-sequence.ogg",
+      "text": "sequence",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/01/En-us-sequence.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-sequence.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-service.ogg",
+      "text": "service",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d2/En-us-service.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-service.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-shank.ogg",
+      "text": "shank",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c2/En-us-shank.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-shank.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-shots.ogg",
+      "text": "shots",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/31/En-us-shots.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-shots.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-shoulder.ogg",
+      "text": "shoulder",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/44/En-us-shoulder.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-shoulder.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Shoulders",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work",
+        "Human shoulders"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-shuttle.ogg",
+      "text": "shuttle",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Gbeebani",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/69/En-us-shuttle.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-shuttle.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-slide.ogg",
+      "text": "slide",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4a/En-us-slide.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-slide.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-slot.ogg",
+      "text": "slot",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ef/En-us-slot.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-slot.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-socket.ogg",
+      "text": "socket",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/70/En-us-socket.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-socket.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Sockets",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-spare.ogg",
+      "text": "spare",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5f/En-us-spare.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-spare.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-sphere.ogg",
+      "text": "sphere",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/eb/En-us-sphere.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-sphere.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-spider.ogg",
+      "text": "spider",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/36/En-us-spider.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-spider.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-spool.ogg",
+      "text": "spool",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/63/En-us-spool.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-spool.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-sprocket.ogg",
+      "text": "sprocket",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3f/En-us-sprocket.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-sprocket.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-stairs.ogg",
+      "text": "stairs",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/En-us-stairs.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-stairs.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-straight.ogg",
+      "text": "straight",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/30/En-us-straight.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-straight.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-support.ogg",
+      "text": "support",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/00/En-us-support.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-support.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-test.ogg",
+      "text": "test",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9c/En-us-test.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-test.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-thread.ogg",
+      "text": "thread",
+      "license": "Public domain",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/En-us-thread.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-thread.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work",
+        "PD-self"
+      ],
+      "accepted": true,
+      "reasons": []
+    },
+    {
+      "title": "File:En-us-tip.ogg",
+      "text": "tip",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f8/En-us-tip.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-tip.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-tolerance.ogg",
+      "text": "tolerance",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/07/En-us-tolerance.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-tolerance.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-torque.ogg",
+      "text": "torque",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/En-us-torque.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-torque.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-truck.ogg",
+      "text": "truck",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5c/En-us-truck.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-truck.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-turbine.ogg",
+      "text": "turbine",
+      "license": "CC BY-SA 4.0",
+      "uploader": "Sylvanmoon",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/73/En-us-turbine.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-turbine.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-vacuum.ogg",
+      "text": "vacuum",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/36/En-us-vacuum.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-vacuum.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Vacuum",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-visit.ogg",
+      "text": "visit",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ac/En-us-visit.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-visit.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-volume.ogg",
+      "text": "volume",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b2/En-us-volume.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-volume.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-wagon.ogg",
+      "text": "wagon",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortybot",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/En-us-wagon.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-wagon.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Wagons",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    },
+    {
+      "title": "File:En-us-wheel.ogg",
+      "text": "wheel",
+      "license": "CC BY-SA 3.0",
+      "uploader": "Dvortygirl",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/78/En-us-wheel.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-wheel.ogg",
+      "categories": [
+        "U.S. English pronunciation",
+        "GFDL",
+        "Wheels",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "License migration redundant",
+        "Self-published work"
+      ],
+      "accepted": false,
+      "reasons": [
+        "license-not-cc0"
+      ]
+    }
+  ]
+}

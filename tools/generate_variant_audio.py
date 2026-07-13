@@ -120,7 +120,15 @@ def _split_term_slashes(text: str) -> list[str]:
             UNIT_LEFT.search("".join(current))
             and UNIT_RIGHT.search(text[index + 1 :])
         )
-        if unit_slash:
+        initialism_slash = bool(
+            index > 0
+            and index + 1 < len(text)
+            and text[index - 1].isupper()
+            and text[index + 1].isupper()
+            and (index < 2 or not text[index - 2].isalpha())
+            and (index + 2 >= len(text) or not text[index + 2].isalpha())
+        )
+        if unit_slash or initialism_slash:
             current.append(character)
         else:
             segment = "".join(current).strip()

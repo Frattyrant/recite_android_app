@@ -131,14 +131,14 @@ class ContentPipelineTest(unittest.TestCase):
             for field in ("english", "primaryEnglish", "exampleEn", "audioText"):
                 self.assertEqual(english, item[field], (key, field))
 
-    def test_builds_expected_2704_records_with_required_fields(self):
+    def test_builds_expected_2698_records_with_required_fields(self):
         directory = PROJECT_ROOT / "tmp" / "content-pipeline-test"
         directory.mkdir(parents=True, exist_ok=True)
         output = directory / "words_v1.json"
         report = directory / "content_report.json"
         records = build_content(SOURCE_DIR, output, report)
 
-        self.assertEqual(2704, len(records))
+        self.assertEqual(2698, len(records))
         counts = {
             category: sum(item["category"] == category for item in records)
             for category in CATEGORY_COUNTS
@@ -166,11 +166,13 @@ class ContentPipelineTest(unittest.TestCase):
                 if (record["category"], record["sourceIndex"]) == identity
             )
             self.assertEqual(stable_id, item["id"])
-            for field in ("english", "primaryEnglish", "exampleEn", "audioText"):
+            for field in ("english", "audioText"):
                 self.assertEqual(corrected_english, item[field], (identity, field))
+            self.assertIn(item["primaryEnglish"].casefold(), item["exampleEn"].casefold())
+            self.assertTrue(item["exampleZh"].strip())
 
         ids = {item["id"] for item in records}
-        self.assertEqual(2704, len(ids))
+        self.assertEqual(2698, len(ids))
         for item in records:
             for field in (
                 "id",
@@ -202,8 +204,6 @@ class ContentPipelineTest(unittest.TestCase):
                 "workshop pipeline through the solenoid valve and pressure switch to "
                 "the manifold, then to each gas-blowing port.",
             ),
-            163: ("cus_0163_a40d31cdb0d5a0de", "MINO USA"),
-            248: ("cus_0248_ecbe12a415c1dd4f", "Proton"),
         }
         for source_index, (old_id, english) in expected_customer_repairs.items():
             item = next(
@@ -224,14 +224,12 @@ class ContentPipelineTest(unittest.TestCase):
             ("mechanical", 471): {
                 "id": "mec_0471_509596a758d037a3",
                 "english": "C gun",
-                "chinese": "C Gun",
-                "phonetic": "/sˈiː/",
+                "chinese": "C枪",
             },
             ("mechanical", 472): {
                 "id": "mec_0472_b1fb9f4f2cdea5b4",
-                "english": "X gun (P gun)",
-                "chinese": "X Gun(P Gun)",
-                "phonetic": "/ˈɛks pˈiː/",
+                "english": "X gun;P gun",
+                "chinese": "X枪;P枪",
             },
             ("customer_review", 220): {
                 "id": "cus_0220_7b5b327869465483",
@@ -274,21 +272,31 @@ class ContentPipelineTest(unittest.TestCase):
             self.assertEqual(expected_repair["id"], item["id"])
             self.assertEqual(f"audio/{item['id']}.ogg", item["audioAsset"])
             self.assertEqual(expected_repair["english"], item["english"])
-            self.assertEqual(expected_repair["english"], item["primaryEnglish"])
-            self.assertEqual(expected_repair["english"], item["exampleEn"])
+            self.assertEqual(
+                expected_repair["english"].split(";", 1)[0],
+                item["primaryEnglish"],
+            )
             self.assertEqual(expected_repair["english"], item["audioText"])
             self.assertEqual(expected_repair["chinese"], item["chinese"])
             if category == "customer_review":
+                self.assertEqual(expected_repair["english"], item["exampleEn"])
                 self.assertEqual(expected_repair["chinese"], item["exampleZh"])
+            else:
+                self.assertIn(
+                    item["primaryEnglish"].casefold(),
+                    item["exampleEn"].casefold(),
+                )
             if "phonetic" in expected_repair:
                 self.assertEqual(expected_repair["phonetic"], item["phonetic"])
 
         on_disk = json.loads(output.read_text(encoding="utf-8"))
         self.assertEqual(records, on_disk["words"])
         audit = json.loads(report.read_text(encoding="utf-8"))
-        self.assertEqual(2704, audit["total"])
+        self.assertEqual(2698, audit["total"])
         self.assertEqual(CATEGORY_COUNTS, audit["counts"])
-        self.assertEqual("2026.06.29", on_disk["contentVersion"])
+        self.assertEqual("2026.07.13-v2.31", on_disk["contentVersion"])
+        self.assertEqual(6, len(audit["v231Migration"]["excludedIds"]))
+        self.assertEqual(99, audit["phraseCleanup"]["cleanedCount"])
         self.assertEqual(3, len(audit["reviewedTermCorrections"]))
         self.assertTrue(
             all(item["evidence"] for item in audit["reviewedTermCorrections"])

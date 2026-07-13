@@ -1,0 +1,599 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "cus_0002_14dc80264af800f5",
+      "originalEnglish": "The distance between the permanent zone and motion volumes should be over 100mm. 100mm",
+      "english": "The distance between the permanent zone and motion volumes should be over 100 mm.",
+      "reason": "Remove the duplicated unit note and normalize unit spacing."
+    },
+    {
+      "id": "cus_0006_8ef4d3cde7a6dba6",
+      "originalEnglish": "The cell space should be 150mm from the fence, so we can get rid of engineering fence.If it's more than 150mm, we can use only normal fence. 150mm, .150mm .( 150kg, 150mm; 150kg, 500mm)",
+      "english": "The cell space should be 150 mm from the fence, so we can get rid of the engineering fence. If it's more than 150 mm, we can use only a normal fence.",
+      "reason": "Remove duplicated numeric source notes and restore sentence spacing."
+    },
+    {
+      "id": "cus_0010_0cb3253fa94bebab",
+      "originalEnglish": "if the gripper is more than two 150 kilos then we will need to have 500 millimeters safety distance and if we have this then we can use plastic doors. 150kg, 500mm",
+      "english": "If the gripper weighs more than 150 kilograms, we will need a 500-millimeter safety distance; then we can use plastic doors.",
+      "reason": "Remove duplicated unit notes and repair the reviewed sentence grammar."
+    },
+    {
+      "id": "cus_0013_2a05f83c8944178f",
+      "originalEnglish": "If the weight of parts plus end eﬀector plus hoist exceeds 100kg, then we need to use a monorail. 100kg",
+      "english": "If the weight of the parts, end effector, and hoist exceeds 100 kg, we need to use a monorail.",
+      "reason": "Remove the duplicated unit note and normalize the ligature."
+    },
+    {
+      "id": "cus_0014_f9038ebefbbf9902",
+      "originalEnglish": "To keep 150mm distance, it's better to just reduce the cell space instead of adding a permanent space. 150mm",
+      "english": "To keep a 150 mm distance, it's better to reduce the cell space instead of adding a permanent space.",
+      "reason": "Remove the duplicated unit note."
+    },
+    {
+      "id": "cus_0029_e4a77c9f1470e6d9",
+      "originalEnglish": "The colors in 3D are based on Mino's standard not T's standard 3D ( )",
+      "english": "The colors in 3D are based on Mino's standard, not T's standard.",
+      "reason": "Remove an empty source annotation and duplicated 3D label."
+    },
+    {
+      "id": "cus_0031_609888a63af216b7",
+      "originalEnglish": "It's better if we can keep all the cable trays just in the side that you are showing, because in the other side the doors of the laser booth that open for maintenance are 3.6m high. So we would need to go higher if they were on the other side. , 3.6m",
+      "english": "It's better to keep all the cable trays on the side you are showing, because the maintenance doors on the other side of the laser booth are 3.6 m high. We would need to go higher if the trays were on that side.",
+      "reason": "Remove the duplicated unit note and clarify the reviewed sentence."
+    },
+    {
+      "id": "cus_0036_b9153ca5a2fea9bc",
+      "originalEnglish": "Time slot( )",
+      "english": "Time slot",
+      "reason": "Remove an empty source annotation."
+    },
+    {
+      "id": "cus_0042_995b1a01679433ac",
+      "originalEnglish": "This is high light intensity...we have to protect completely the area from the operator will have an injury on his eyes. ( )",
+      "english": "This is high light intensity. We have to protect the area completely, or the operator could suffer an eye injury.",
+      "reason": "Remove an empty source annotation and repair sentence grammar."
+    },
+    {
+      "id": "cus_0055_3e20baad9540ff22",
+      "originalEnglish": "If you only go three stations on a conveyor, the blue robot will be too compressed/tight/jammed up/ crunched up against itself to be able to load to the conveyor.( : 4 3 , ) , ( , )",
+      "english": "If you use only three stations on the conveyor, the blue robot will be too compressed, tight, jammed up, or crunched against itself to load the conveyor.",
+      "reason": "Remove a source annotation and turn inline slash alternatives into a natural sentence."
+    },
+    {
+      "id": "cus_0058_7b51da6afff3e505",
+      "originalEnglish": "Increase the minimum distance between the volume and the cell space. ( 100mm)",
+      "english": "Increase the minimum distance between the volume and the cell space to 100 mm.",
+      "reason": "Integrate the source-side unit note into the sentence."
+    },
+    {
+      "id": "cus_0075_204ae4cd4976b109",
+      "originalEnglish": "It's blurred( )",
+      "english": "It's blurred.",
+      "reason": "Remove an empty source annotation."
+    },
+    {
+      "id": "cus_0077_8137db39ed57dd51",
+      "originalEnglish": "The distance between the fences and the cell space and the height of fences must be shown in safety design review document.The distance is based on the height of the fence. DCS ( ) ( )",
+      "english": "The distance between the fences and the cell space, as well as the fence height, must be shown in the safety design review document. The required distance is based on the fence height.",
+      "reason": "Remove glossary debris and restore sentence spacing."
+    },
+    {
+      "id": "cus_0085_39150d6e92255766",
+      "originalEnglish": "When you do a pic from the top, then after that you must have a picture with this isometric view. DCS , ( )",
+      "english": "When you take a picture from the top, you must also include a picture with this isometric view.",
+      "reason": "Remove glossary debris and clarify the reviewed sentence."
+    },
+    {
+      "id": "cus_0106_773e16ccdbf974f3",
+      "originalEnglish": "Put the pedal to the metal , / ( )",
+      "english": "Put the pedal to the metal.",
+      "reason": "Remove empty slash and parenthetical source debris."
+    },
+    {
+      "id": "cus_0114_7906bba9cff8c09a",
+      "originalEnglish": "If we use the 1.6m stair, the distance from where the operator stands to the end of the equipment will be 1.9m. It will be very hard for operator to reach this side of the equipment. 1.6m , 1.9m",
+      "english": "If we use the 1.6 m stair, the distance from where the operator stands to the end of the equipment will be 1.9 m. It will be very hard for the operator to reach this side of the equipment.",
+      "reason": "Remove duplicated unit notes and normalize unit spacing."
+    },
+    {
+      "id": "cus_0115_0fabe75f724f45ce",
+      "originalEnglish": "It's the same thing as the one on the other side, right? ?( )",
+      "english": "It's the same thing as the one on the other side, right?",
+      "reason": "Remove an empty source annotation and duplicated question mark."
+    },
+    {
+      "id": "cus_0128_875230e186cb1a01",
+      "originalEnglish": "Please show us in a ppt from where we could use the ladder to adjust the sensor in this table. PPT ( )",
+      "english": "Please show us in a PPT where we could use the ladder to adjust the sensor on this table.",
+      "reason": "Remove glossary debris and repair the reviewed sentence."
+    },
+    {
+      "id": "cus_0134_5ee981ebde5297ad",
+      "originalEnglish": "Add here on this edge a rough locator so the operator can help with this shoulder to load and with this rough locator, we solve also the poka yoke. , , ( )",
+      "english": "Add a rough locator on this edge so the operator can use this shoulder while loading; the rough locator will also provide poka-yoke protection.",
+      "reason": "Remove empty source debris and clarify the reviewed sentence."
+    },
+    {
+      "id": "cus_0137_aa96fd4cad92a631",
+      "originalEnglish": "As a general point, 0.5mm undersize is only for the pass table and pure handling gripper, 0.15mm is for process gripper. , 0.5mm, 0.15mm",
+      "english": "As a general rule, a 0.5 mm undersize applies only to the pass table and pure handling gripper; 0.15 mm applies to the process gripper.",
+      "reason": "Remove duplicated unit notes and normalize the reviewed sentence."
+    },
+    {
+      "id": "cus_0146_5534afac0385f410",
+      "originalEnglish": "Please add a plate underneath here, so that the stairs are closed. ( )",
+      "english": "Please add a plate underneath here so that the stairs are closed.",
+      "reason": "Remove an empty source annotation."
+    },
+    {
+      "id": "cus_0159_1c413d642bbac379",
+      "originalEnglish": "Can you load this program in the path editor? .( / )",
+      "english": "Can you load this program in the path editor?",
+      "reason": "Remove empty slash and parenthetical source debris."
+    },
+    {
+      "id": "cus_0180_6aec25e3168a3113",
+      "originalEnglish": "All good. ( )",
+      "english": "All good.",
+      "reason": "Remove an empty source annotation."
+    },
+    {
+      "id": "cus_0193_2568fcd3ff13eb03",
+      "originalEnglish": "I want to see how the pin engages with the locating holes... ( )",
+      "english": "I want to see how the pin engages with the locating holes.",
+      "reason": "Remove an empty source annotation and normalize punctuation."
+    },
+    {
+      "id": "cus_0194_0dd7724104816a28",
+      "originalEnglish": "The glue location before and the location after need to be be linear and the distance between them should be 50-100mm. . 50-100mm",
+      "english": "The glue locations before and after need to be linear, and the distance between them should be 50 to 100 mm.",
+      "reason": "Remove the duplicated unit note and repeated word."
+    },
+    {
+      "id": "cus_0203_b1d20ab7c0825860",
+      "originalEnglish": "Sense one of each type and assume that the rest of those types are present but not sensed? ... ( )",
+      "english": "Sense one of each type and assume that the remaining items of those types are present but not sensed?",
+      "reason": "Remove an empty source annotation and normalize punctuation."
+    },
+    {
+      "id": "cus_0216_e891260bcc9b32d6",
+      "originalEnglish": "If you can reach this to 900mm, this is the best option. In this way we can get rid of the maintenance platform. 900mm",
+      "english": "If you can reduce this to 900 mm, that is the best option. This way, we can get rid of the maintenance platform.",
+      "reason": "Remove the duplicated unit note and clarify the reviewed sentence."
+    },
+    {
+      "id": "cus_0225_4b6aec0ce17222cc",
+      "originalEnglish": "What's the travel for the spring? ?( )",
+      "english": "What's the travel of the spring?",
+      "reason": "Remove an empty source annotation and duplicated question mark."
+    },
+    {
+      "id": "cus_0228_62aa22ad6077d540",
+      "originalEnglish": "We need to be sure that when we open the clamps, the part will not fall down and will stay on the pins. Please just adjust a little bit angle here. , . ( )",
+      "english": "We need to ensure that when we open the clamps, the part will not fall and will stay on the pins. Please adjust the angle here slightly.",
+      "reason": "Remove empty source debris and repair sentence grammar."
+    },
+    {
+      "id": "cus_0243_db2df4a58c44cec7",
+      "originalEnglish": "It should be minus 0.3mm. 0.3mm",
+      "english": "It should be minus 0.3 mm.",
+      "reason": "Remove the duplicated unit note."
+    },
+    {
+      "id": "cus_0244_20777b4b990e90c1",
+      "originalEnglish": "Any detail that touches outer surface has to be urethane minimum 50 by 50mm. / , 50X50",
+      "english": "Any detail that touches the outer surface must be urethane with a minimum size of 50 by 50 mm.",
+      "reason": "Remove slash debris and integrate the dimensional requirement into the sentence."
+    },
+    {
+      "id": "cus_0003_f30f91730f22ff86",
+      "originalEnglish": "The proposal assume that we can't achieve that 150mm, and they just found that we can, so we don't need that steel fence anymore. 150mm , . , .PS",
+      "english": "The proposal assumed that we couldn't achieve a 150 mm distance. They have now found that we can, so we no longer need the steel fence.",
+      "reason": "Remove glossary debris and repair the reviewed sentence grammar."
+    },
+    {
+      "id": "cus_0034_2843f37151c8956b",
+      "originalEnglish": "All positions, including home position, pounce position, and maintenance position cannot be inside the monitoring zone. home ;pounce",
+      "english": "All positions, including the home, pounce, and maintenance positions, must remain outside the monitoring zone.",
+      "reason": "Remove duplicated glossary terms and clarify the reviewed sentence."
+    },
+    {
+      "id": "cus_0052_107e4d8fe0a91f59",
+      "originalEnglish": "ladder stair :ladder , stair",
+      "english": "ladder;stair",
+      "reason": "Represent the two compared terms as independently pronounceable variants."
+    },
+    {
+      "id": "cus_0053_027e697a466bffb5",
+      "originalEnglish": "How is/are...attached to... ... ... ?",
+      "english": "How is ... attached to ...?",
+      "reason": "Remove duplicated ellipsis debris while preserving the sentence pattern."
+    },
+    {
+      "id": "cus_0059_666df1181dbd8cc0",
+      "originalEnglish": "beefy;staunching;rigid",
+      "english": "beefy;sturdy;rigid",
+      "reason": "Replace the unrelated word staunching with the reviewed strength adjective sturdy."
+    },
+    {
+      "id": "cus_0149_cc3074c374e2f008",
+      "originalEnglish": "How many pallets we have in the conveyor? APC ?",
+      "english": "How many pallets do we have on the conveyor?",
+      "reason": "Remove a detached glossary abbreviation and repair question grammar."
+    },
+    {
+      "id": "cus_0150_7a723d03ceecde93",
+      "originalEnglish": "provide a presentation for all the weld spots that were unable to access the weld gun. PPT",
+      "english": "Provide a presentation showing all weld spots that the weld gun was unable to access.",
+      "reason": "Remove a detached glossary abbreviation and clarify the reviewed sentence."
+    },
+    {
+      "id": "cus_0151_fd70127020da1cd1",
+      "originalEnglish": "close;turn oﬀ;turn...oﬀ;blank;switch...oﬀ;hide",
+      "english": "close;turn off;blank;switch off;hide",
+      "reason": "Normalize ligatures and remove ellipsis debris from the pronunciation variants."
+    },
+    {
+      "id": "cus_0227_d0674aecf80b0c95",
+      "originalEnglish": "Before we do the VC,we must have only one cell if we use only one PLC. VC , PLC, cell",
+      "english": "Before we do the VC, we must have only one cell if we use only one PLC.",
+      "reason": "Remove duplicated glossary terms and restore sentence spacing."
+    },
+    {
+      "id": "cus_0224_77989d0a5be22568",
+      "originalEnglish": "For doing the maintenance document, you will need to place a man here for the presentation. ,PPT",
+      "english": "For the maintenance document, include a person in the presentation.",
+      "reason": "Remove a detached PPT label and rewrite the reviewed instruction in natural English."
+    },
+    {
+      "id": "cus_0021_c39508acb317464e",
+      "originalEnglish": "When the robot drives the gripper into the rack, what stops robot from its travel and need to try and pick the part? , , ?",
+      "english": "When the robot drives the gripper into the rack, what stops its travel before it picks the part?",
+      "reason": "Remove source punctuation debris and restore question grammar."
+    },
+    {
+      "id": "cus_0025_c0a6acd5805633bf",
+      "originalEnglish": "What is the clearance after we raise the rack to pass the bracket on the floor? ( ) ?",
+      "english": "What is the clearance after we raise the rack to pass the bracket on the floor?",
+      "reason": "Remove an empty source annotation and duplicated question mark."
+    },
+    {
+      "id": "cus_0037_c2133e85c878f0e6",
+      "originalEnglish": "How far away are you from the part when you are actually taking your picture? , ?",
+      "english": "How far away are you from the part when you are actually taking your picture?",
+      "reason": "Remove duplicated terminal punctuation."
+    },
+    {
+      "id": "cus_0039_8037d7329a3eef7f",
+      "originalEnglish": "If forklift driver is not careful enough, we won't be able to fit for racks. , .——",
+      "english": "If the forklift driver is not careful enough, we won't be able to fit the racks.",
+      "reason": "Remove terminal source debris and restore the article and object."
+    },
+    {
+      "id": "cus_0041_5fbc75379c397177",
+      "originalEnglish": "Are those laser sensors shooting out past the part, so that you can detect the part in front of it to avoid the crash? , , ?",
+      "english": "Are those laser sensors shooting out past the part so that you can detect the part in front of it and avoid a crash?",
+      "reason": "Remove terminal source debris and clarify the reviewed question."
+    },
+    {
+      "id": "cus_0066_c61a6d596713bd55",
+      "originalEnglish": "so right now it's not accounted for but you think you have enough time to account for it and still be under cycle time, right? ( ) , ?",
+      "english": "So right now it's not accounted for, but you think you have enough time to account for it and still be under cycle time, right?",
+      "reason": "Remove an empty source annotation and restore sentence punctuation."
+    },
+    {
+      "id": "cus_0070_5e533cedbaa55e9c",
+      "originalEnglish": "The robot is holding the panel. And in that station, we put studs in the top, but we also put studs in the bottom. How do you already allowed for the cycle time within your calculation to rotate the panel upside down? , , , . ( )?",
+      "english": "The robot is holding the panel. In that station, we put studs in both the top and bottom. Have you allowed enough cycle time in your calculation to rotate the panel upside down?",
+      "reason": "Remove source punctuation debris and repair the reviewed question grammar."
+    },
+    {
+      "id": "cus_0072_7628942c4e9e5d5c",
+      "originalEnglish": "What if you get rid of the conveyor and just drop the part in somewhere in this area? , ?",
+      "english": "What if you get rid of the conveyor and just drop the part somewhere in this area?",
+      "reason": "Remove duplicated terminal punctuation and a redundant preposition."
+    },
+    {
+      "id": "cus_0074_0c3f51fb3358cdef",
+      "originalEnglish": "Do you have any concern with the proximity like how close together these fixtures are and the cubic S for these three robots here to allow an operator to be loading in one whilst you are welding in another? ? , ?",
+      "english": "Do you have any concerns about how close these fixtures are and whether the cubic S for these three robots allows an operator to load one while you are welding in another?",
+      "reason": "Remove terminal source debris and clarify the reviewed safety question."
+    },
+    {
+      "id": "cus_0078_ad25f3927257c9e4",
+      "originalEnglish": "Any robot where it was multiple jobs and now it only does one job, remove the ATC. , , ATC",
+      "english": "Remove the ATC from any robot that previously had multiple jobs but now performs only one.",
+      "reason": "Remove a duplicated glossary label and repair instruction grammar."
+    },
+    {
+      "id": "cus_0080_00cb8d86cc83f378",
+      "originalEnglish": "The vision system will have everything inside the cabinet, but the HMI will still be able to show us the results of the vision, right? , ?",
+      "english": "The vision system will have everything inside the cabinet, but the HMI will still be able to show us the vision results, right?",
+      "reason": "Remove duplicated punctuation and tighten the reviewed question."
+    },
+    {
+      "id": "cus_0086_ecb8938ef748d76c",
+      "originalEnglish": "So I take it that the block locations are just concept and the surface is still to be cut, is that right? , ?",
+      "english": "So I take it that the block locations are only conceptual and the surface still needs to be cut, is that right?",
+      "reason": "Remove duplicated punctuation and restore natural review language."
+    },
+    {
+      "id": "cus_0089_c7c23fccc9667a75",
+      "originalEnglish": "When you do the isometric picture, we need to understand also where is in Z, the lower level and the higher level of this permanent zone. Lower level and higher level mean I need a distance to understand where this area start from the floor, and then I will need a maximum elevation to understand this area finish in Z. , , Z",
+      "english": "In the isometric view, we also need to understand the lower and upper Z levels of this permanent zone. Show the distance from the floor and the maximum elevation of the zone.",
+      "reason": "Remove a detached Z label and clarify the dimensional review instruction."
+    },
+    {
+      "id": "cus_0090_7bdab433e95adc09",
+      "originalEnglish": "Did you include fixture inspection plates on your fixtures? There would be four plates around the tool with an XYZ location engraved on them, and they rotate out the way to reveal a hole that you use to inspect the fixture. ? 4 , XYZ",
+      "english": "Did you include fixture inspection plates on your fixtures? There should be four plates around the tool with an XYZ location engraved on them, and they should rotate out of the way to reveal a hole used to inspect the fixture.",
+      "reason": "Remove duplicated glossary notes and restore sentence punctuation."
+    },
+    {
+      "id": "cus_0094_7a0bbc47e84ab6a7",
+      "originalEnglish": "As a rule, can you keep the edge of all block 3mm from any radius? , 3mm",
+      "english": "As a rule, can you keep the edge of every block 3 mm from any radius?",
+      "reason": "Remove a duplicated unit note and normalize grammar and spacing."
+    },
+    {
+      "id": "cus_0107_d32e241b394f32b7",
+      "originalEnglish": "What is the height from the part until the floor? ( )?",
+      "english": "What is the height from the part to the floor?",
+      "reason": "Remove an empty source annotation and use the correct dimensional preposition."
+    },
+    {
+      "id": "cus_0111_fdddf18e63f9fa49",
+      "originalEnglish": "Even if you don't know the zone numbers, you already know with which robots the robot 60 will have some collision zones. It's pretty easy to fill it. zone , 60 . zone number",
+      "english": "Even if you don't know the zone numbers, you already know which robots will share collision zones with robot 60. It should be easy to fill them in.",
+      "reason": "Remove detached glossary notes and clarify the reviewed instruction."
+    },
+    {
+      "id": "cus_0125_641deacbe171da36",
+      "originalEnglish": "How high is the laser sensor on top from the bottom for the maintenance? , ?",
+      "english": "For maintenance, how high is the top laser sensor from the bottom?",
+      "reason": "Remove duplicated punctuation and clarify the dimensional question."
+    },
+    {
+      "id": "cus_0131_310b0a6b4bb93bce",
+      "originalEnglish": "What is the distance between the rough locators in the bottom and the bottom of the rack like how much space does the forklift driver have to get right in that area before dropping it down? ? , ?",
+      "english": "What is the distance between the rough locators and the bottom of the rack? How much space does the forklift driver have before lowering the rack?",
+      "reason": "Remove duplicated punctuation and split the dimensional review into two clear questions."
+    },
+    {
+      "id": "cus_0138_bfbcaed36f96b573",
+      "originalEnglish": "I would like to see if you could turn on the DCS space for the monitoring station/operator station, and then turn on the sphere for the gun, and run through both cap change and tip dress so that we can see how close it is. / DCS",
+      "english": "Please turn on the DCS space for the monitoring station and operator station, then turn on the sphere for the gun and run through both cap change and tip dress so we can see how close it is.",
+      "reason": "Remove a duplicated DCS glossary segment and clarify the simulation instruction."
+    },
+    {
+      "id": "cus_0142_8854798093d3e7c9",
+      "originalEnglish": "is matching what's on the floor/is matching what's in the current production, correct? ... ?",
+      "english": "Is it matching what's on the floor or what's in current production?",
+      "reason": "Replace source slash and ellipsis debris with a natural alternative question."
+    },
+    {
+      "id": "cus_0158_1ea87000e9d61227",
+      "originalEnglish": "Whenever we are picking up the first part in the rack, has Mino checked if the gripper doesn't hit the part in the back? , ?",
+      "english": "When picking up the first part in the rack, has Mino checked that the gripper does not hit the part behind it?",
+      "reason": "Remove duplicated punctuation and clarify the interference question."
+    },
+    {
+      "id": "cus_0171_982e21794213e811",
+      "originalEnglish": "Thank you , , :Back to you",
+      "english": "Thank you. Back to you.",
+      "reason": "Replace source punctuation debris with two complete expressions."
+    },
+    {
+      "id": "cus_0206_2d5a9cbae547dfa6",
+      "originalEnglish": "If possible don't use decimal number. , ( joint jog )",
+      "english": "If possible, don't use decimal numbers.",
+      "reason": "Remove a detached glossary annotation and restore punctuation."
+    },
+    {
+      "id": "cus_0208_81e87c0f4113e20b",
+      "originalEnglish": "Do you have Kawasaki document for each gun/gripper...? / Kawasaki ?",
+      "english": "Do you have a Kawasaki document for each gun or gripper?",
+      "reason": "Remove duplicated brand and ellipsis debris and restore the article."
+    },
+    {
+      "id": "cus_0211_b4eed5780c8b125e",
+      "originalEnglish": "Are we gonna have problems with the lack of surface underneath those lock nuts that hold those sensors on those horseshoes? , U ?",
+      "english": "Are we going to have problems with the lack of surface underneath the lock nuts that hold the sensors on those horseshoes?",
+      "reason": "Remove a detached source label and normalize formal review language."
+    },
+    {
+      "id": "cus_0212_b05023fece5a75c2",
+      "originalEnglish": "I would like to understand where is the wait of this robot.So what is the position when this robot is waiting, when the robot is loading the previous part. , ?",
+      "english": "I would like to understand the wait position of this robot. Where does it wait while the previous part is being loaded?",
+      "reason": "Remove terminal debris, restore sentence spacing, and clarify the wait-position question."
+    },
+    {
+      "id": "cus_0214_73faa3947d16630b",
+      "originalEnglish": "when we pick one time and drop two times, we have to have two separate TCP's , TCP",
+      "english": "When we pick once and drop twice, we need two separate TCPs.",
+      "reason": "Remove a duplicated TCP label and correct plural and sentence grammar."
+    },
+    {
+      "id": "cus_0215_bf303ed40b83e2b5",
+      "originalEnglish": "What was the force required to clamp that? The manually actuated clamp, I mean how hard does the operator have to push on that? ? , ?",
+      "english": "What force is required to clamp that manually actuated clamp? How hard does the operator have to push it?",
+      "reason": "Remove duplicated punctuation and clarify the manual-force questions."
+    },
+    {
+      "id": "cus_0219_971e0d124f4e1643",
+      "originalEnglish": "Is this actually coming in contact with the part or is it the holder that's coming in contact with the part?Is a magnet slightly recessed? ? ?",
+      "english": "Is this actually coming into contact with the part, or is the holder contacting it? Is the magnet slightly recessed?",
+      "reason": "Remove duplicated punctuation and restore sentence spacing."
+    },
+    {
+      "id": "cus_0221_3b5aa0250376a3be",
+      "originalEnglish": "What the life expectance of the belt...then if a belt goes, how easy is it to find a replacement or is it just a custom? ? ? ?",
+      "english": "What is the life expectancy of the belt? If it fails, how easy is it to find a replacement, or is it custom-made?",
+      "reason": "Remove ellipsis debris and restore the maintenance question grammar."
+    },
+    {
+      "id": "cus_0234_3fe2be7cc04fc7fa",
+      "originalEnglish": "What's the process of clamping? Will the pin retract before the end eﬀector engages the part, then the end eﬀector clamps close? ? , ?",
+      "english": "What is the clamping process? Will the pin retract before the end effector engages the part and the clamps close?",
+      "reason": "Normalize the ligature, remove duplicated punctuation, and clarify the clamping sequence."
+    },
+    {
+      "id": "cus_0237_82dca8d800402015",
+      "originalEnglish": "How long do you think this would take to install if we have all the parts? , ?",
+      "english": "How long do you think this would take to install if we have all the parts?",
+      "reason": "Remove duplicated terminal punctuation."
+    },
+    {
+      "id": "cus_0240_870dedc998a64e77",
+      "originalEnglish": "Can we see the tool base where you have the holes for the alignment of the measurement of the base? base ?",
+      "english": "Can we see the tool base and the holes used to align its measurement?",
+      "reason": "Remove a duplicated base label and clarify the measurement question."
+    },
+    {
+      "id": "cus_0007_ce18dc47a7cf40cf",
+      "originalEnglish": "How much time we are actually allowing for the operators to load? ?",
+      "english": "How much time are we actually allowing the operators to load?",
+      "reason": "Remove a duplicated question mark and restore question grammar."
+    },
+    {
+      "id": "cus_0032_bcfd0ac5cd0c92a9",
+      "originalEnglish": "in the loop 「 , 」, , cc(carbon copy, )",
+      "english": "in the loop;cc (carbon copy)",
+      "reason": "Remove source punctuation debris and preserve the two reviewed expressions."
+    },
+    {
+      "id": "cus_0050_e96410dd8b311dbc",
+      "originalEnglish": "Is there a reason why this table is not the 90 degrees exactly but have this angle? ?",
+      "english": "Is there a reason why this table is not exactly at 90 degrees but has this angle?",
+      "reason": "Remove duplicated punctuation and restore question grammar."
+    },
+    {
+      "id": "cus_0057_ac91068c023e9f42",
+      "originalEnglish": "What heights are those clamp handles...Can you get these handles a little bit higher/lower? ? / ?",
+      "english": "What is the height of those clamp handles? Can you move them a little higher or lower?",
+      "reason": "Remove slash and ellipsis debris and split the review into two clear questions."
+    },
+    {
+      "id": "cus_0060_1b7b8c60b221fc5d",
+      "originalEnglish": "How much engagement of the pin? ?",
+      "english": "How much pin engagement is there?",
+      "reason": "Remove duplicated punctuation and restore question grammar."
+    },
+    {
+      "id": "cus_0073_9c31352b8c009dd7",
+      "originalEnglish": "What is the distance from the part till the cell space? ?",
+      "english": "What is the distance from the part to the cell space?",
+      "reason": "Remove duplicated punctuation and normalize the dimensional preposition."
+    },
+    {
+      "id": "cus_0087_d94dd70e32ba50a2",
+      "originalEnglish": "Do I make sense? ?",
+      "english": "Do I make sense?",
+      "reason": "Remove a duplicated question mark."
+    },
+    {
+      "id": "cus_0098_f447b3ba3d949732",
+      "originalEnglish": "and you pass it straight to the robot or you drop it straight into the fixture? ?",
+      "english": "Do you pass it straight to the robot or drop it straight into the fixture?",
+      "reason": "Remove duplicated punctuation and restore the question opening."
+    },
+    {
+      "id": "cus_0100_184ce524dd54d2dc",
+      "originalEnglish": "How this part is married with the other one? ?",
+      "english": "How is this part joined to the other one?",
+      "reason": "Remove duplicated punctuation and use natural assembly terminology."
+    },
+    {
+      "id": "cus_0133_120ea33768ebd768",
+      "originalEnglish": "Could we get going?/Could we start? ?",
+      "english": "Could we get going? Could we start?",
+      "reason": "Remove slash and duplicated punctuation while preserving both expressions."
+    },
+    {
+      "id": "cus_0144_3bdcffa46510def5",
+      "originalEnglish": "Can we insert this gun to hit these welds? ?",
+      "english": "Can we insert this gun to reach these welds?",
+      "reason": "Remove duplicated punctuation and use the reviewed welding verb."
+    },
+    {
+      "id": "cus_0155_2cc7255d4651363b",
+      "originalEnglish": "Can we use instead of welding parts some kind of aluminum plates that are fixed together with some screws, not welded? ?",
+      "english": "Instead of welded parts, can we use aluminum plates fastened together with screws?",
+      "reason": "Remove duplicated punctuation and clarify the design alternative."
+    },
+    {
+      "id": "cus_0175_a789af2d0ab515a2",
+      "originalEnglish": "Is it possible to have the cable tray on top of the fixture plate down the center? ?",
+      "english": "Is it possible to place the cable tray along the center on top of the fixture plate?",
+      "reason": "Remove duplicated punctuation and clarify the cable-tray location."
+    },
+    {
+      "id": "cus_0176_78781a435540fba0",
+      "originalEnglish": "Why this angle is needed/why this have an angle? ?",
+      "english": "Why is this angle needed? Why does this have an angle?",
+      "reason": "Remove slash and duplicated punctuation and restore both question forms."
+    },
+    {
+      "id": "cus_0197_41ded73eb7fe7f22",
+      "originalEnglish": "Can you measure the angle with the floor? ?",
+      "english": "Can you measure the angle relative to the floor?",
+      "reason": "Remove duplicated punctuation and clarify the measurement reference."
+    },
+    {
+      "id": "cus_0207_d0d18512645df55d",
+      "originalEnglish": "Is this (fence) designed for optimum ergonomic heights for the operator? ?",
+      "english": "Is this fence designed at the optimum ergonomic height for the operator?",
+      "reason": "Remove duplicated punctuation and normalize the sentence."
+    },
+    {
+      "id": "cus_0222_18f6349276d51e9f",
+      "originalEnglish": "What's the distance in between the moving parts and light curtain? ?",
+      "english": "What is the distance between the moving parts and the light curtain?",
+      "reason": "Remove duplicated punctuation and normalize the dimensional question."
+    },
+    {
+      "id": "cus_0226_ae2477009cad06df",
+      "originalEnglish": "Is it not possible to make a straight line here? ?",
+      "english": "Is it possible to make a straight line here?",
+      "reason": "Remove duplicated punctuation and simplify the question."
+    },
+    {
+      "id": "cus_0230_cda5920b59db857d",
+      "originalEnglish": "What's the part orientation during dispensing? ?",
+      "english": "What is the part orientation during dispensing?",
+      "reason": "Remove a duplicated question mark."
+    },
+    {
+      "id": "cus_0231_f1793852e885f849",
+      "originalEnglish": "What was your limit on what was okay to shim and what was not okay to shim? ? , ?(Mino: 2mm )",
+      "english": "What is your limit for acceptable shimming?",
+      "reason": "Remove duplicated punctuation and a detached answer annotation."
+    },
+    {
+      "id": "cus_0233_d77cccbecc2e0448",
+      "originalEnglish": "All the spot welds can be performed with the clamp closes? Or does it have to be like a second spot? ? ?",
+      "english": "Can all the spot welds be performed with the clamp closed, or is a second position required?",
+      "reason": "Remove duplicated punctuation and clarify the welding question."
+    },
+    {
+      "id": "cus_0241_febf1bc56e861a9f",
+      "originalEnglish": "Doesn't the four-way pin overconstrain the fixture? ?",
+      "english": "Doesn't the four-way pin overconstrain the fixture?",
+      "reason": "Remove a duplicated question mark."
+    },
+    {
+      "id": "cus_0242_dad4967a4a9cb877",
+      "originalEnglish": "How does this shuttle go forwards and backwards? ?",
+      "english": "How does this shuttle move forward and backward?",
+      "reason": "Remove duplicated punctuation and normalize motion terminology."
+    },
+    {
+      "id": "cus_0251_bbb7c63131e4dac7",
+      "originalEnglish": "VS",
+      "english": "pneumatic hoist;air balancer",
+      "reason": "Restore the two compared English terms described by the reviewed Chinese source."
+    }
+  ]
+}

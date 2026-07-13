@@ -25,6 +25,14 @@ class EnglishVariantParserTest {
         assertEquals(listOf("clamp arm"), EnglishVariantParser.parse("clamp arm"))
         assertEquals(listOf("Read at 300mm/s"), EnglishVariantParser.parse("Read at 300mm/s"))
     }
+
+    @Test
+    fun termKeepsInitialismSlashesInsideOneVariant() {
+        assertEquals(
+            listOf("the assignment of the I/O"),
+            EnglishVariantParser.parse("the assignment of the I/O"),
+        )
+    }
     @Test
     fun removesEmptySegmentsAndPreservesOrder() {
         assertEquals(

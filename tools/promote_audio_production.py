@@ -22,7 +22,7 @@ def promote_production(
     staging: Path,
     assets: Path,
     manifest_target: Path,
-    expected_count: int = 2_704,
+    expected_count: int = 2_698,
 ) -> None:
     validation_path = staging / "validation_report.json"
     if not validation_path.is_file():
@@ -38,10 +38,10 @@ def promote_production(
     assets_parent = assets.parent
     assets_parent.mkdir(parents=True, exist_ok=True)
     manifest_target.parent.mkdir(parents=True, exist_ok=True)
-    new_assets = assets_parent / f"{assets.name}.v2.3-new"
-    backup_assets = assets_parent / f"{assets.name}.v2.2-backup"
-    new_manifest = manifest_target.with_name(manifest_target.name + ".v2.3-new")
-    backup_manifest = manifest_target.with_name(manifest_target.name + ".v2.2-backup")
+    new_assets = assets_parent / f"{assets.name}.v2.31-new"
+    backup_assets = assets_parent / f"{assets.name}.v2.3-backup"
+    new_manifest = manifest_target.with_name(manifest_target.name + ".v2.31-new")
+    backup_manifest = manifest_target.with_name(manifest_target.name + ".v2.3-backup")
     for path in (new_assets, backup_assets):
         if path.exists():
             shutil.rmtree(path)

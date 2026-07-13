@@ -25,6 +25,7 @@ import com.miearn.app.domain.LearningContentPolicy
 import com.miearn.app.domain.LearningSession
 import com.miearn.app.domain.QuizEngine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -45,6 +46,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val launchEpochDay = MIearnRepository.todayEpochDay()
     private val currentMineMonth = YearMonth.from(LocalDate.ofEpochDay(launchEpochDay))
     private var selectedMineMonth = currentMineMonth
+    private var answerAdvanceJob: Job? = null
 
     val seedState = MutableStateFlow<SeedUiState>(SeedUiState.Loading)
     val selectedTab = MutableStateFlow(MainTab.LEARNING)
@@ -464,14 +466,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun answerStudy(answer: String) {
         val session = learningSession ?: return
         val active = studyState.value as? StudyUiState.Active ?: return
-        if (session.pendingFirstCorrect != null || active.options.isEmpty()) return
+        if (
+            session.pendingFirstCorrect != null ||
+            active.options.isEmpty() ||
+            answerAdvanceJob?.isActive == true
+        ) return
         val firstCorrect = answer == LearningContentPolicy.displayChinese(active.word.chinese)
         container.audio.stop()
         container.answerFeedback.play(if (firstCorrect) AnswerFeedback.CORRECT else AnswerFeedback.WRONG)
         val answered = session.submitAnswer(firstCorrect)
+        learningSession = answered
         val responseMillis = (System.currentTimeMillis() - currentWordShownAtMillis)
             .coerceAtLeast(0)
-        viewModelScope.launch {
+        answerAdvanceJob = viewModelScope.launch {
             if (
                 session.phase == LearningPhase.REVIEW ||
                 session.phase == LearningPhase.CONSOLIDATE
@@ -487,27 +494,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             } else {
                 repository.recordReinforcementAnswer(answered)
             }
-            learningSession = answered
+            if (learningSession !== answered || studyState.value !is StudyUiState.Active) {
+                return@launch
+            }
             renderStudy(autoplay = false, selectedAnswer = answer)
+            val next = StudyAnswerAdvance.afterFeedback(answered)
+            if (learningSession !== answered || studyState.value !is StudyUiState.Active) {
+                return@launch
+            }
+            showNextStudyState(next)
         }
     }
 
     fun continueStudy() {
         val session = learningSession ?: return
         if (session.pendingFirstCorrect == null) return
+        answerAdvanceJob?.cancel()
         viewModelScope.launch {
-            val next = session.continueAfterAnswer()
-            learningSession = next
-            if (next.isComplete) {
-                finishStudy(next)
-            } else {
-                repository.saveSession(
-                    next,
-                    activeSessionEpochDay,
-                    activeSessionCategory,
-                )
-                renderStudy(autoplay = true)
-            }
+            showNextStudyState(session.continueAfterAnswer())
         }
     }
 
@@ -528,6 +532,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun closeStudy() {
+        answerAdvanceJob?.cancel()
         container.audio.stop()
         studyState.value = StudyUiState.Idle
     }
@@ -562,6 +567,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private suspend fun activateSession(saved: SavedLearningSession) {
+        answerAdvanceJob?.cancel()
         activeSessionEpochDay = saved.epochDay
         activeSessionCategory = saved.category
         learningSession = saved.session
@@ -578,7 +584,30 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         )
         if (saved.session.isComplete) {
             finishStudy(saved.session)
+        } else if (saved.session.pendingFirstCorrect != null) {
+            renderStudy(autoplay = false)
+            val answered = saved.session
+            answerAdvanceJob = viewModelScope.launch {
+                val next = StudyAnswerAdvance.afterFeedback(answered)
+                if (learningSession === answered && studyState.value is StudyUiState.Active) {
+                    showNextStudyState(next)
+                }
+            }
         } else {
+            renderStudy(autoplay = true)
+        }
+    }
+
+    private suspend fun showNextStudyState(next: LearningSession) {
+        learningSession = next
+        if (next.isComplete) {
+            finishStudy(next)
+        } else {
+            repository.saveSession(
+                next,
+                activeSessionEpochDay,
+                activeSessionCategory,
+            )
             renderStudy(autoplay = true)
         }
     }

@@ -13,20 +13,34 @@ from openpyxl import load_workbook
 from pypdf import PdfReader
 
 try:
+    from tools.example_generator import apply_examples
+    from tools.migrate_content_v231 import migrate_content
+    from tools.phrase_cleanup import apply_phrase_cleanups
     from tools.term_corrections import apply_correction, load_corrections
 except ModuleNotFoundError:
+    from example_generator import apply_examples
+    from migrate_content_v231 import migrate_content
+    from phrase_cleanup import apply_phrase_cleanups
     from term_corrections import apply_correction, load_corrections
 
 
 CATEGORY_COUNTS = {
     "mechanical": 1227,
     "electrical": 970,
-    "customer_review": 251,
-    "meeting": 58,
+    "customer_review": 246,
+    "meeting": 57,
     "business": 198,
 }
 
+RAW_CATEGORY_COUNTS = {
+    **CATEGORY_COUNTS,
+    "customer_review": 251,
+    "meeting": 58,
+}
+
 TERM_CORRECTIONS_PATH = Path(__file__).resolve().parent / "data" / "term_corrections.json"
+V231_REPAIRS_PATH = Path(__file__).resolve().parent / "data" / "content_v231_repairs.json"
+PHRASE_CLEANUPS_PATH = Path(__file__).resolve().parent / "data" / "phrase_cleanups_v231.json"
 
 CATEGORY_LABELS = {
     "mechanical": "机械专业词汇",
@@ -128,7 +142,12 @@ def normalize_text(value: Any) -> str:
 
 def clean_primary_english(english: str) -> str:
     value = normalize_text(english)
-    first = VARIANT_SPLIT.split(value, maxsplit=1)[0].strip()
+    protected = re.sub(
+        r"(?<![A-Za-z])([A-Z])/([A-Z])(?![A-Za-z])",
+        lambda match: f"{match.group(1)}\uFFF0{match.group(2)}",
+        value,
+    )
+    first = VARIANT_SPLIT.split(protected, maxsplit=1)[0].replace("\uFFF0", "/").strip()
     first = re.sub(r"\s*\([^)]*[A-Z][A-Z0-9& ]*\)\s*$", "", first).strip()
     first = re.sub(r"\s*\([^)]*[\u3400-\u9fff][^)]*\)\s*$", "", first).strip()
     return first or value
@@ -505,7 +524,7 @@ def build_content(source_dir: Path, output_path: Path, report_path: Path) -> lis
         )
 
     counts = Counter(item["category"] for item in records)
-    if dict(counts) != CATEGORY_COUNTS:
+    if dict(counts) != RAW_CATEGORY_COUNTS:
         raise ValueError(f"unexpected category counts: {dict(counts)}")
     if len({item["id"] for item in records}) != len(records):
         raise ValueError("duplicate stable IDs detected")
@@ -546,6 +565,13 @@ def build_content(source_dir: Path, output_path: Path, report_path: Path) -> lis
         "sourceFiles": [workbook_path.name, pdf_path.name],
         "words": records,
     }
+    v231_repairs = json.loads(V231_REPAIRS_PATH.read_text(encoding="utf-8"))
+    payload, migration_audit = migrate_content(payload, v231_repairs)
+    phrase_cleanups = json.loads(PHRASE_CLEANUPS_PATH.read_text(encoding="utf-8"))
+    payload, phrase_cleanup_audit = apply_phrase_cleanups(payload, phrase_cleanups)
+    payload = apply_examples(payload)
+    records = payload["words"]
+    counts = Counter(item["category"] for item in records)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2),
@@ -555,6 +581,8 @@ def build_content(source_dir: Path, output_path: Path, report_path: Path) -> lis
         "total": len(records),
         "counts": dict(counts),
         "uniqueIds": len({item["id"] for item in records}),
+        "v231Migration": migration_audit,
+        "phraseCleanup": phrase_cleanup_audit,
         "reviewedTermCorrections": [
             {
                 "category": correction.category,

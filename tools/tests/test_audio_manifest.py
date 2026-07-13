@@ -21,7 +21,7 @@ class AudioManifestTest(unittest.TestCase):
             ).read_text(encoding="utf-8")
         )
         files = list((PROJECT_ROOT / "app/src/main/assets/audio").glob("*.ogg"))
-        self.assertEqual(2704, len(files))
+        self.assertEqual(2698, len(files))
         expected = {Path(word["audioAsset"]).name for word in data["words"]}
         self.assertEqual(expected, {path.name for path in files})
         self.assertTrue(all(path.stat().st_size > 256 for path in files))
@@ -38,7 +38,7 @@ class AudioManifestTest(unittest.TestCase):
         )
         self.assertTrue(manifest_path.is_file())
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        self.assertEqual(2, manifest["schemaVersion"])
+        self.assertEqual(3, manifest["schemaVersion"])
         self.assertEqual("en_US-lessac-high", manifest["profile"]["name"])
         self.assertEqual(40, manifest["profile"]["bitRateKbps"])
         self.assertEqual(48_000, manifest["profile"]["encodedSampleRate"])
@@ -49,6 +49,8 @@ class AudioManifestTest(unittest.TestCase):
             entry = entries[word["id"]]
             self.assertEqual(word["id"], entry["id"])
             self.assertEqual(word["audioAsset"], entry["path"])
+            self.assertEqual(word["phonetic"], entry["expectedIpa"])
+            self.assertIn(entry["sourceType"], {"piper", "human", "mixed"})
             self.assertEqual(
                 segment_plan_sha256(
                     raw_variants(word["english"], word.get("kind", "TERM"))
@@ -61,9 +63,13 @@ class AudioManifestTest(unittest.TestCase):
             segments = entry.get("segments", [])
             if len(variants) > 1:
                 self.assertEqual(variants, [segment["text"] for segment in segments])
+                self.assertTrue(
+                    all(segment.get("expectedTranscript") for segment in segments)
+                )
                 self.assertEqual(500, entry["pauseBetweenSegmentsMs"])
             else:
                 self.assertEqual([], segments)
+                self.assertTrue(entry.get("expectedTranscript"))
                 self.assertNotIn("pauseBetweenSegmentsMs", entry)
 
 
@@ -81,7 +87,7 @@ class AudioManifestTest(unittest.TestCase):
             and len(legacy_term_variants(word["english"])) > 1
         }
 
-        self.assertEqual(1413, len(affected))
+        self.assertEqual(1412, len(affected))
         self.assertIn("mec_0001_0bc593b6bd35f925", affected)
         self.assertIn("ele_0001_bbb7b92b27e75187", affected)
 

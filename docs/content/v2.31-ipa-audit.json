@@ -1,0 +1,2039 @@
+{
+  "contentVersion": "2026.07.13-v2.31",
+  "entryCount": 2698,
+  "variantCount": 3323,
+  "sourceCounts": {
+    "espeak-fallback": 71,
+    "ipa-dict": 2840,
+    "letter-name": 44,
+    "mixed": 313,
+    "reviewed-override": 55
+  },
+  "fallbackEntryCount": 256,
+  "fallbackEntries": [
+    {
+      "id": "mec_0003_1a85b03518b7c358",
+      "english": "Clamp;clamper;push/pusher;pressure foot",
+      "tokens": [
+        "clamper"
+      ]
+    },
+    {
+      "id": "mec_0007_dde04066619e1675",
+      "english": "shim;grindable shim",
+      "tokens": [
+        "grindable"
+      ]
+    },
+    {
+      "id": "mec_0014_c4159d2bcb9fc2a8",
+      "english": "capacitive proximity switch",
+      "tokens": [
+        "capacitive"
+      ]
+    },
+    {
+      "id": "mec_0034_569241f4a0f078fa",
+      "english": "GD&T-Geometric Dimensioning and Tolerancing",
+      "tokens": [
+        "Dimensioning",
+        "Tolerancing"
+      ]
+    },
+    {
+      "id": "mec_0040_be515370d5b08db0",
+      "english": "bush;bushing",
+      "tokens": [
+        "bushing"
+      ]
+    },
+    {
+      "id": "mec_0041_446c4b39a0970686",
+      "english": "oil-free bushing",
+      "tokens": [
+        "bushing"
+      ]
+    },
+    {
+      "id": "mec_0042_8a2eb9acc34b0d84",
+      "english": "steel bushing",
+      "tokens": [
+        "bushing"
+      ]
+    },
+    {
+      "id": "mec_0077_5bba33a194d9b415",
+      "english": "Poka yoke;poka-yoke;Error-proofing mechanism",
+      "tokens": [
+        "Poka",
+        "poka"
+      ]
+    },
+    {
+      "id": "mec_0093_f89fe7e4980a9c80",
+      "english": "chamfer",
+      "tokens": [
+        "chamfer"
+      ]
+    },
+    {
+      "id": "mec_0099_44641a7fd74eecb9",
+      "english": "spring tensioner",
+      "tokens": [
+        "tensioner"
+      ]
+    },
+    {
+      "id": "mec_0102_943dae238bd82128",
+      "english": "translational",
+      "tokens": [
+        "translational"
+      ]
+    },
+    {
+      "id": "mec_0113_8c3ee3a0bd1464a3",
+      "english": "2T weld;3T weld",
+      "tokens": [
+        "2",
+        "3"
+      ]
+    },
+    {
+      "id": "mec_0126_3ade3438cacddcc8",
+      "english": "cantilever",
+      "tokens": [
+        "cantilever"
+      ]
+    },
+    {
+      "id": "mec_0135_8ab6d3ad972ee3f2",
+      "english": "Preload",
+      "tokens": [
+        "Preload"
+      ]
+    },
+    {
+      "id": "mec_0150_c79f9e6ea7bc9e58",
+      "english": "unstacking",
+      "tokens": [
+        "unstacking"
+      ]
+    },
+    {
+      "id": "mec_0167_4f454434b8b0de4f",
+      "english": "CP4、CP3",
+      "tokens": [
+        "3",
+        "4"
+      ]
+    },
+    {
+      "id": "mec_0201_cba57feacf100fff",
+      "english": "Clamp only;clamper",
+      "tokens": [
+        "clamper"
+      ]
+    },
+    {
+      "id": "mec_0207_b18a452d57278de1",
+      "english": "rack;bin;dunnage",
+      "tokens": [
+        "dunnage"
+      ]
+    },
+    {
+      "id": "mec_0212_de71dea3570d8838",
+      "english": "gusset support",
+      "tokens": [
+        "gusset"
+      ]
+    },
+    {
+      "id": "mec_0222_c6b3c01c6f8b0935",
+      "english": "belt tensioner",
+      "tokens": [
+        "tensioner"
+      ]
+    },
+    {
+      "id": "mec_0226_0e0ccb1c592356dc",
+      "english": "anodized surface",
+      "tokens": [
+        "anodized"
+      ]
+    },
+    {
+      "id": "mec_0256_8fc98e1e41afde2e",
+      "english": "untrimmed part",
+      "tokens": [
+        "untrimmed"
+      ]
+    },
+    {
+      "id": "mec_0261_5be7f6d4149f7955",
+      "english": "accessibility;reachability",
+      "tokens": [
+        "reachability"
+      ]
+    },
+    {
+      "id": "mec_0263_9a7e647fbc5e0b6c",
+      "english": "Clevis",
+      "tokens": [
+        "Clevis"
+      ]
+    },
+    {
+      "id": "mec_0264_cfa4576fa7e587a1",
+      "english": "clevis pin",
+      "tokens": [
+        "clevis"
+      ]
+    },
+    {
+      "id": "mec_0303_7384878c37f8017b",
+      "english": "cable tray;trunking;bridge",
+      "tokens": [
+        "trunking"
+      ]
+    },
+    {
+      "id": "mec_0305_598a6ea817484772",
+      "english": "postdrop",
+      "tokens": [
+        "postdrop"
+      ]
+    },
+    {
+      "id": "mec_0307_6593ba41a2ca8c52",
+      "english": "postpick",
+      "tokens": [
+        "postpick"
+      ]
+    },
+    {
+      "id": "mec_0316_ec6834bf9aa39da5",
+      "english": "ISO;isometric view",
+      "tokens": [
+        "isometric"
+      ]
+    },
+    {
+      "id": "mec_0324_c6e4a5ba91ada587",
+      "english": "configuration;config",
+      "tokens": [
+        "config"
+      ]
+    },
+    {
+      "id": "mec_0358_b07989496bf1809b",
+      "english": "anti-flutter mastic adhesive",
+      "tokens": [
+        "mastic"
+      ]
+    },
+    {
+      "id": "mec_0367_80ca8a1379d5c0f0",
+      "english": "robot datasheet",
+      "tokens": [
+        "datasheet"
+      ]
+    },
+    {
+      "id": "mec_0386_53bd50438c672d39",
+      "english": "wireframe mode",
+      "tokens": [
+        "wireframe"
+      ]
+    },
+    {
+      "id": "mec_0401_052140ab2f4c5f31",
+      "english": "UF-Uframe;base frame",
+      "tokens": [
+        "Uframe"
+      ]
+    },
+    {
+      "id": "mec_0402_0aa30544884d299d",
+      "english": "UT-Utool",
+      "tokens": [
+        "Utool"
+      ]
+    },
+    {
+      "id": "mec_0414_ba7652f02ff9f35f",
+      "english": "Library(sys root)",
+      "tokens": [
+        "sys"
+      ]
+    },
+    {
+      "id": "mec_0430_2dda9188c6278c5e",
+      "english": "kinematic editor",
+      "tokens": [
+        "kinematic"
+      ]
+    },
+    {
+      "id": "mec_0449_38f76b4d387238d8",
+      "english": "hand riveter",
+      "tokens": [
+        "riveter"
+      ]
+    },
+    {
+      "id": "mec_0503_388056026864c356",
+      "english": "nosepiece",
+      "tokens": [
+        "nosepiece"
+      ]
+    },
+    {
+      "id": "mec_0518_dd65da3b1f462ce5",
+      "english": "laser brazing;laser braze",
+      "tokens": [
+        "braze",
+        "brazing"
+      ]
+    },
+    {
+      "id": "mec_0536_f01b2c9530148a66",
+      "english": "shutoff valve",
+      "tokens": [
+        "shutoff"
+      ]
+    },
+    {
+      "id": "mec_0559_9153043b95420629",
+      "english": "solenoid valve;magnetic valve",
+      "tokens": [
+        "solenoid"
+      ]
+    },
+    {
+      "id": "mec_0592_085906ccfdd24594",
+      "english": "Centerline",
+      "tokens": [
+        "Centerline"
+      ]
+    },
+    {
+      "id": "mec_0593_340502e3af79a6db",
+      "english": "INOVANCE",
+      "tokens": [
+        "INOVANCE"
+      ]
+    },
+    {
+      "id": "mec_0598_433a2fa0c4fbbd47",
+      "english": "Henrob",
+      "tokens": [
+        "Henrob"
+      ]
+    },
+    {
+      "id": "mec_0617_0c9fb850adef86d7",
+      "english": "splined shaft",
+      "tokens": [
+        "splined"
+      ]
+    },
+    {
+      "id": "mec_0628_fbf686795326f673",
+      "english": "FRL(filter,relief valve/regulator;lubricator)",
+      "tokens": [
+        "lubricator"
+      ]
+    },
+    {
+      "id": "mec_0639_59db5e213198ec97",
+      "english": "Isvision",
+      "tokens": [
+        "Isvision"
+      ]
+    },
+    {
+      "id": "mec_0640_e380fd70a90b3667",
+      "english": "laser traceability",
+      "tokens": [
+        "traceability"
+      ]
+    },
+    {
+      "id": "mec_0666_60df67641330a338",
+      "english": "tunnage",
+      "tokens": [
+        "tunnage"
+      ]
+    },
+    {
+      "id": "mec_0675_bac008af099af9d0",
+      "english": "fume extractor",
+      "tokens": [
+        "extractor"
+      ]
+    },
+    {
+      "id": "mec_0699_77af8e616c7c9ea7",
+      "english": "Gigafactory",
+      "tokens": [
+        "Gigafactory"
+      ]
+    },
+    {
+      "id": "mec_0719_8d5a10ef8540b598",
+      "english": "countersink;counter head",
+      "tokens": [
+        "countersink"
+      ]
+    },
+    {
+      "id": "mec_0720_ab12d8bb7754f033",
+      "english": "counterbore",
+      "tokens": [
+        "counterbore"
+      ]
+    },
+    {
+      "id": "mec_0726_6a9f87cdbb2664b6",
+      "english": "speed reducer",
+      "tokens": [
+        "reducer"
+      ]
+    },
+    {
+      "id": "mec_0727_fda3f9e8a65ed21b",
+      "english": "encoder",
+      "tokens": [
+        "encoder"
+      ]
+    },
+    {
+      "id": "mec_0745_ae115125f4dd1065",
+      "english": "plexiglass;plexy glass",
+      "tokens": [
+        "plexy"
+      ]
+    },
+    {
+      "id": "mec_0752_cd11a3770a09d0cb",
+      "english": "ductwork",
+      "tokens": [
+        "ductwork"
+      ]
+    },
+    {
+      "id": "mec_0753_6c120b2f7987b85d",
+      "english": "R1T,R1S",
+      "tokens": [
+        "1"
+      ]
+    },
+    {
+      "id": "mec_0757_4cf9cd3a3f3ed6bc",
+      "english": "pulse encoder",
+      "tokens": [
+        "encoder"
+      ]
+    },
+    {
+      "id": "mec_0761_d3b0659c531da6d1",
+      "english": "passivation",
+      "tokens": [
+        "passivation"
+      ]
+    },
+    {
+      "id": "mec_0767_a106666b24f1c458",
+      "english": "RFF=Rivian front floor;RFS=Rivian front structure",
+      "tokens": [
+        "Rivian"
+      ]
+    },
+    {
+      "id": "mec_0773_5253a39774b57617",
+      "english": "Rivian Add In",
+      "tokens": [
+        "Rivian"
+      ]
+    },
+    {
+      "id": "mec_0774_0af123b3052ff018",
+      "english": "point cloud file;3D scanning data",
+      "tokens": [
+        "3"
+      ]
+    },
+    {
+      "id": "mec_0777_55a630a06ebe4eaa",
+      "english": "locknut",
+      "tokens": [
+        "locknut"
+      ]
+    },
+    {
+      "id": "mec_0783_d9d31597e5b9a9c4",
+      "english": "schedule 80=SCH80",
+      "tokens": [
+        "80"
+      ]
+    },
+    {
+      "id": "mec_0787_1cdeb04d9115dd00",
+      "english": "checkbox",
+      "tokens": [
+        "checkbox"
+      ]
+    },
+    {
+      "id": "mec_0791_faf9bf5f771bab72",
+      "english": "lift gate;liftgate",
+      "tokens": [
+        "liftgate"
+      ]
+    },
+    {
+      "id": "mec_0810_b883e938ce09739b",
+      "english": "adhesive 1k;adhesive 2k",
+      "tokens": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "mec_0823_7456d971966cb67a",
+      "english": "direct sb. to sth....",
+      "tokens": [
+        "sb",
+        "sth"
+      ]
+    },
+    {
+      "id": "mec_0832_2016786cfd3c09b9",
+      "english": "jackscrew",
+      "tokens": [
+        "jackscrew"
+      ]
+    },
+    {
+      "id": "mec_0860_e468e4c9927e90c9",
+      "english": "MISP-MINO I-IoT SERVICE PLATFORM",
+      "tokens": [
+        "IoT"
+      ]
+    },
+    {
+      "id": "mec_0862_91a7575a67f8d940",
+      "english": "Onboarding process",
+      "tokens": [
+        "Onboarding"
+      ]
+    },
+    {
+      "id": "mec_0870_6ffe7ffcf064397a",
+      "english": "herringbone ladder",
+      "tokens": [
+        "herringbone"
+      ]
+    },
+    {
+      "id": "mec_0889_8e63e2848f2d9fa1",
+      "english": "buyoff",
+      "tokens": [
+        "buyoff"
+      ]
+    },
+    {
+      "id": "mec_0891_32c9cbaca9da8cb6",
+      "english": "screenshot;printscreen",
+      "tokens": [
+        "printscreen"
+      ]
+    },
+    {
+      "id": "mec_0924_9a64124b8d72a514",
+      "english": "fantastical robotics island",
+      "tokens": [
+        "fantastical"
+      ]
+    },
+    {
+      "id": "mec_0930_4aab9c8c48014c33",
+      "english": "Respot Fixture",
+      "tokens": [
+        "Respot"
+      ]
+    },
+    {
+      "id": "mec_0984_c9c9730e4d663134",
+      "english": "Respot Station Roller Bed_Pallet Type",
+      "tokens": [
+        "Respot"
+      ]
+    },
+    {
+      "id": "mec_0991_ea95241b52d4746c",
+      "english": "Rotative Roller Bed",
+      "tokens": [
+        "Rotative"
+      ]
+    },
+    {
+      "id": "mec_0992_c2b9efad545c1358",
+      "english": "Latitude Moving And Rotative Roller Bed",
+      "tokens": [
+        "Rotative"
+      ]
+    },
+    {
+      "id": "mec_1020_1e23d40acfcd96dd",
+      "english": "NCFL-424_NC Locator-mechanical part",
+      "tokens": [
+        "424"
+      ]
+    },
+    {
+      "id": "mec_1021_58baf82b6484ec87",
+      "english": "NCFL-434_NC Locator-mechanical part",
+      "tokens": [
+        "434"
+      ]
+    },
+    {
+      "id": "mec_1022_d926ac95b388c04d",
+      "english": "2NC_NC Locator-Control Cabinet",
+      "tokens": [
+        "2"
+      ]
+    },
+    {
+      "id": "mec_1023_0fb6ec5288af9c99",
+      "english": "2NC_NC Locator-Software System",
+      "tokens": [
+        "2"
+      ]
+    },
+    {
+      "id": "mec_1024_ce3607ed9ead48de",
+      "english": "4NC_NC Locator-Control Cabinet",
+      "tokens": [
+        "4"
+      ]
+    },
+    {
+      "id": "mec_1025_22a2a4de48912d7e",
+      "english": "4NC_NC Locator-Software System",
+      "tokens": [
+        "4"
+      ]
+    },
+    {
+      "id": "mec_1026_70465ad98d085d13",
+      "english": "6NC_NC Locator-Control Cabinet",
+      "tokens": [
+        "6"
+      ]
+    },
+    {
+      "id": "mec_1027_3808303e85c4519e",
+      "english": "6NC_NC Locator-Software System",
+      "tokens": [
+        "6"
+      ]
+    },
+    {
+      "id": "mec_1028_d3973159978b6614",
+      "english": "8NC_NC Locator-Control Cabinet",
+      "tokens": [
+        "8"
+      ]
+    },
+    {
+      "id": "mec_1029_2fd6867909cdbbeb",
+      "english": "8NC_NC Locator-Software System",
+      "tokens": [
+        "8"
+      ]
+    },
+    {
+      "id": "mec_1054_b16e4a64179b256b",
+      "english": "Trunnion",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "mec_1055_59a82ebe852e1fba",
+      "english": "Servo Trunnion-Two Face",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "mec_1056_847b7d2f848b8e6e",
+      "english": "Servo Trunnion-Three Face",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "mec_1057_8c45f8b46d1fa9f8",
+      "english": "Servo Trunnion-Four Face",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "mec_1058_3cd94a638d860bd2",
+      "english": "Pneumatic Trunnion",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "mec_1059_f22dcf2b251a4dda",
+      "english": "Manual Trunnion",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "mec_1060_7987fb966bb24941",
+      "english": "Positioner;position changer",
+      "tokens": [
+        "Positioner"
+      ]
+    },
+    {
+      "id": "mec_1081_91be3dddadaa2971",
+      "english": "Robot Riser__0-1000mm",
+      "tokens": [
+        "0"
+      ]
+    },
+    {
+      "id": "mec_1082_93dd7dff3532d4c6",
+      "english": "Robot Riser_1100-2000mm",
+      "tokens": [
+        "1100"
+      ]
+    },
+    {
+      "id": "mec_1083_be4f52263a748a64",
+      "english": "Robot Riser_2100-3000mm",
+      "tokens": [
+        "2100"
+      ]
+    },
+    {
+      "id": "mec_1085_02d8adf447da84d5",
+      "english": "Seven Axis Riser_0-500mm",
+      "tokens": [
+        "0"
+      ]
+    },
+    {
+      "id": "mec_1091_5d29af28fc26466c",
+      "english": "Stationary Gluing Gun Stand",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1092_3fc0372862ec77c4",
+      "english": "Maintenance Platform of Stationary Gluing Stand (Lifting)",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1093_be0c248b090fc57c",
+      "english": "Maintenance Platform of Stationary Gluing Stand (Fixed)",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1100_e82d5b21dd39ad3d",
+      "english": "Anti-Collision Fence;crashproof fence",
+      "tokens": [
+        "crashproof"
+      ]
+    },
+    {
+      "id": "mec_1119_3b8508bd2d3ab61f",
+      "english": "Respot Robot",
+      "tokens": [
+        "Respot"
+      ]
+    },
+    {
+      "id": "mec_1122_7d7df5543e185017",
+      "english": "Handling+Stationary Gluing Robot",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1123_9f518860251dd454",
+      "english": "Handling+Stationary Gluing+Welding Robot",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1126_57c9350aaf841d76",
+      "english": "Gluing Robot",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1138_0e5200f6c938b3f4",
+      "english": "Dress Package_Gluing",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1146_aa27e0da14857f80",
+      "english": "Electrogas Quick Insert",
+      "tokens": [
+        "Electrogas"
+      ]
+    },
+    {
+      "id": "mec_1161_1004f612f6b6d796",
+      "english": "Automatic Gluing Equipment with Single Pump and Single Gun",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1162_5bf3882bb7108f01",
+      "english": "Automatic Gluing Equipment with Single Pump and Double Guns",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1163_fca46a67d6d6db99",
+      "english": "Automatic Gluing Equipment with Double Pumps and Single Gun",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1164_fa7edf48d43869b4",
+      "english": "Automatic Gluing Equipment with Double Pumps and Double Guns",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1165_0993190b62b5325f",
+      "english": "Manual Gluing Equipment with Single Pump and Single Gun",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1166_bba9ee362ae40a16",
+      "english": "Manual Gluing Equipment with Single Pump and Double Guns",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1167_f8dd8767f30a1865",
+      "english": "Manual Gluing Equipment with Double Pumps and Single Gun",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1168_11b4517cf3b1f288",
+      "english": "Manual Gluing Equipment with Double Pumps and Double Guns",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1204_9c03ae198c761886",
+      "english": "On-Line Gluing Inspection_2D",
+      "tokens": [
+        "2",
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1205_9a621f96844c2e64",
+      "english": "On-Line Gluing Inspection_3D",
+      "tokens": [
+        "3",
+        "Gluing"
+      ]
+    },
+    {
+      "id": "mec_1206_fc379053d2fdd789",
+      "english": "Part Picking Guiding Vision_2D",
+      "tokens": [
+        "2"
+      ]
+    },
+    {
+      "id": "mec_1207_397b4913af308107",
+      "english": "Part Picking Guiding Vision_3D",
+      "tokens": [
+        "3"
+      ]
+    },
+    {
+      "id": "mec_1221_f880dbe95bfb18aa",
+      "english": "Flextrack",
+      "tokens": [
+        "Flextrack"
+      ]
+    },
+    {
+      "id": "ele_0013_8e210c2b061bcb46",
+      "english": "Solenoid Valve",
+      "tokens": [
+        "Solenoid"
+      ]
+    },
+    {
+      "id": "ele_0032_5fbe152b7c8695b9",
+      "english": "Encoder",
+      "tokens": [
+        "Encoder"
+      ]
+    },
+    {
+      "id": "ele_0036_b2200ebd29552b9d",
+      "english": "Inverter",
+      "tokens": [
+        "Inverter"
+      ]
+    },
+    {
+      "id": "ele_0041_193977b90025d5f8",
+      "english": "Isolator",
+      "tokens": [
+        "Isolator"
+      ]
+    },
+    {
+      "id": "ele_0042_ad6ea579eb8014c2",
+      "english": "Contactor",
+      "tokens": [
+        "Contactor"
+      ]
+    },
+    {
+      "id": "ele_0078_e11d1674f90b59b0",
+      "english": "Selector Switch",
+      "tokens": [
+        "Selector"
+      ]
+    },
+    {
+      "id": "ele_0102_3451835e65b0b6c5",
+      "english": "Lighting Contactor",
+      "tokens": [
+        "Contactor"
+      ]
+    },
+    {
+      "id": "ele_0129_8a1a5f0b5a720a6f",
+      "english": "barcode",
+      "tokens": [
+        "barcode"
+      ]
+    },
+    {
+      "id": "ele_0139_d62480c57f027563",
+      "english": "Pre-buyoff",
+      "tokens": [
+        "buyoff"
+      ]
+    },
+    {
+      "id": "ele_0154_6571cbae74df77c1",
+      "english": "the maintainability of the control part",
+      "tokens": [
+        "maintainability"
+      ]
+    },
+    {
+      "id": "ele_0155_e3a7c994bc2c8137",
+      "english": "Management of non-compliances or exceptions",
+      "tokens": [
+        "compliances"
+      ]
+    },
+    {
+      "id": "ele_0171_ab35b2363265a3fe",
+      "english": "traceability",
+      "tokens": [
+        "traceability"
+      ]
+    },
+    {
+      "id": "ele_0198_b60995b1242c09af",
+      "english": "configuration;config",
+      "tokens": [
+        "config"
+      ]
+    },
+    {
+      "id": "ele_0200_7a2517e2be714951",
+      "english": "Multicore cable",
+      "tokens": [
+        "Multicore"
+      ]
+    },
+    {
+      "id": "ele_0205_eaaa525a27beb93c",
+      "english": "cybersecurity requirements",
+      "tokens": [
+        "cybersecurity"
+      ]
+    },
+    {
+      "id": "ele_0212_02e414b985829746",
+      "english": "Decrypt",
+      "tokens": [
+        "Decrypt"
+      ]
+    },
+    {
+      "id": "ele_0215_5d9d07d9eeab14b4",
+      "english": "non-compliances",
+      "tokens": [
+        "compliances"
+      ]
+    },
+    {
+      "id": "ele_0219_90a2d89068590907",
+      "english": "cable tray;trunking;bridge",
+      "tokens": [
+        "trunking"
+      ]
+    },
+    {
+      "id": "ele_0221_f1e99868d89bf0d8",
+      "english": "postdrop",
+      "tokens": [
+        "postdrop"
+      ]
+    },
+    {
+      "id": "ele_0223_a9d9cea30edd3d1d",
+      "english": "postpick",
+      "tokens": [
+        "postpick"
+      ]
+    },
+    {
+      "id": "ele_0250_3a2f7c184e2c9d8c",
+      "english": "UF-Uframe;base frame",
+      "tokens": [
+        "Uframe"
+      ]
+    },
+    {
+      "id": "ele_0251_1c5dee091eb24b51",
+      "english": "UT-Utool",
+      "tokens": [
+        "Utool"
+      ]
+    },
+    {
+      "id": "ele_0314_dcf3d8613f1349a9",
+      "english": "nosepiece",
+      "tokens": [
+        "nosepiece"
+      ]
+    },
+    {
+      "id": "ele_0329_883a44179b12ffaa",
+      "english": "laser brazing;laser braze",
+      "tokens": [
+        "braze",
+        "brazing"
+      ]
+    },
+    {
+      "id": "ele_0345_2840624f64651692",
+      "english": "Centerline",
+      "tokens": [
+        "Centerline"
+      ]
+    },
+    {
+      "id": "ele_0346_75c68f90939f8afa",
+      "english": "INOVANCE",
+      "tokens": [
+        "INOVANCE"
+      ]
+    },
+    {
+      "id": "ele_0351_bfcd2700d4c9946d",
+      "english": "Henrob",
+      "tokens": [
+        "Henrob"
+      ]
+    },
+    {
+      "id": "ele_0370_3a6a5141b222563e",
+      "english": "splined shaft",
+      "tokens": [
+        "splined"
+      ]
+    },
+    {
+      "id": "ele_0379_a631a9297c36d38b",
+      "english": "FRL(filter,relief valve/regulator;lubricator)",
+      "tokens": [
+        "lubricator"
+      ]
+    },
+    {
+      "id": "ele_0390_a137086dc29be7fc",
+      "english": "Isvision",
+      "tokens": [
+        "Isvision"
+      ]
+    },
+    {
+      "id": "ele_0391_b3cd38a47d5f0025",
+      "english": "laser traceability",
+      "tokens": [
+        "traceability"
+      ]
+    },
+    {
+      "id": "ele_0417_1654fb8bb8af1d90",
+      "english": "tunnage",
+      "tokens": [
+        "tunnage"
+      ]
+    },
+    {
+      "id": "ele_0426_ac78e49eacb85b42",
+      "english": "fume extractor",
+      "tokens": [
+        "extractor"
+      ]
+    },
+    {
+      "id": "ele_0449_ca1a757fbb1c956e",
+      "english": "Gigafactory",
+      "tokens": [
+        "Gigafactory"
+      ]
+    },
+    {
+      "id": "ele_0469_46e9be78c1f26d62",
+      "english": "countersink;counter head",
+      "tokens": [
+        "countersink"
+      ]
+    },
+    {
+      "id": "ele_0470_ced933df10b1bc4d",
+      "english": "counterbore",
+      "tokens": [
+        "counterbore"
+      ]
+    },
+    {
+      "id": "ele_0476_77918bead969b791",
+      "english": "speed reducer",
+      "tokens": [
+        "reducer"
+      ]
+    },
+    {
+      "id": "ele_0477_d3b5dd0e9e3c840c",
+      "english": "encoder",
+      "tokens": [
+        "encoder"
+      ]
+    },
+    {
+      "id": "ele_0495_d5f91c7405ce027d",
+      "english": "plexiglass;plexy glass",
+      "tokens": [
+        "plexy"
+      ]
+    },
+    {
+      "id": "ele_0502_c069e3612858dada",
+      "english": "ductwork",
+      "tokens": [
+        "ductwork"
+      ]
+    },
+    {
+      "id": "ele_0503_65cdd7a9f94bfacf",
+      "english": "R1T,R1S",
+      "tokens": [
+        "1"
+      ]
+    },
+    {
+      "id": "ele_0507_d780763a0dd44471",
+      "english": "pulse encoder",
+      "tokens": [
+        "encoder"
+      ]
+    },
+    {
+      "id": "ele_0511_67149e4053b13201",
+      "english": "passivation",
+      "tokens": [
+        "passivation"
+      ]
+    },
+    {
+      "id": "ele_0517_25356f49cc0a603b",
+      "english": "RFF=Rivian front floor;RFS=Rivian front structure",
+      "tokens": [
+        "Rivian"
+      ]
+    },
+    {
+      "id": "ele_0523_2ed0b902c5c74ca8",
+      "english": "Rivian Add In",
+      "tokens": [
+        "Rivian"
+      ]
+    },
+    {
+      "id": "ele_0524_89727ea6546c00bf",
+      "english": "point cloud file;3D scanning data",
+      "tokens": [
+        "3"
+      ]
+    },
+    {
+      "id": "ele_0527_cddc767b0476a088",
+      "english": "locknut",
+      "tokens": [
+        "locknut"
+      ]
+    },
+    {
+      "id": "ele_0533_76dfa7df90bda3e4",
+      "english": "schedule 80=SCH80",
+      "tokens": [
+        "80"
+      ]
+    },
+    {
+      "id": "ele_0537_ee540418fe389ad2",
+      "english": "checkbox",
+      "tokens": [
+        "checkbox"
+      ]
+    },
+    {
+      "id": "ele_0541_616d8fc2d47218b6",
+      "english": "lift gate;liftgate",
+      "tokens": [
+        "liftgate"
+      ]
+    },
+    {
+      "id": "ele_0560_36c8d01b23b87e94",
+      "english": "adhesive 1k;adhesive 2k",
+      "tokens": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "ele_0573_f30ab6e092a22051",
+      "english": "direct sb. to sth....",
+      "tokens": [
+        "sb",
+        "sth"
+      ]
+    },
+    {
+      "id": "ele_0582_ec17dce38c3b3abc",
+      "english": "jackscrew",
+      "tokens": [
+        "jackscrew"
+      ]
+    },
+    {
+      "id": "ele_0610_4240c617552298e7",
+      "english": "MISP-MINO I-IoT SERVICE PLATFORM",
+      "tokens": [
+        "IoT"
+      ]
+    },
+    {
+      "id": "ele_0612_a5acd43b0356efbc",
+      "english": "Onboarding process",
+      "tokens": [
+        "Onboarding"
+      ]
+    },
+    {
+      "id": "ele_0620_771b6d2bf9e194c9",
+      "english": "herringbone ladder",
+      "tokens": [
+        "herringbone"
+      ]
+    },
+    {
+      "id": "ele_0638_121de483749d4c78",
+      "english": "buyoff",
+      "tokens": [
+        "buyoff"
+      ]
+    },
+    {
+      "id": "ele_0640_6d3026f5b6965c3a",
+      "english": "screenshot;printscreen",
+      "tokens": [
+        "printscreen"
+      ]
+    },
+    {
+      "id": "ele_0673_25b65ceb1b7772ca",
+      "english": "fantastical robotics island",
+      "tokens": [
+        "fantastical"
+      ]
+    },
+    {
+      "id": "ele_0679_435ca4a6d1d8de54",
+      "english": "Respot Fixture",
+      "tokens": [
+        "Respot"
+      ]
+    },
+    {
+      "id": "ele_0730_3f3585e076a7dba5",
+      "english": "Respot Station Roller Bed_Pallet Type",
+      "tokens": [
+        "Respot"
+      ]
+    },
+    {
+      "id": "ele_0737_a39f3ed25527480f",
+      "english": "Rotative Roller Bed",
+      "tokens": [
+        "Rotative"
+      ]
+    },
+    {
+      "id": "ele_0738_229758368bb22266",
+      "english": "Latitude Moving And Rotative Roller Bed",
+      "tokens": [
+        "Rotative"
+      ]
+    },
+    {
+      "id": "ele_0765_1dd73c3457e519b2",
+      "english": "NCFL-424_NC Locator-mechanical part",
+      "tokens": [
+        "424"
+      ]
+    },
+    {
+      "id": "ele_0766_dda1ab9699461ad3",
+      "english": "NCFL-434_NC Locator-mechanical part",
+      "tokens": [
+        "434"
+      ]
+    },
+    {
+      "id": "ele_0767_c0c6bd22c2a4e73e",
+      "english": "2NC_NC Locator-Control Cabinet",
+      "tokens": [
+        "2"
+      ]
+    },
+    {
+      "id": "ele_0768_158c3e0e9015a86a",
+      "english": "2NC_NC Locator-Software System",
+      "tokens": [
+        "2"
+      ]
+    },
+    {
+      "id": "ele_0769_792708bce3f887eb",
+      "english": "4NC_NC Locator-Control Cabinet",
+      "tokens": [
+        "4"
+      ]
+    },
+    {
+      "id": "ele_0770_890333af1225006f",
+      "english": "4NC_NC Locator-Software System",
+      "tokens": [
+        "4"
+      ]
+    },
+    {
+      "id": "ele_0771_0ac011cc93a8cf6f",
+      "english": "6NC_NC Locator-Control Cabinet",
+      "tokens": [
+        "6"
+      ]
+    },
+    {
+      "id": "ele_0772_754b788fe74f3a94",
+      "english": "6NC_NC Locator-Software System",
+      "tokens": [
+        "6"
+      ]
+    },
+    {
+      "id": "ele_0773_23abe94b000b22ff",
+      "english": "8NC_NC Locator-Control Cabinet",
+      "tokens": [
+        "8"
+      ]
+    },
+    {
+      "id": "ele_0774_73e40235b8e027fc",
+      "english": "8NC_NC Locator-Software System",
+      "tokens": [
+        "8"
+      ]
+    },
+    {
+      "id": "ele_0798_7a6ae783523f3e2f",
+      "english": "Trunnion",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "ele_0799_71b3874cf2b8b324",
+      "english": "Servo Trunnion-Two Face",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "ele_0800_adaa99ac0a303585",
+      "english": "Servo Trunnion-Three Face",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "ele_0801_90e09d427323a3bf",
+      "english": "Servo Trunnion-Four Face",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "ele_0802_a8a96b19fc51901e",
+      "english": "Pneumatic Trunnion",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "ele_0803_490a64e20299c47b",
+      "english": "Manual Trunnion",
+      "tokens": [
+        "Trunnion"
+      ]
+    },
+    {
+      "id": "ele_0804_5e4fb46d98b56c13",
+      "english": "Positioner;position changer",
+      "tokens": [
+        "Positioner"
+      ]
+    },
+    {
+      "id": "ele_0825_1e947ac01f368299",
+      "english": "Robot Riser__0-1000mm",
+      "tokens": [
+        "0"
+      ]
+    },
+    {
+      "id": "ele_0826_d5ae31d25ca02493",
+      "english": "Robot Riser_1100-2000mm",
+      "tokens": [
+        "1100"
+      ]
+    },
+    {
+      "id": "ele_0827_ef9b714a6607adb3",
+      "english": "Robot Riser_2100-3000mm",
+      "tokens": [
+        "2100"
+      ]
+    },
+    {
+      "id": "ele_0829_ed8de4a1f9869c34",
+      "english": "Seven Axis Riser_0-500mm",
+      "tokens": [
+        "0"
+      ]
+    },
+    {
+      "id": "ele_0835_37a6c1e8ddb07f1c",
+      "english": "Stationary Gluing Gun Stand",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0836_01d130bbd13ccfa6",
+      "english": "Maintenance Platform of Stationary Gluing Stand (Lifting)",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0837_e34bafeb2f6b0e41",
+      "english": "Maintenance Platform of Stationary Gluing Stand (Fixed)",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0844_e8778e36336e31f4",
+      "english": "Anti-Collision Fence;crashproof fence",
+      "tokens": [
+        "crashproof"
+      ]
+    },
+    {
+      "id": "ele_0863_1b7d7cf4ae20c14c",
+      "english": "Respot Robot",
+      "tokens": [
+        "Respot"
+      ]
+    },
+    {
+      "id": "ele_0866_6c70609e33a1a2f7",
+      "english": "Handling+Stationary Gluing Robot",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0867_a1b3a8f3034da477",
+      "english": "Handling+Stationary Gluing+Welding Robot",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0870_223ca11e2384e75d",
+      "english": "Gluing Robot",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0882_7005151a25ec859a",
+      "english": "Dress Package_Gluing",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0890_598133842bab0c2f",
+      "english": "Electrogas Quick Insert",
+      "tokens": [
+        "Electrogas"
+      ]
+    },
+    {
+      "id": "ele_0905_e98113817a4ae635",
+      "english": "Automatic Gluing Equipment with Single Pump and Single Gun",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0906_ad68d2e27b716801",
+      "english": "Automatic Gluing Equipment with Single Pump and Double Guns",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0907_6c2f0a64997923e8",
+      "english": "Automatic Gluing Equipment with Double Pumps and Single Gun",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0908_90b17786c46c02bc",
+      "english": "Automatic Gluing Equipment with Double Pumps and Double Guns",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0909_9ba11cbb59b1bed3",
+      "english": "Manual Gluing Equipment with Single Pump and Single Gun",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0910_ce1d86bfab8a5f3d",
+      "english": "Manual Gluing Equipment with Single Pump and Double Guns",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0911_dc5ea7513d2e59a8",
+      "english": "Manual Gluing Equipment with Double Pumps and Single Gun",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0912_506dbd200de38c7c",
+      "english": "Manual Gluing Equipment with Double Pumps and Double Guns",
+      "tokens": [
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0947_7fd670d17247b8be",
+      "english": "On-Line Gluing Inspection_2D",
+      "tokens": [
+        "2",
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0948_ac8cd298527043b0",
+      "english": "On-Line Gluing Inspection_3D",
+      "tokens": [
+        "3",
+        "Gluing"
+      ]
+    },
+    {
+      "id": "ele_0949_4b87c54c918158b0",
+      "english": "Part Picking Guiding Vision_2D",
+      "tokens": [
+        "2"
+      ]
+    },
+    {
+      "id": "ele_0950_b0aabc12e3b52cf0",
+      "english": "Part Picking Guiding Vision_3D",
+      "tokens": [
+        "3"
+      ]
+    },
+    {
+      "id": "ele_0964_c4ef500b769b798e",
+      "english": "Flextrack",
+      "tokens": [
+        "Flextrack"
+      ]
+    },
+    {
+      "id": "cus_0011_740c73a705f914e8",
+      "english": "Respect centerline of the system",
+      "tokens": [
+        "centerline"
+      ]
+    },
+    {
+      "id": "cus_0015_f86476c6e563f810",
+      "english": "You need to have dividers inside the cable tray",
+      "tokens": [
+        "dividers"
+      ]
+    },
+    {
+      "id": "cus_0023_4e96202736841538",
+      "english": "then working that close to the aisle, it's dangerous because we will get a lot of traﬃc",
+      "tokens": [
+        "tra"
+      ]
+    },
+    {
+      "id": "cus_0029_e4a77c9f1470e6d9",
+      "english": "The colors in 3D are based on Mino's standard, not T's standard.",
+      "tokens": [
+        "3",
+        "Mino's"
+      ]
+    },
+    {
+      "id": "cus_0079_cd01df693401d0c5",
+      "english": "Laser-welding fixture shielding gas: gas flows from the cylinder or workshop pipeline through the solenoid valve and pressure switch to the manifold, then to each gas-blowing port.",
+      "tokens": [
+        "solenoid"
+      ]
+    },
+    {
+      "id": "cus_0085_39150d6e92255766",
+      "english": "When you take a picture from the top, you must also include a picture with this isometric view.",
+      "tokens": [
+        "isometric"
+      ]
+    },
+    {
+      "id": "cus_0089_c7c23fccc9667a75",
+      "english": "In the isometric view, we also need to understand the lower and upper Z levels of this permanent zone. Show the distance from the floor and the maximum elevation of the zone.",
+      "tokens": [
+        "isometric"
+      ]
+    },
+    {
+      "id": "cus_0097_f7a3f0b2d93e53a5",
+      "english": "For all robots, use only 300mm/s for gluing. With 600mm/s, the quality will not be fine. We have to reduce the speed to get a good quality. 300mm/s",
+      "tokens": [
+        "gluing"
+      ]
+    },
+    {
+      "id": "cus_0113_0f16699f4757dd15",
+      "english": "spacer is diﬀerent from the shims because shims you can pull from the side and spacer has like a full hole",
+      "tokens": [
+        "erent",
+        "shims"
+      ]
+    },
+    {
+      "id": "cus_0122_40a3455fc2ecd51a",
+      "english": "If it is possible, please make something like an adapter plate to have shimming closer to the pin",
+      "tokens": [
+        "shimming"
+      ]
+    },
+    {
+      "id": "cus_0134_5ee981ebde5297ad",
+      "english": "Add a rough locator on this edge so the operator can use this shoulder while loading; the rough locator will also provide poka-yoke protection.",
+      "tokens": [
+        "poka"
+      ]
+    },
+    {
+      "id": "cus_0137_aa96fd4cad92a631",
+      "english": "As a general rule, a 0.5 mm undersize applies only to the pass table and pure handling gripper; 0.15 mm applies to the process gripper.",
+      "tokens": [
+        "undersize"
+      ]
+    },
+    {
+      "id": "cus_0148_7a31c2e389d5d66e",
+      "english": "open; turn on; turn...on; display;bring up;unhide",
+      "tokens": [
+        "unhide"
+      ]
+    },
+    {
+      "id": "cus_0201_de2ce908666b681c",
+      "english": "Stellantis/Autodie",
+      "tokens": [
+        "Stellantis"
+      ]
+    },
+    {
+      "id": "cus_0213_9e54378d29bcc290",
+      "english": "It's not a dimensionally stable tab",
+      "tokens": [
+        "dimensionally"
+      ]
+    },
+    {
+      "id": "cus_0214_73faa3947d16630b",
+      "english": "When we pick once and drop twice, we need two separate TCPs.",
+      "tokens": [
+        "TCPs"
+      ]
+    },
+    {
+      "id": "cus_0215_bf303ed40b83e2b5",
+      "english": "What force is required to clamp that manually actuated clamp? How hard does the operator have to push it?",
+      "tokens": [
+        "actuated"
+      ]
+    },
+    {
+      "id": "cus_0231_f1793852e885f849",
+      "english": "What is your limit for acceptable shimming?",
+      "tokens": [
+        "shimming"
+      ]
+    },
+    {
+      "id": "cus_0236_179a6efa8d57e9c0",
+      "english": "The thing with the prox sensor is they have to be really close to the part. And sometimes if you have like a little variation, those sensors can hit the part. With the laser ones, they are really far, so you don't have any kind of issue like hitting the part",
+      "tokens": [
+        "prox"
+      ]
+    },
+    {
+      "id": "cus_0241_febf1bc56e861a9f",
+      "english": "Doesn't the four-way pin overconstrain the fixture?",
+      "tokens": [
+        "overconstrain"
+      ]
+    },
+    {
+      "id": "cus_0246_c4166c373dd08980",
+      "english": "Shim packages have to be parallel to the bodyline",
+      "tokens": [
+        "bodyline"
+      ]
+    },
+    {
+      "id": "cus_0247_93f9bf26cd74b636",
+      "english": "Tool base and products need to be parallel to bodyline",
+      "tokens": [
+        "bodyline"
+      ]
+    },
+    {
+      "id": "cus_0249_c0da463cc76a4f5a",
+      "english": "Gripper stand needs to be under 80 degrees in SS11 project and make it to be horizontal as much as possible.",
+      "tokens": [
+        "11"
+      ]
+    },
+    {
+      "id": "mee_0002_5beb0e237b2cb9d2",
+      "english": "Hi/good morning/good afternoon/good evening,Tesla team/Rivian team/Lucid team/XXX (customer's name)",
+      "tokens": [
+        "Rivian"
+      ]
+    }
+  ],
+  "spellingRepairedCount": 0,
+  "spellingRepairedIds": [],
+  "phraseCleanup": {
+    "cleanedCount": 99,
+    "cleanedIds": [
+      "cus_0002_14dc80264af800f5",
+      "cus_0006_8ef4d3cde7a6dba6",
+      "cus_0010_0cb3253fa94bebab",
+      "cus_0013_2a05f83c8944178f",
+      "cus_0014_f9038ebefbbf9902",
+      "cus_0029_e4a77c9f1470e6d9",
+      "cus_0031_609888a63af216b7",
+      "cus_0036_b9153ca5a2fea9bc",
+      "cus_0042_995b1a01679433ac",
+      "cus_0055_3e20baad9540ff22",
+      "cus_0058_7b51da6afff3e505",
+      "cus_0075_204ae4cd4976b109",
+      "cus_0077_8137db39ed57dd51",
+      "cus_0085_39150d6e92255766",
+      "cus_0106_773e16ccdbf974f3",
+      "cus_0114_7906bba9cff8c09a",
+      "cus_0115_0fabe75f724f45ce",
+      "cus_0128_875230e186cb1a01",
+      "cus_0134_5ee981ebde5297ad",
+      "cus_0137_aa96fd4cad92a631",
+      "cus_0146_5534afac0385f410",
+      "cus_0159_1c413d642bbac379",
+      "cus_0180_6aec25e3168a3113",
+      "cus_0193_2568fcd3ff13eb03",
+      "cus_0194_0dd7724104816a28",
+      "cus_0203_b1d20ab7c0825860",
+      "cus_0216_e891260bcc9b32d6",
+      "cus_0225_4b6aec0ce17222cc",
+      "cus_0228_62aa22ad6077d540",
+      "cus_0243_db2df4a58c44cec7",
+      "cus_0244_20777b4b990e90c1",
+      "cus_0003_f30f91730f22ff86",
+      "cus_0034_2843f37151c8956b",
+      "cus_0052_107e4d8fe0a91f59",
+      "cus_0053_027e697a466bffb5",
+      "cus_0059_666df1181dbd8cc0",
+      "cus_0149_cc3074c374e2f008",
+      "cus_0150_7a723d03ceecde93",
+      "cus_0151_fd70127020da1cd1",
+      "cus_0227_d0674aecf80b0c95",
+      "cus_0224_77989d0a5be22568",
+      "cus_0021_c39508acb317464e",
+      "cus_0025_c0a6acd5805633bf",
+      "cus_0037_c2133e85c878f0e6",
+      "cus_0039_8037d7329a3eef7f",
+      "cus_0041_5fbc75379c397177",
+      "cus_0066_c61a6d596713bd55",
+      "cus_0070_5e533cedbaa55e9c",
+      "cus_0072_7628942c4e9e5d5c",
+      "cus_0074_0c3f51fb3358cdef",
+      "cus_0078_ad25f3927257c9e4",
+      "cus_0080_00cb8d86cc83f378",
+      "cus_0086_ecb8938ef748d76c",
+      "cus_0089_c7c23fccc9667a75",
+      "cus_0090_7bdab433e95adc09",
+      "cus_0094_7a0bbc47e84ab6a7",
+      "cus_0107_d32e241b394f32b7",
+      "cus_0111_fdddf18e63f9fa49",
+      "cus_0125_641deacbe171da36",
+      "cus_0131_310b0a6b4bb93bce",
+      "cus_0138_bfbcaed36f96b573",
+      "cus_0142_8854798093d3e7c9",
+      "cus_0158_1ea87000e9d61227",
+      "cus_0171_982e21794213e811",
+      "cus_0206_2d5a9cbae547dfa6",
+      "cus_0208_81e87c0f4113e20b",
+      "cus_0211_b4eed5780c8b125e",
+      "cus_0212_b05023fece5a75c2",
+      "cus_0214_73faa3947d16630b",
+      "cus_0215_bf303ed40b83e2b5",
+      "cus_0219_971e0d124f4e1643",
+      "cus_0221_3b5aa0250376a3be",
+      "cus_0234_3fe2be7cc04fc7fa",
+      "cus_0237_82dca8d800402015",
+      "cus_0240_870dedc998a64e77",
+      "cus_0007_ce18dc47a7cf40cf",
+      "cus_0032_bcfd0ac5cd0c92a9",
+      "cus_0050_e96410dd8b311dbc",
+      "cus_0057_ac91068c023e9f42",
+      "cus_0060_1b7b8c60b221fc5d",
+      "cus_0073_9c31352b8c009dd7",
+      "cus_0087_d94dd70e32ba50a2",
+      "cus_0098_f447b3ba3d949732",
+      "cus_0100_184ce524dd54d2dc",
+      "cus_0133_120ea33768ebd768",
+      "cus_0144_3bdcffa46510def5",
+      "cus_0155_2cc7255d4651363b",
+      "cus_0175_a789af2d0ab515a2",
+      "cus_0176_78781a435540fba0",
+      "cus_0197_41ded73eb7fe7f22",
+      "cus_0207_d0d18512645df55d",
+      "cus_0222_18f6349276d51e9f",
+      "cus_0226_ae2477009cad06df",
+      "cus_0230_cda5920b59db857d",
+      "cus_0231_f1793852e885f849",
+      "cus_0233_d77cccbecc2e0448",
+      "cus_0241_febf1bc56e861a9f",
+      "cus_0242_dad4967a4a9cb877",
+      "cus_0251_bbb7c63131e4dac7"
+    ],
+    "alreadyCleanCount": 99,
+    "alreadyCleanIds": [
+      "cus_0002_14dc80264af800f5",
+      "cus_0006_8ef4d3cde7a6dba6",
+      "cus_0010_0cb3253fa94bebab",
+      "cus_0013_2a05f83c8944178f",
+      "cus_0014_f9038ebefbbf9902",
+      "cus_0029_e4a77c9f1470e6d9",
+      "cus_0031_609888a63af216b7",
+      "cus_0036_b9153ca5a2fea9bc",
+      "cus_0042_995b1a01679433ac",
+      "cus_0055_3e20baad9540ff22",
+      "cus_0058_7b51da6afff3e505",
+      "cus_0075_204ae4cd4976b109",
+      "cus_0077_8137db39ed57dd51",
+      "cus_0085_39150d6e92255766",
+      "cus_0106_773e16ccdbf974f3",
+      "cus_0114_7906bba9cff8c09a",
+      "cus_0115_0fabe75f724f45ce",
+      "cus_0128_875230e186cb1a01",
+      "cus_0134_5ee981ebde5297ad",
+      "cus_0137_aa96fd4cad92a631",
+      "cus_0146_5534afac0385f410",
+      "cus_0159_1c413d642bbac379",
+      "cus_0180_6aec25e3168a3113",
+      "cus_0193_2568fcd3ff13eb03",
+      "cus_0194_0dd7724104816a28",
+      "cus_0203_b1d20ab7c0825860",
+      "cus_0216_e891260bcc9b32d6",
+      "cus_0225_4b6aec0ce17222cc",
+      "cus_0228_62aa22ad6077d540",
+      "cus_0243_db2df4a58c44cec7",
+      "cus_0244_20777b4b990e90c1",
+      "cus_0003_f30f91730f22ff86",
+      "cus_0034_2843f37151c8956b",
+      "cus_0052_107e4d8fe0a91f59",
+      "cus_0053_027e697a466bffb5",
+      "cus_0059_666df1181dbd8cc0",
+      "cus_0149_cc3074c374e2f008",
+      "cus_0150_7a723d03ceecde93",
+      "cus_0151_fd70127020da1cd1",
+      "cus_0227_d0674aecf80b0c95",
+      "cus_0224_77989d0a5be22568",
+      "cus_0021_c39508acb317464e",
+      "cus_0025_c0a6acd5805633bf",
+      "cus_0037_c2133e85c878f0e6",
+      "cus_0039_8037d7329a3eef7f",
+      "cus_0041_5fbc75379c397177",
+      "cus_0066_c61a6d596713bd55",
+      "cus_0070_5e533cedbaa55e9c",
+      "cus_0072_7628942c4e9e5d5c",
+      "cus_0074_0c3f51fb3358cdef",
+      "cus_0078_ad25f3927257c9e4",
+      "cus_0080_00cb8d86cc83f378",
+      "cus_0086_ecb8938ef748d76c",
+      "cus_0089_c7c23fccc9667a75",
+      "cus_0090_7bdab433e95adc09",
+      "cus_0094_7a0bbc47e84ab6a7",
+      "cus_0107_d32e241b394f32b7",
+      "cus_0111_fdddf18e63f9fa49",
+      "cus_0125_641deacbe171da36",
+      "cus_0131_310b0a6b4bb93bce",
+      "cus_0138_bfbcaed36f96b573",
+      "cus_0142_8854798093d3e7c9",
+      "cus_0158_1ea87000e9d61227",
+      "cus_0171_982e21794213e811",
+      "cus_0206_2d5a9cbae547dfa6",
+      "cus_0208_81e87c0f4113e20b",
+      "cus_0211_b4eed5780c8b125e",
+      "cus_0212_b05023fece5a75c2",
+      "cus_0214_73faa3947d16630b",
+      "cus_0215_bf303ed40b83e2b5",
+      "cus_0219_971e0d124f4e1643",
+      "cus_0221_3b5aa0250376a3be",
+      "cus_0234_3fe2be7cc04fc7fa",
+      "cus_0237_82dca8d800402015",
+      "cus_0240_870dedc998a64e77",
+      "cus_0007_ce18dc47a7cf40cf",
+      "cus_0032_bcfd0ac5cd0c92a9",
+      "cus_0050_e96410dd8b311dbc",
+      "cus_0057_ac91068c023e9f42",
+      "cus_0060_1b7b8c60b221fc5d",
+      "cus_0073_9c31352b8c009dd7",
+      "cus_0087_d94dd70e32ba50a2",
+      "cus_0098_f447b3ba3d949732",
+      "cus_0100_184ce524dd54d2dc",
+      "cus_0133_120ea33768ebd768",
+      "cus_0144_3bdcffa46510def5",
+      "cus_0155_2cc7255d4651363b",
+      "cus_0175_a789af2d0ab515a2",
+      "cus_0176_78781a435540fba0",
+      "cus_0197_41ded73eb7fe7f22",
+      "cus_0207_d0d18512645df55d",
+      "cus_0222_18f6349276d51e9f",
+      "cus_0226_ae2477009cad06df",
+      "cus_0230_cda5920b59db857d",
+      "cus_0231_f1793852e885f849",
+      "cus_0233_d77cccbecc2e0448",
+      "cus_0241_febf1bc56e861a9f",
+      "cus_0242_dad4967a4a9cb877",
+      "cus_0251_bbb7c63131e4dac7"
+    ]
+  },
+  "provenance": {
+    "name": "open-dict-data/ipa-dict en_US",
+    "url": "https://github.com/open-dict-data/ipa-dict",
+    "revision": "43c3570eb3553bdd19fccd2bd0091534889af023",
+    "sha256": "a20b0131b6e98d30fc4f40bc3f82184fe40105ee4a87525a7fe417ef67420f78",
+    "license": "MIT (English US data derived from cmudict-ipa; see upstream credits)",
+    "fallback": "piper-tts bundled eSpeak-ng en-us phonemizer"
+  }
+}

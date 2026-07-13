@@ -78,6 +78,45 @@ class GenerateAudioProductionTest(unittest.TestCase):
             self.assertNotIn("segments", report["entries"]["mee_0001_x"])
             self.assertFalse((root / "audio/variants/mee_0001_x_00.ogg").exists())
 
+    def test_manifest_separates_spoken_hint_from_expected_transcript(self):
+        words = [{
+            "id": "mec_catia",
+            "category": "mechanical",
+            "kind": "TERM",
+            "english": "CATIA",
+            "phonetic": "/k\u0259\u02c8ti\u02d0\u0259/",
+        }]
+        overrides = PronunciationOverrides.from_json(
+            {
+                "schemaVersion": 1,
+                "wordId": {},
+                "exactText": {
+                    "CATIA": {
+                        "spokenText": "kuh TEE uh",
+                        "auditText": "CATIA",
+                        "type": "pronunciationHint",
+                    }
+                },
+            }
+        )
+        plans = plan_production(words, overrides)
+
+        with tempfile.TemporaryDirectory() as directory:
+            report = generate_staged_pack(
+                plans=plans,
+                words=words,
+                output=Path(directory) / "audio-production-v2.31",
+                content_hash="content-hash",
+                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                synthesize=write_fixture_wav,
+                encode=write_fixture_ogg,
+                probe=probe_fixture,
+            )
+
+        entry = report["entries"]["mec_catia"]
+        self.assertEqual("kuh TEE uh", entry["spokenText"])
+        self.assertEqual("CATIA", entry["expectedTranscript"])
+
     def test_writes_complete_variants_manifest_and_audit(self):
         words = [
             {
@@ -86,6 +125,7 @@ class GenerateAudioProductionTest(unittest.TestCase):
                 "kind": "TERM",
                 "english": "fixture；jig",
                 "chinese": "夹具",
+                "phonetic": "/ˈfɪkstʃɝ/； /ˈdʒɪɡ/",
             },
             {
                 "id": "mee_0001_x",
@@ -93,6 +133,7 @@ class GenerateAudioProductionTest(unittest.TestCase):
                 "kind": "PHRASE",
                 "english": "Can you repeat that?",
                 "chinese": "请重复",
+                "phonetic": "/kæn ju ɹɪˈpit ðæt/",
             },
         ]
         plans = plan_production(words, PronunciationOverrides.empty())
@@ -111,9 +152,12 @@ class GenerateAudioProductionTest(unittest.TestCase):
             )
 
             self.assertEqual(2, report["entryCount"])
+            self.assertEqual(3, report["schemaVersion"])
             entry = report["entries"]["mec_0001_x"]
             self.assertEqual(500, entry["pauseBetweenSegmentsMs"])
             self.assertEqual(["fixture", "jig"], [item["text"] for item in entry["segments"]])
+            self.assertEqual(["piper", "piper"], [item["sourceType"] for item in entry["segments"]])
+            self.assertEqual("/ˈfɪkstʃɝ/", entry["segments"][0]["expectedIpa"])
             self.assertTrue((root / "audio/mec_0001_x.ogg").is_file())
             self.assertTrue((root / "audio/variants/mec_0001_x_01.ogg").is_file())
             manifest = json.loads((root / "audio_manifest_v1.json").read_text(encoding="utf-8"))
@@ -153,6 +197,47 @@ class GenerateAudioProductionTest(unittest.TestCase):
             generate_staged_pack(**arguments)
 
             self.assertEqual(first_run_calls, len(encode_calls))
+
+    def test_unchanged_speech_plan_survives_content_metadata_update(self):
+        words = [{
+            "id": "mec_0001_x",
+            "category": "mechanical",
+            "kind": "TERM",
+            "english": "fixture",
+            "phonetic": "/ˈfɪkstʃɝ/",
+        }]
+        plans = plan_production(words, PronunciationOverrides.empty())
+        encode_calls = []
+
+        def tracked_encode(source: Path, target: Path, stable_key: str) -> None:
+            encode_calls.append(stable_key)
+            write_fixture_ogg(source, target, stable_key)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "audio-production-v2.31"
+            common = dict(
+                plans=plans,
+                words=words,
+                output=root,
+                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                synthesize=write_fixture_wav,
+                encode=tracked_encode,
+                probe=probe_fixture,
+            )
+            generate_staged_pack(content_hash="old-content", **common)
+            first_run_calls = len(encode_calls)
+            updated_words = [dict(words[0], phonetic="/fɪkstʃɚ/")]
+            updated_plans = plan_production(updated_words, PronunciationOverrides.empty())
+            report = generate_staged_pack(
+                content_hash="new-content",
+                plans=updated_plans,
+                words=updated_words,
+                **{key: value for key, value in common.items() if key not in {"plans", "words"}},
+            )
+
+            self.assertEqual(first_run_calls, len(encode_calls))
+            self.assertEqual("new-content", report["contentSha256"])
+            self.assertEqual("/fɪkstʃɚ/", report["entries"]["mec_0001_x"]["expectedIpa"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "2026.07.13-v2.31",
+  "records": [
+    {
+      "text": "bench",
+      "fileName": "1b32c28cb38c05480ecc.ogg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3a/En-us-bench.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bench.ogg",
+      "speaker": "Dvortygirl",
+      "license": "Public domain",
+      "accentEvidence": [
+        "File:En-us-bench.ogg",
+        "U.S. English pronunciation",
+        "Benches",
+        "Files with no machine-readable source",
+        "Self-published work",
+        "PD-self",
+        "Assumed own work"
+      ],
+      "bytes": 21850,
+      "sha256": "e7a1a3bf7d05070551e37b66d625fc97f92f9b273a8e3006ee93116e95a03aa8"
+    },
+    {
+      "text": "bin",
+      "fileName": "51a1f05af85e342e3c84.ogg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/80/En-us-bin.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-bin.ogg",
+      "speaker": "Muke",
+      "license": "Public domain",
+      "accentEvidence": [
+        "File:En-us-bin.ogg",
+        "U.S. English pronunciation",
+        "Files with no machine-readable author",
+        "Files with no machine-readable source",
+        "Media missing infobox template",
+        "Self-published work",
+        "PD-self"
+      ],
+      "bytes": 13842,
+      "sha256": "3cf4d20c9f86ea8eee9087c417266dca677d03feb8731828f9639cb3c1437443"
+    },
+    {
+      "text": "flimsy",
+      "fileName": "1d0f3b28c557189e7a28.ogg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8c/En-us-flimsy.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-flimsy.ogg",
+      "speaker": "Dvortygirl",
+      "license": "Public domain",
+      "accentEvidence": [
+        "File:En-us-flimsy.ogg",
+        "U.S. English pronunciation",
+        "Self-published work",
+        "PD-self"
+      ],
+      "bytes": 12461,
+      "sha256": "f3c0eea582d209ba4e25b07eab20a80a0a850cbc128333c6082cad6e2f61d5d6"
+    },
+    {
+      "text": "i",
+      "fileName": "de7d1b721a1e0632b7cf.ogg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9f/En-us-I.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-I.ogg",
+      "speaker": "Muke",
+      "license": "Public domain",
+      "accentEvidence": [
+        "File:En-us-I.ogg",
+        "U.S. English pronunciation",
+        "Files with no machine-readable author",
+        "Files with no machine-readable source",
+        "Media missing infobox template",
+        "Self-published work",
+        "PD-self",
+        "U.S. English pronunciation of letters"
+      ],
+      "bytes": 9272,
+      "sha256": "7a3a70a505356fd642b866f7c9fb69c28b1861a0242a2b385f6fe36c89f78720"
+    },
+    {
+      "text": "label",
+      "fileName": "1aca80e8b55c802f7b43.ogg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cb/En-us-label.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-label.ogg",
+      "speaker": "Derbeth",
+      "license": "Public domain",
+      "accentEvidence": [
+        "File:En-us-label.ogg",
+        "U.S. English pronunciation",
+        "PD-user"
+      ],
+      "bytes": 12389,
+      "sha256": "db0032fcf38297c8f553958478e8269b8951efcfed4408a002d40bcb6d4aac47"
+    },
+    {
+      "text": "o",
+      "fileName": "65c74c15a686187bb6bb.ogg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/En-us-O.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-O.ogg",
+      "speaker": "Vanished user 58234729",
+      "license": "Public domain",
+      "accentEvidence": [
+        "File:En-us-O.ogg",
+        "U.S. English pronunciation",
+        "Self-published work",
+        "PD-self",
+        "U.S. English pronunciation of letters"
+      ],
+      "bytes": 9072,
+      "sha256": "ae1fb7b0a8798b4f8e644bcd97a9327130b8e40fe043f3c9729ea8ac9135deed"
+    },
+    {
+      "text": "thread",
+      "fileName": "39200d1e8a8dbbb6d7bc.ogg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/En-us-thread.ogg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:En-us-thread.ogg",
+      "speaker": "Dvortygirl",
+      "license": "Public domain",
+      "accentEvidence": [
+        "File:En-us-thread.ogg",
+        "U.S. English pronunciation",
+        "Self-published work",
+        "PD-self"
+      ],
+      "bytes": 11858,
+      "sha256": "4a27ae35e9a065f4f6fbc32e567dd4ec66a0a9f47e67713a09a7a040eed086e2"
+    }
+  ]
+}

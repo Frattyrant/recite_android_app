@@ -39,13 +39,20 @@ ENCODING_PARAMS = {
 }
 _CJK = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
 _PARENTHETICAL = re.compile(r"\([^()]*\)")
+_EMPTY_PARENTHETICAL = re.compile(r"\(\s*\)")
 _UNSAFE = re.compile(r"[^A-Za-z0-9\s.,;:!?&'()/+\-=]")
 _WHITESPACE = re.compile(r"\s+")
 _SLASHES = re.compile(r"[/\\]+")
+_ELLIPSIS = re.compile(r"\.{2,}")
 _SEPARATOR_SPACING = re.compile(r"\s*([,;:/])\s*")
 _MEANINGFUL_TOKEN = re.compile(
     r"(?<![A-Za-z0-9])(?=[A-Za-z0-9]*[A-Za-z])[A-Za-z0-9]{2,}"
 )
+_LETTER_SEQUENCE = re.compile(r"(?:\b[A-Za-z]\b(?:\s+|$)){2,}")
+
+
+def _has_meaningful_token(text: str) -> bool:
+    return bool(_MEANINGFUL_TOKEN.search(text) or _LETTER_SEQUENCE.search(text))
 
 
 def _build_ogg_crc_table() -> tuple[int, ...]:
@@ -77,13 +84,15 @@ def spoken_text(word: dict) -> str:
             break
         text = cleaned
     text = _CJK.sub(" ", text)
+    text = _EMPTY_PARENTHETICAL.sub(" ", text)
     text = _UNSAFE.sub(" ", text)
     text = _SLASHES.sub(" ", text)
+    text = _ELLIPSIS.sub(" ", text)
     text = _SEPARATOR_SPACING.sub(r"\1 ", text)
     text = re.sub(r"([!?.,;:])\1+", r"\1", text)
     text = re.sub(r"\s*[-=]{2,}\s*", ", ", text)
     text = _WHITESPACE.sub(" ", text).strip(" ,;:/-=")
-    if not _MEANINGFUL_TOKEN.search(text):
+    if not _has_meaningful_token(text):
         fallback = unicodedata.normalize(
             "NFKC", str(word.get("primaryEnglish", ""))
         )
@@ -91,7 +100,7 @@ def spoken_text(word: dict) -> str:
         fallback = _UNSAFE.sub(" ", fallback)
         fallback = _SLASHES.sub(" ", fallback)
         text = _WHITESPACE.sub(" ", fallback).strip(" ,;:/-=")
-    if not _MEANINGFUL_TOKEN.search(text):
+    if not _has_meaningful_token(text):
         raise ValueError(
             "no pronounceable English text with a meaningful English token "
             f"for {word.get('id')}"

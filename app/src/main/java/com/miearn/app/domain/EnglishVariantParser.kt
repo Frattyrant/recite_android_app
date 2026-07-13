@@ -61,7 +61,11 @@ object EnglishVariantParser {
             }
             val unitSlash = unitLeft.containsMatchIn(current.toString()) &&
                 unitRight.containsMatchIn(text.substring(index + 1))
-            if (unitSlash) {
+            val initialismSlash = text.getOrNull(index - 1)?.isUpperCase() == true &&
+                text.getOrNull(index + 1)?.isUpperCase() == true &&
+                text.getOrNull(index - 2)?.isLetter() != true &&
+                text.getOrNull(index + 2)?.isLetter() != true
+            if (unitSlash || initialismSlash) {
                 current.append(char)
             } else {
                 current.toString().trim().takeIf(String::isNotEmpty)?.let { yield(it) }

@@ -37,7 +37,7 @@ except ModuleNotFoundError:
     )
     from generate_variant_audio import raw_variants  # type: ignore[no-redef]
 
-EXPECTED_COUNT = 2704
+EXPECTED_COUNT = 2698
 EXPECTED_PIPER_VERSION = "1.4.2"
 MODEL_CONFIG_SHA256 = (
     "efe19c417bed055f2d69908248c6ba650fa135bc868b0e6abb3da181dab690a0"

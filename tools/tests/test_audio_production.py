@@ -8,6 +8,7 @@ from tools.audio_profiles import (
     PronunciationRule,
 )
 from tools.audio_production import (
+    HumanAudioSource,
     assert_safe_staging_path,
     content_sha256,
     plan_production,
@@ -22,12 +23,14 @@ class AudioProductionPlanTest(unittest.TestCase):
                 "english": "fixture；jig",
                 "audioText": "fixture；jig",
                 "kind": "TERM",
+                "phonetic": "/ˈfɪkstʃɝ/； /ˈdʒɪɡ/",
             },
             {
                 "id": "mee_0001_x",
                 "english": "PLC",
                 "audioText": "PLC",
                 "kind": "TERM",
+                "phonetic": "/ˌpiː ɛl ˈsiː/",
             },
         ]
         overrides = PronunciationOverrides(
@@ -49,6 +52,34 @@ class AudioProductionPlanTest(unittest.TestCase):
         )
         self.assertEqual("P L C", plan[1].segments[0].spoken_text)
         self.assertEqual("exactText:PLC", plan[1].segments[0].override_key)
+
+    def test_plan_prefers_verified_human_source_and_never_sends_slashes_to_piper(self):
+        human = HumanAudioSource(
+            text="fixture",
+            path=Path("staging/fixture.ogg"),
+            source_url="https://upload.wikimedia.org/fixture.ogg",
+            description_url="https://commons.wikimedia.org/wiki/File:En-us-fixture.ogg",
+            speaker="speaker",
+            license_name="Public domain",
+            sha256="a" * 64,
+        )
+        words = [{
+            "id": "term",
+            "english": "fixture;push/pusher",
+            "kind": "TERM",
+            "phonetic": "/ˈfɪkstʃɝ/； /pʊʃ/； /ˈpʊʃɝ/",
+        }]
+
+        plan = plan_production(
+            words,
+            PronunciationOverrides.empty(),
+            human_audio={"fixture": human},
+        )[0]
+
+        self.assertEqual("human", plan.segments[0].source_type)
+        self.assertEqual("piper", plan.segments[1].source_type)
+        self.assertNotIn("/", plan.segments[1].spoken_text)
+        self.assertEqual("/ˈfɪkstʃɝ/", plan.segments[0].expected_ipa)
 
     def test_plan_rejects_duplicate_ids(self):
         words = [

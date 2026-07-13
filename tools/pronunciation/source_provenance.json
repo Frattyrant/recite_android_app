@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "dialect": "en-US",
+  "ipaDictionary": {
+    "name": "open-dict-data/ipa-dict en_US",
+    "url": "https://github.com/open-dict-data/ipa-dict",
+    "revision": "43c3570eb3553bdd19fccd2bd0091534889af023",
+    "sha256": "a20b0131b6e98d30fc4f40bc3f82184fe40105ee4a87525a7fe417ef67420f78",
+    "license": "MIT",
+    "upstreamBasis": "cmudict-ipa / CMU Pronouncing Dictionary"
+  },
+  "fallbackPhonemizer": {
+    "name": "eSpeak-ng en-us bundled with piper-tts 1.4.2",
+    "purpose": "Audited fallback for terms absent from the pinned dictionary"
+  },
+  "humanAudioDiscovery": {
+    "api": "https://commons.wikimedia.org/w/api.php",
+    "policy": "Exact text, explicit en-US evidence, and CC0 or public-domain status required",
+    "allowlist": "human_audio_allowlist.json"
+  },
+  "synthesisFallback": {
+    "voice": "Piper en_US-lessac-high",
+    "modelSha256": "4cabf7c3a638017137f34a1516522032d4fe3f38228a843cc9b764ddcbcd9e09",
+    "encoding": "mono 48 kHz Ogg/Opus 40 kbps"
+  }
+}

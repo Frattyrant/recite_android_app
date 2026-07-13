@@ -7,6 +7,27 @@ from tools.generate_audio import can_skip, spoken_text, spoken_text_sha256
 
 
 class AudioGeneratorTest(unittest.TestCase):
+    def test_ellipsis_placeholders_are_not_spoken_as_dot(self):
+        word = {
+            "id": "sentence-pattern",
+            "audioText": "How is ... attached to ...? Turn...on.",
+            "primaryEnglish": "How is attached to? Turn on.",
+        }
+
+        result = spoken_text(word)
+
+        self.assertEqual("How is attached to ? Turn on.", result)
+        self.assertNotIn("...", result)
+
+    def test_empty_parentheses_are_removed_from_synthesis_text(self):
+        word = {
+            "id": "presentation",
+            "audioText": "PPT ( )",
+            "primaryEnglish": "PPT",
+        }
+
+        self.assertEqual("PPT", spoken_text(word))
+
     def test_non_english_source_fails_fast(self):
         word = {
             "id": "fixture",

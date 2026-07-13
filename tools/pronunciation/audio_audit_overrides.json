@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "audio/variants/ele_0235_ccfc527dfe305134_01.ogg": {
+      "audioSha256": "98682b693071c9ea04b31fb544c1b4312669cc35b5eb6885913c49eed2fa39f2",
+      "reason": "Dual-ASR final-consonant ambiguity; /mæɡ/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "base-and-small-en-transcripts"]
+    },
+    "audio/ele_0265_b47ea31408c4d1a4.ogg": {
+      "audioSha256": "85716955af4f015e265220145a53a768de292fadcb6c39227e4b01eb930f4751",
+      "reason": "Sub-second dual-ASR ambiguity; /sɛl/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    },
+    "audio/ele_0348_e790f5cc253aadfa.ogg": {
+      "audioSha256": "2d53f753cbaa8661bac78f809e8853970454824bfd4538c141f132be3819fc19",
+      "reason": "ASR rendered Balluff phonetically as BAHLOOF, matching the explicit supplier pronunciation plan.",
+      "evidence": ["official-brand-spelling", "explicit-pronunciation-plan", "base-and-small-en-transcripts"]
+    },
+    "audio/ele_0350_c55bf1d92fe9a3c1.ogg": {
+      "audioSha256": "c6557f44de6e69e62d2a025cc329942163484b1accbb9549ac264f15cd85153d",
+      "reason": "Prompted ASR rendered Dotran as DoH Tran, matching the explicit supplier pronunciation plan.",
+      "evidence": ["official-brand-spelling", "explicit-pronunciation-plan", "small-en-prompted-transcript"]
+    },
+    "audio/variants/ele_0556_1763eea16a5e2c44_00.ogg": {
+      "audioSha256": "38596f2a753db691a069cb0c2726a0e3e60fbbef2caead5b831647e00929bf70",
+      "reason": "Dual-ASR final-consonant ambiguity; /mæɡ/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "base-and-small-en-transcripts"]
+    },
+    "audio/ele_0634_9701d769e1b2bb61.ogg": {
+      "audioSha256": "ddbaf2957629335729219b57c3cc115ce9f5c7663db567354a3d2cf1babda200",
+      "reason": "Controlled syllable hint produced DVY Sean, a phonetic ASR rendering of the reviewed deviation pronunciation.",
+      "evidence": ["ipa-dict-en_US", "controlled-synthesis-trial", "explicit-pronunciation-plan"]
+    },
+    "audio/ele_0962_37477c41af6d749b.ogg": {
+      "audioSha256": "2b717e23d7025a27575ca992560e29c964c52a4fc2d30c9e5abba8cdf0a1b9bd",
+      "reason": "Sub-second initial-cluster ASR ambiguity; /kɹeɪn/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    },
+    "audio/mec_0004_a63f9b97d2585e95.ogg": {
+      "audioSha256": "0e8f088931aa8149d46e1a5b6add651e7852722c593447b79dddffda7b093123",
+      "reason": "Dual-ASR initial-cluster ambiguity; both words match the reviewed IPA and deterministic Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    },
+    "audio/variants/mec_0023_57708e48e1cef5e2_00.ogg": {
+      "audioSha256": "2ee8681ade17b8a0f90781cf009a9df13e8bfec706e58679c9707c3428f56719",
+      "reason": "Sub-second initial-cluster ASR ambiguity; /kɹeɪn/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    },
+    "audio/variants/mec_0087_b4f87a4f95ca7f34_04.ogg": {
+      "audioSha256": "19672be4fb22b7e243ef4bba5cef7333070e2bc652ff37201580dd95b0a69e23",
+      "reason": "Dual-ASR short-phrase ambiguity; valve island matches the reviewed two-word IPA plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    },
+    "audio/variants/mec_0352_3c737298b0c13447_01.ogg": {
+      "audioSha256": "bafaa0eae8757083ad5e6c0bb8a52c45f132c15619cc04755b5877e89e6e8292",
+      "reason": "Dual-ASR final-consonant ambiguity; /mæɡ/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "base-and-small-en-transcripts"]
+    },
+    "audio/mec_0361_b46c7959e56f76dd.ogg": {
+      "audioSha256": "e05333e90cb23f5cf21350347465dd233187b8659e41ae14cd385222be0c4083",
+      "reason": "ASR voiced the medial stop in a sub-second clip; /ˈwɛtɪŋ/ is explicitly reviewed and matches the Piper plan.",
+      "evidence": ["reviewed-ipa-override", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    },
+    "audio/mec_0419_ba5eb51a4f9a0663.ogg": {
+      "audioSha256": "1a391e1db0529798351b89e70340952446fa3e75b47526583505c948b3798e51",
+      "reason": "Sub-second initial-cluster ASR ambiguity; /skɹeɪp/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    },
+    "audio/mec_0441_ceb3abed2c9e8b47.ogg": {
+      "audioSha256": "2ccf4b8b7649dcb702f8dd002c4efa2884c085467f928a1851c8a288f0f476d1",
+      "reason": "Sub-second dual-ASR ambiguity; /sɛl/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    },
+    "audio/mec_0595_fe4a0f4f13153e84.ogg": {
+      "audioSha256": "f3be4e3d5cf6724a9df7b339a035d9084a947f8bb77fc48184b626c5a1f0213d",
+      "reason": "ASR rendered Balluff phonetically as BAHLOOF, matching the explicit supplier pronunciation plan.",
+      "evidence": ["official-brand-spelling", "explicit-pronunciation-plan", "base-and-small-en-transcripts"]
+    },
+    "audio/mec_0597_1dce1af6940a3931.ogg": {
+      "audioSha256": "6b64f8ac2f89936f8c0b57f8a7867946e5e6cae710a08fe8343022b126443153",
+      "reason": "Prompted ASR rendered Dotran as DoH Tran, matching the explicit supplier pronunciation plan.",
+      "evidence": ["official-brand-spelling", "explicit-pronunciation-plan", "small-en-prompted-transcript"]
+    },
+    "audio/variants/mec_0806_5a4eb4f9a491e67f_00.ogg": {
+      "audioSha256": "7bddba25c34f0ecd327e9650a21009246aba3a6e5c477aa04b716739791e28cc",
+      "reason": "Dual-ASR final-consonant ambiguity; /mæɡ/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "base-and-small-en-transcripts"]
+    },
+    "audio/mec_0884_525e0837fc34b102.ogg": {
+      "audioSha256": "0458481111e1952b1c6c22aa4deb5be53c6a5d0f5b81b4ea5f1cdc05cc996ab8",
+      "reason": "Controlled syllable hint produced DVY Sean, a phonetic ASR rendering of the reviewed deviation pronunciation.",
+      "evidence": ["ipa-dict-en_US", "controlled-synthesis-trial", "explicit-pronunciation-plan"]
+    },
+    "audio/mec_1219_39c85b9bad10d7cc.ogg": {
+      "audioSha256": "fdf106c9cf4c3456fa78da145630848b148b6a58b1d84b31d05f67be3a5f6410",
+      "reason": "Sub-second initial-cluster ASR ambiguity; /kɹeɪn/ matches the reviewed IPA and Piper plan.",
+      "evidence": ["ipa-dict-en_US", "piper-lessac-high-plan", "controlled-synthesis-trial"]
+    }
+  }
+}

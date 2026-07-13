@@ -31,24 +31,31 @@ def audio_metadata(root: Path, relative: str, duration: float) -> dict:
 
 def build_pack(root: Path) -> tuple[list[dict], dict[str, dict]]:
     words = [
-        {"id": "one", "english": "fixture；jig", "kind": "TERM"},
-        {"id": "two", "english": "PLC", "kind": "TERM"},
+        {"id": "one", "english": "fixture；jig", "kind": "TERM", "phonetic": "/ˈfɪkstʃɝ/； /ˈdʒɪɡ/"},
+        {"id": "two", "english": "PLC", "kind": "TERM", "phonetic": "/ˌpiː ɛl ˈsiː/"},
     ]
     one_segments = [
-        {"index": 0, "text": "fixture", "spokenText": "fixture", "overrideKey": None,
+        {"index": 0, "text": "fixture", "spokenText": "fixture", "expectedTranscript": "fixture", "overrideKey": None,
+         "expectedIpa": "/ˈfɪkstʃɝ/", "sourceType": "piper",
          **audio_metadata(root, "audio/variants/one_00.ogg", 0.6)},
-        {"index": 1, "text": "jig", "spokenText": "jig", "overrideKey": None,
+        {"index": 1, "text": "jig", "spokenText": "jig", "expectedTranscript": "jig", "overrideKey": None,
+         "expectedIpa": "/ˈdʒɪɡ/", "sourceType": "piper",
          **audio_metadata(root, "audio/variants/one_01.ogg", 0.5)},
     ]
     entries = {
         "one": {"id": "one", **audio_metadata(root, "audio/one.ogg", 1.6),
+                "sourceType": "piper", "expectedIpa": "/ˈfɪkstʃɝ/； /ˈdʒɪɡ/",
+                "speechPlanSha256": "a" * 64,
                 "pauseBetweenSegmentsMs": 500, "segments": one_segments,
                 "segmentPlanSha256": segment_plan_sha256(["fixture", "jig"])},
         "two": {"id": "two", **audio_metadata(root, "audio/two.ogg", 0.7),
+                "sourceType": "piper", "expectedIpa": "/ˌpiː ɛl ˈsiː/",
+                "spokenText": "P L C", "expectedTranscript": "P L C", "overrideKey": "exactText:PLC",
+                "speechPlanSha256": "b" * 64,
                 "segmentPlanSha256": segment_plan_sha256(["PLC"])},
     }
     manifest = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "contentSha256": "content",
         "entryCount": 2,
         "profile": {
@@ -126,6 +133,21 @@ class ValidateAudioProductionTest(unittest.TestCase):
 
             self.assertFalse(report["passed"])
             self.assertTrue(any("pause mismatch" in error for error in report["errors"]))
+
+    def test_missing_expected_transcript_is_reported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            words, entries = build_pack(root)
+            del entries["two"]["expectedTranscript"]
+            manifest_path = root / "audio_manifest_v1.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["entries"] = entries
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = validate_production(root, words, probe, expected_count=2)
+
+            self.assertFalse(report["passed"])
+            self.assertTrue(any("expected transcript" in error for error in report["errors"]))
 
 
 if __name__ == "__main__":

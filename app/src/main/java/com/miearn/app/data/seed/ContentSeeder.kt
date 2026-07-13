@@ -17,13 +17,24 @@ class ContentSeeder(
     suspend fun ensureSeeded(): Int = withContext(Dispatchers.IO) {
         val json = context.assets.open(CONTENT_ASSET).bufferedReader().use { it.readText() }
         val seed = SeedJsonParser.parse(json)
-        val installedVersion = database.metadataDao().get(CONTENT_VERSION_KEY)
+        syncSeed(seed)
+    }
+
+    internal suspend fun syncSeed(seed: ContentSeed): Int {
         database.withTransaction {
+            val installedVersion = database.metadataDao().get(CONTENT_VERSION_KEY)
             if (
                 installedVersion != seed.contentVersion ||
                 database.wordDao().builtInCount() != seed.words.size
             ) {
                 seed.words.chunked(250).forEach { database.wordDao().upsertAll(it) }
+                val seedIds = seed.words.mapTo(hashSetOf()) { it.id }
+                database.wordDao().builtInIds()
+                    .filterNot(seedIds::contains)
+                    .chunked(250)
+                    .forEach { obsoleteIds ->
+                        database.wordDao().deleteBuiltInIds(obsoleteIds)
+                    }
                 database.metadataDao().put(ContentMetadataEntity(CONTENT_VERSION_KEY, seed.contentVersion))
             }
             val grouped = seed.words.groupBy { it.category }
@@ -43,7 +54,7 @@ class ContentSeeder(
                 )
             }
         }
-        seed.words.size
+        return seed.words.size
     }
 
     companion object {
