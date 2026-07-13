@@ -1,4 +1,4 @@
-package com.miearn.app.ui
+﻿package com.miearn.app.ui
 
 import android.app.Application
 import android.content.ActivityNotFoundException
@@ -104,6 +104,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val wordBrowserDestination = MutableStateFlow<WordBrowserDestination?>(null)
     val wordBrowserQuery = MutableStateFlow("")
+    val wordDetailRequest = MutableStateFlow<WordDetailRequest?>(null)
 
     val wordBrowserWords = combine(
         wordBrowserDestination,
@@ -392,6 +393,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun openWordDetail(word: WordEntity, variantIndex: Int?) {
+        wordDetailRequest.value = com.miearn.app.ui.wordDetailRequest(word, variantIndex)
+    }
+
+    fun closeWordDetail() {
+        container.audio.stop()
+        wordDetailRequest.value = null
+    }
+
+    fun playWordDetail() {
+        val request = wordDetailRequest.value ?: return
+        val index = request.variantIndex
+        if (index == null) {
+            container.audio.play(request.word)
+        } else {
+            container.audio.playVariant(request.word, index)
+        }
+    }
     fun toggleFavorite(wordId: String) {
         viewModelScope.launch { repository.toggleFavorite(wordId) }
     }

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "wordId": {},
+  "exactText": {
+    "I": {
+      "spokenText": "eye",
+      "type": "singleLetter",
+      "note": "Pronounce the input-side token from split I/O expressions."
+    },
+    "GD&T": {
+      "spokenText": "G D and T",
+      "type": "symbolExpansion",
+      "note": "Read the abbreviation, not the ampersand."
+    },
+    "CMM": {
+      "spokenText": "C M M",
+      "type": "initialism",
+      "note": "Coordinate measuring machine."
+    },
+    "PLC": {
+      "spokenText": "P L C",
+      "type": "initialism",
+      "note": "Programmable logic controller."
+    }
+  }
+}

@@ -17,6 +17,27 @@ import org.robolectric.annotation.Config
 @Config(application = Application::class)
 class SpeechAssetPlanTest {
     @Test
+    fun productionManifestUsesPiperHighForEveryBuiltInWord() {
+        val assets = File("src/main/assets")
+        val content = JSONObject(
+            File(assets, "content/words_v1.json").readText(Charsets.UTF_8),
+        )
+        val manifest = JSONObject(
+            File(assets, "content/audio_manifest_v1.json").readText(Charsets.UTF_8),
+        )
+        val words = content.getJSONArray("words")
+        val entries = manifest.getJSONObject("entries")
+        val profile = manifest.getJSONObject("profile")
+
+        assertEquals(2_704, words.length())
+        assertEquals(words.length(), entries.length())
+        assertEquals(2, manifest.getInt("schemaVersion"))
+        assertEquals("en_US-lessac-high", profile.getString("name"))
+        assertEquals(40, profile.getInt("bitRateKbps"))
+        assertEquals(48_000, profile.getInt("encodedSampleRate"))
+    }
+
+    @Test
     fun runtimeSegmentsExactlyMatchEveryPackagedAudioSegment() {
         val assets = File("src/main/assets")
         val content = JSONObject(
