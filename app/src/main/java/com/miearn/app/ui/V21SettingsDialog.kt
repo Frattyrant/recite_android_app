@@ -42,6 +42,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.miearn.app.data.settings.UserSettings
+import com.miearn.app.reminder.ReminderDeliveryStatus
+import com.miearn.app.reminder.ReminderUiState
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -55,6 +57,10 @@ fun V21SettingsDialog(
     onAutoPlay: (Boolean) -> Unit,
     onReminderEnabled: (Boolean) -> Unit,
     onReminderTime: (Int, Int) -> Unit,
+    reminderUiState: ReminderUiState,
+    reminderTestResult: Boolean?,
+    onTestReminder: () -> Unit,
+    onOpenNotificationSettings: () -> Unit,
     reminderPermissionMessage: String? = null,
 ) {
     ModalBottomSheet(onDismissRequest = onDismiss) {
@@ -90,6 +96,58 @@ fun V21SettingsDialog(
                     minute = settings.reminderMinute,
                     onTime = onReminderTime,
                 )
+                Text(
+                    text = ReminderUiText.nextReminder(
+                        if (settings.reminderEnabled) {
+                            reminderUiState.nextTriggerAtMillis
+                        } else {
+                            null
+                        },
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Text(
+                    text = ReminderUiText.status(reminderUiState.deliveryStatus),
+                    color = if (
+                        reminderUiState.deliveryStatus == ReminderDeliveryStatus.AVAILABLE
+                    ) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.error
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    TextButton(
+                        onClick = onTestReminder,
+                        enabled = reminderUiState.deliveryStatus == ReminderDeliveryStatus.AVAILABLE ||
+                            reminderUiState.deliveryStatus == ReminderDeliveryStatus.CHANNEL_SILENT,
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Text("发送测试提醒")
+                    }
+                    TextButton(
+                        onClick = onOpenNotificationSettings,
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Text("通知设置")
+                    }
+                }
+                reminderTestResult?.let { successful ->
+                    Text(
+                        text = ReminderUiText.testResult(successful),
+                        color = if (successful) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.error
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
                 reminderPermissionMessage?.let {
                     Text(
                         it,

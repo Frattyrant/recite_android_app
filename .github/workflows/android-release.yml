@@ -22,6 +22,9 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v5
 
+      - name: Prepare Gradle wrapper
+        run: chmod +x gradlew
+
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
@@ -69,7 +72,7 @@ jobs:
           MIEARN_KEYSTORE_PASSWORD: ${{ secrets.MIEARN_KEYSTORE_PASSWORD }}
           MIEARN_KEY_ALIAS: ${{ secrets.MIEARN_KEY_ALIAS }}
           MIEARN_KEY_PASSWORD: ${{ secrets.MIEARN_KEY_PASSWORD }}
-        run: ./gradlew verifyReleaseApkSize
+        run: ./gradlew -Dorg.gradle.java.home="$JAVA_HOME" verifyReleaseApkSize
 
       - name: apksigner verify
         run: |
@@ -80,14 +83,37 @@ jobs:
               | tail -n 1
           )"
           test -n "$apksigner_path"
-          "$apksigner_path" verify --verbose \
-            app/build/outputs/apk/release/app-release.apk
+          "$apksigner_path" verify --verbose --print-certs \
+            app/build/outputs/apk/release/app-release.apk \
+            | tee app/build/outputs/apk/release/app-release.apk.cert.txt
+
+      - name: Verify Release permission surface
+        run: |
+          set -euo pipefail
+          apkanalyzer_path="$(find "$ANDROID_HOME/cmdline-tools" -type f -name apkanalyzer | sort -V | tail -n 1)"
+          test -n "$apkanalyzer_path"
+          permissions="$($apkanalyzer_path manifest permissions app/build/outputs/apk/release/app-release.apk)"
+          printf '%s\n' "$permissions"
+          if printf '%s\n' "$permissions" | grep -E \
+            'android\.permission\.(INTERNET|READ_EXTERNAL_STORAGE|WRITE_EXTERNAL_STORAGE|MANAGE_EXTERNAL_STORAGE)'; then
+            echo "::error::Release APK contains a forbidden network or broad-storage permission"
+            exit 1
+          fi
+
+      - name: Generate release checksum
+        run: |
+          set -euo pipefail
+          cd app/build/outputs/apk/release
+          sha256sum app-release.apk > app-release.apk.sha256
 
       - name: Upload signed Release APK
         uses: actions/upload-artifact@v4
         with:
           name: miearn-release-apk
-          path: app/build/outputs/apk/release/app-release.apk
+          path: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/apk/release/app-release.apk.sha256
+            app/build/outputs/apk/release/app-release.apk.cert.txt
           if-no-files-found: error
           retention-days: 30
 

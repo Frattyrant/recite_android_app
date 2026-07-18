@@ -27,26 +27,42 @@ The generated launcher foreground uses the user-provided illustration as its
 visual source.
 
 The packaged offline Ogg files were synthesized with `piper-tts` 1.4.2 using
-the `en_US-lessac-high` voice at 40 kbps Opus:
+the `en_US-ljspeech-high` U.S.-English female voice at 40 kbps Opus:
 
 - Piper generation tool: https://github.com/OHF-Voice/piper1-gpl,
   GPL-3.0-or-later. The tool is used during asset generation and is not
   packaged in the application.
 - Voice model source:
-  https://huggingface.co/rhasspy/piper-voices/tree/main/en/en_US/lessac/high.
+  https://huggingface.co/rhasspy/piper-voices/tree/main/en/en_US/ljspeech/high.
   The `rhasspy/piper-voices` repository declares the MIT License. The ONNX
   model and its JSON configuration are generation inputs and are not packaged
   in the application.
-- The voice model card identifies the Lessac Blizzard 2013 dataset and links
-  its research license:
-  https://www.cstr.ed.ac.uk/projects/blizzard/2013/lessac_blizzard2013/license.html.
+- The voice model card identifies the LJSpeech dataset as public domain:
+  https://keithito.com/LJ-Speech-Dataset/.
 
-The adopted production voice uses the `en_US-lessac-high` model from the same
+The adopted production voice uses the `en_US-ljspeech-high` model from the same
 Piper voice repository. Its ONNX SHA-256 is
-`4cabf7c3a638017137f34a1516522032d4fe3f38228a843cc9b764ddcbcd9e09`.
+`5d4f08ba6a2a48c44592eed3ce56bf85e9de3dd4e20df90541ae68a8310c029a`.
+Its configuration SHA-256 is
+`7e1f4634af596d83cca997fb7a931ba80b70f8a316a2655ee69c55365e0ace14`,
+and the pinned model-card SHA-256 is
+`fbdb9c09bd33e73f6876ba48fc2eeea120b9984d07763bfa21b3c8192fd4ba86`.
 The model is stored outside the repository, used only at build time, and is
 not packaged in the application. MIearn packages only the generated Ogg/Opus
 audio assets.
+
+Fifty-three expression-specific correction sources were synthesized with
+Kokoro-82M 1.0 using the U.S.-English `af_heart` voice. These corrections are
+selected by exact normalized expression and bound to the generated source WAV
+hash; they do not replace the global LJSpeech voice:
+
+- Project: https://github.com/hexgrad/kokoro
+- Model: https://huggingface.co/hexgrad/Kokoro-82M
+- License: Apache License 2.0
+- The model, weights and generation environment are build-time inputs stored
+  outside the repository and are not packaged in either application.
+- The production audio manifest records the model name, version, voice,
+  license, source URL and SHA-256 of every adopted correction source.
 
 General American IPA is generated from the pinned `en_US` data in
 `open-dict-data/ipa-dict`:
@@ -64,8 +80,9 @@ Seven exact U.S.-English pronunciation recordings sourced from Wikimedia
 Commons are used for `bench`, `bin`, `flimsy`, `I`, `label`, `O`, and `thread`.
 Each source page declares the recording public domain. Source URL, description
 page, uploader, original file hash, and accent evidence are preserved in
-`app/src/main/assets/content/audio_attributions_v231.json`. All other bundled
-pronunciation audio uses the Piper fallback described above.
+`app/src/main/assets/content/audio_attributions_v231.json`. Remaining bundled
+pronunciation audio uses the Piper fallback or the hash-bound Kokoro correction
+path described above.
 These notices identify the generation tool, model provenance, and upstream
 licenses; they do not relicense upstream recordings, the model, or generated
 audio.

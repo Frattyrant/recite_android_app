@@ -42,8 +42,8 @@ android {
         applicationId = "com.miearn.app"
         minSdk = 29
         targetSdk = 36
-        versionCode = 8
-        versionName = "2.31"
+        versionCode = 9
+        versionName = "2.32"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

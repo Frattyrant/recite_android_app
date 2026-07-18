@@ -22,6 +22,9 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v5
 
+      - name: Prepare Gradle wrapper
+        run: chmod +x gradlew
+
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
@@ -32,7 +35,20 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Test, lint, and assemble Debug APK
-        run: ./gradlew test lint assembleDebug
+        run: ./gradlew -Dorg.gradle.java.home="$JAVA_HOME" test lint assembleDebug verifyDebugApkSize
+
+      - name: Verify Debug permission surface
+        run: |
+          set -euo pipefail
+          apkanalyzer_path="$(find "$ANDROID_HOME/cmdline-tools" -type f -name apkanalyzer | sort -V | tail -n 1)"
+          test -n "$apkanalyzer_path"
+          permissions="$($apkanalyzer_path manifest permissions app/build/outputs/apk/debug/app-debug.apk)"
+          printf '%s\n' "$permissions"
+          if printf '%s\n' "$permissions" | grep -E \
+            'android\.permission\.(INTERNET|READ_EXTERNAL_STORAGE|WRITE_EXTERNAL_STORAGE|MANAGE_EXTERNAL_STORAGE)'; then
+            echo "::error::Debug APK contains a forbidden network or broad-storage permission"
+            exit 1
+          fi
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4

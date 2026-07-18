@@ -5,6 +5,7 @@ import androidx.work.workDataOf
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
 import com.miearn.app.MIearnApplication
+import com.miearn.app.data.local.ImportDraftEntity
 import com.miearn.app.data.local.ImportJobEntity
 import com.miearn.app.data.local.ImportJobStatus
 import java.io.File
@@ -12,6 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -63,4 +66,92 @@ class PrepareImportWorkerTest {
         )
         }
     }
+
+    @Test
+    fun failedPreparationDeletesCopiedFileAndDraftRows() = runTest {
+        withContext(Dispatchers.IO) {
+            val file = File(application.cacheDir, "failed-worker-import.csv")
+            file.writeText("英文,中文\n123,无效\n", Charsets.UTF_8)
+            val job = importJob(
+                jobId = "failed-worker-job",
+                file = file,
+                status = ImportJobStatus.COPYING,
+            )
+            application.container.database.importDao().upsertJob(job)
+            application.container.database.importDao().upsertDrafts(
+                listOf(importDraft(job.jobId)),
+            )
+            val worker = TestListenableWorkerBuilder<PrepareImportWorker>(application)
+                .setInputData(workDataOf(PrepareImportWorker.KEY_JOB_ID to job.jobId))
+                .build()
+
+            val result = worker.doWork()
+
+            assertTrue(result is androidx.work.ListenableWorker.Result.Failure)
+            assertEquals(
+                ImportJobStatus.FAILED.name,
+                application.container.database.importDao().getJob(job.jobId)?.status,
+            )
+            assertFalse(file.exists())
+            assertTrue(application.container.database.importDao().drafts(job.jobId).isEmpty())
+        }
+    }
+
+    @Test
+    fun cancellationDeletesCopiedFileAndDraftRows() = runTest {
+        withContext(Dispatchers.IO) {
+            val file = File(application.cacheDir, "cancelled-worker-import.csv")
+            file.writeText("英文,中文\nfixture,夹具\n", Charsets.UTF_8)
+            val job = importJob(
+                jobId = "cancelled-worker-job",
+                file = file,
+                status = ImportJobStatus.PREPARING,
+            )
+            application.container.database.importDao().upsertJob(job)
+            application.container.database.importDao().upsertDrafts(
+                listOf(importDraft(job.jobId)),
+            )
+            val coordinator = ImportWorkCoordinator(
+                application,
+                application.container.database,
+            )
+
+            coordinator.cancel(job.jobId)
+
+            assertEquals(
+                ImportJobStatus.CANCELLED.name,
+                application.container.database.importDao().getJob(job.jobId)?.status,
+            )
+            assertFalse(file.exists())
+            assertTrue(application.container.database.importDao().drafts(job.jobId).isEmpty())
+        }
+    }
+
+    private fun importJob(
+        jobId: String,
+        file: File,
+        status: ImportJobStatus,
+    ) = ImportJobEntity(
+        jobId = jobId,
+        sourceId = "source-$jobId",
+        sourceName = "测试词库",
+        originalFileName = file.name,
+        internalFilePath = file.absolutePath,
+        status = status.name,
+        createdAtEpochMillis = 1,
+        updatedAtEpochMillis = 1,
+    )
+
+    private fun importDraft(jobId: String) = ImportDraftEntity(
+        jobId = jobId,
+        rowIndex = 1,
+        normalizedEnglish = "fixture",
+        english = "fixture",
+        primaryEnglish = "fixture",
+        phonetic = "/fixture/",
+        chinese = "夹具",
+        note = "",
+        exampleEn = "",
+        exampleZh = "",
+    )
 }

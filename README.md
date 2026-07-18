@@ -1,47 +1,49 @@
-﻿# MIearn
+# MIearn
 
-一款面向制造业专业英语的 Android 离线背词应用。
+MIearn 是一款面向制造业专业英语的离线背词应用。内置 2,698 条经过清洗的专业词汇与句子，无需注册、无需联网，安装后即可学习。
 
-MIearn 内置 2,698 条经过清洗的专业词汇与句子，无需注册、无需联网，安装后即可学习。
+[下载 Android 最新版](https://github.com/Frattyrant/recite_android_app/releases/latest)
 
-[下载最新版本](https://github.com/Frattyrant/recite_android_app/releases/latest)
+## v2.32 更新
+
+- 全量重建美式英语发音：LJSpeech High 主声音 + Kokoro 定向纠音，3,741 个完整/分段音频均通过哈希、解码和 ASR 审计。
+- 修正专业词条音标与多表达切分；点击紫色词块可只播放当前表达。
+- 修复每日提醒只触发一次的问题，并增加系统状态与测试提醒入口。
+- 强化本地数据安全、数据库迁移和自定义词库导入的临时文件保护。
+- 新增 iOS 16+ SwiftUI 客户端源码，与 Android 共用词库、学习规则和离线音频。
 
 ## 主要功能
 
 - 机械、电气、客户评审、会议口语和商务句子五类内置词库。
-- 新词先浏览、再做英选中巩固，减少首次学习的认知负担。
-- SM-2 复习、错题强化、收藏和学习进度统计。
+- 新词先浏览、再做英选中巩固，第二遍作答后自动进入下一词。
+- SM-2 复习、错题强化、收藏、学习日历和数据统计。
 - 英选中、中选英、拼写、听音选词和例句填空五种测试。
-- 内置美式音标与离线发音，多表达词条支持分别点击播放。
-- 第二遍巩固作答后自动进入下一词，并保留简短正误反馈。
-- 制造业场景例句按词条轮换，减少重复模板感。
-- 月度学习日历、周摘要和每日学习详情。
-- 支持导入 `.csv` 与 `.xlsx` 自定义词库。
+- 内置美式音标和离线发音；多表达词条支持完整播放或单独播放。
+- Android 支持导入 CSV/XLSX 自定义词库；iOS 当前支持 CSV。
 - 跟随系统切换浅色或深色界面。
 
-## 安装
+## Android 安装
 
 1. 打开 [Releases](https://github.com/Frattyrant/recite_android_app/releases)。
-2. 下载最新版 `MIearn-v2.31.apk`。
-3. 在 Android 手机上打开 APK 并按系统提示完成安装。
+2. 下载 `MIearn-v2.32.apk`。
+3. 在 Android 手机上打开 APK，并按系统提示完成安装。
 
 系统要求：Android 10 或更高版本。
 
-> 如果系统阻止安装，请仅为当前文件管理器开启“允许安装未知应用”，安装结束后可再次关闭。
+> 如果系统阻止安装，请仅为当前文件管理器开启“允许安装未知应用”，安装完成后可再次关闭。
 
 ## 快速开始
 
-1. 打开 MIearn，在首页顶部选择要学习的词库。
-2. 点击底部上方的“开始学习”。
-3. 第一遍浏览卡片，点击卡片查看音标、释义和例句。
-4. 第二遍完成英选中巩固。
-5. 之后按首页显示的到期数量进行复习。
+1. 打开 MIearn，在首页顶部选择学习词库。
+2. 点击屏幕底部上方的“开始学习”。
+3. 第一遍浏览卡片；点击卡片查看音标、释义和例句。
+4. 第二遍完成英选中巩固，之后按首页到期数量复习。
 
 每日新词数量、自动发音和学习提醒可在首页右上角的设置中调整。
 
 ## 导入自己的词库
 
-首页点击“导入”，选择 CSV 或 Excel 文件。最简单的 CSV 格式如下：
+最简单的 CSV 文件如下：
 
 ```csv
 英文,中文
@@ -55,44 +57,66 @@ limit switch,限位开关
 英文,中文,音标,备注,英文例句,例句翻译
 ```
 
-- 单个文件不超过 20 MB、最多 20,000 行。
-- 所有解析、清洗和字典补全均在本机完成。
+- Android：支持 `.csv` 和 `.xlsx`，单文件不超过 20 MB、最多 20,000 行。
+- iOS：当前支持 UTF-8 编码的 `.csv`。
+- 解析、清洗、字典补全和学习记录均保存在本机。
 - 自定义词条在学习时使用系统英语 TTS 发音。
 
 ## 离线与隐私
 
-- 应用不申请网络权限。
+- Android 应用不申请网络权限，也不申请广泛存储权限。
 - 不包含账号、广告、云同步或用户追踪。
-- 词库、收藏、错题和学习记录均保存在手机本地。
+- 词库、收藏、错题和学习记录均保存在设备本地。
+- Android 禁用应用数据备份和明文网络流量。
 
 ## 从源码构建
 
-环境要求：JDK 21、Android SDK 36、Android Build Tools 36。
+### Android
+
+需要 JDK 21、Android SDK 36 和 Android Build Tools 36：
 
 ```powershell
-./gradlew assembleDebug
 ./gradlew test
 ./gradlew lint
+./gradlew assembleDebug verifyDebugApkSize
 ```
 
-Debug APK 输出位置：
+Debug APK：`app/build/outputs/apk/debug/app-debug.apk`
 
-```text
-app/build/outputs/apk/debug/app-debug.apk
+### iOS
+
+需要 macOS、Xcode 16、XcodeGen 和 iOS 16+ SDK：
+
+```bash
+cd ios/MIearnCore
+swift test
+
+cd ../MIearnApp
+xcodegen generate
+xcodebuild \
+  -project MIearn.xcodeproj \
+  -scheme MIearn \
+  -sdk iphonesimulator \
+  -destination 'generic/platform=iOS Simulator' \
+  CODE_SIGNING_ALLOWED=NO \
+  build
 ```
 
-项目使用 Kotlin、Jetpack Compose、Room、MVVM、DataStore、Media3 和 WorkManager。
+仓库不提供已签名 IPA；请在 Xcode 中使用自己的 Apple Developer 签名运行或归档。
 
-第三方资源与许可信息见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 ## 安全发布
 
-本地签名时，Copy `key.properties.example` to `key.properties`，并仅在本机填写真实签名信息；不要提交 `key.properties`、keystore 或任何密码。
+本地签名时，将 `key.properties.example` 复制为 `key.properties`，并仅在本机填写真实签名信息。不要提交 `key.properties`、keystore 或密码。
 
-GitHub Actions 发布使用以下 GitHub Secrets，仅填写在仓库 Secrets 设置中：
+命令行提示：Copy `key.properties.example` to `key.properties`，然后只在本机编辑副本。
+
+GitHub Actions 使用以下 GitHub Secrets：
 
 - `MIEARN_KEYSTORE_BASE64`
 - `MIEARN_KEYSTORE_PASSWORD`
 - `MIEARN_KEY_ALIAS`
 - `MIEARN_KEY_PASSWORD`
 
-`MIEARN_KEYSTORE_BASE64` 保存 Base64 编码后的新 keystore。不要在 README、工作流、提交记录或日志中写入任何 Secret 的真实值。
+`MIEARN_KEYSTORE_BASE64` 保存 keystore 文件的 Base64 编码内容；真实值只能写入 GitHub Secrets，不能出现在 README、工作流、提交或构建日志中。
+
+项目使用 Kotlin、Jetpack Compose、Room、MVVM、DataStore、Media3、WorkManager 和 SwiftUI。第三方资源与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

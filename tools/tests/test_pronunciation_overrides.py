@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from tools.audio_profiles import (
+    LJSPEECH_HIGH,
     LESSAC_HIGH,
     PronunciationOverrides,
     load_pronunciation_overrides,
@@ -29,11 +30,18 @@ class PronunciationOverridesTest(unittest.TestCase):
         self.assertEqual("eye", spoken)
         self.assertEqual("exactText:I", key)
 
-    def test_lessac_high_profile_uses_40k_audio(self):
+    def test_ljspeech_high_is_the_approved_40k_production_profile(self):
+        self.assertEqual("en_US-ljspeech-high", LJSPEECH_HIGH.name)
+        self.assertEqual(
+            "5d4f08ba6a2a48c44592eed3ce56bf85e9de3dd4e20df90541ae68a8310c029a",
+            LJSPEECH_HIGH.model_sha256,
+        )
+        self.assertEqual(40, LJSPEECH_HIGH.bit_rate_kbps)
+        self.assertEqual("audio", LJSPEECH_HIGH.application)
+        self.assertEqual(48_000, LJSPEECH_HIGH.encoded_sample_rate)
+
+    def test_lessac_profile_remains_available_only_for_legacy_audits(self):
         self.assertEqual("en_US-lessac-high", LESSAC_HIGH.name)
-        self.assertEqual(40, LESSAC_HIGH.bit_rate_kbps)
-        self.assertEqual("audio", LESSAC_HIGH.application)
-        self.assertEqual(48_000, LESSAC_HIGH.encoded_sample_rate)
 
     def test_word_id_rule_wins_over_exact_text_rule(self):
         rules = PronunciationOverrides.from_json(

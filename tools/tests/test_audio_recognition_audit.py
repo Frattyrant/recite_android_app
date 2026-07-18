@@ -4,14 +4,46 @@ from tools.pronunciation.audit_audio_recognition import (
     _apply_composite_evidence,
     _can_reuse_transcript,
     _prefer_transcript,
+    _reusable_checkpoint_seed,
     _review_for_path,
     _should_prompt_retry,
+    _transcribe_audio,
     _targets,
     audit_transcript,
 )
 
 
 class AudioRecognitionAuditTest(unittest.TestCase):
+    def test_transcribe_adapter_supports_openai_and_faster_whisper(self):
+        class OpenAiModel:
+            def transcribe(self, path, **options):
+                self.call = (path, options)
+                return {"text": " fixture "}
+
+        class Segment:
+            def __init__(self, text):
+                self.text = text
+
+        class FasterModel:
+            def transcribe(self, path, **options):
+                self.call = (path, options)
+                return iter([Segment(" fixture "), Segment(" jig ")]), object()
+
+        openai = OpenAiModel()
+        faster = FasterModel()
+
+        self.assertEqual(
+            "fixture",
+            _transcribe_audio(openai, "openai", "one.ogg", "technical fixture"),
+        )
+        self.assertEqual(
+            "fixture jig",
+            _transcribe_audio(faster, "faster-whisper", "two.ogg", "technical fixture"),
+        )
+        self.assertEqual("technical fixture", openai.call[1]["initial_prompt"])
+        self.assertEqual("technical fixture", faster.call[1]["initial_prompt"])
+        self.assertEqual(1, faster.call[1]["beam_size"])
+
     def test_targets_prefer_expected_transcript_over_synthesis_hint(self):
         manifest = {
             "entries": {
@@ -40,6 +72,37 @@ class AudioRecognitionAuditTest(unittest.TestCase):
         )
         self.assertFalse(
             _can_reuse_transcript(prior, "jig", "same", "same")
+        )
+
+    def test_resume_checkpoint_keeps_all_future_hash_matched_results(self):
+        targets = [
+            ("audio/one.ogg", "one", "hash-1"),
+            ("audio/two.ogg", "two", "hash-2"),
+            ("audio/changed.ogg", "changed", "new-hash"),
+        ]
+        existing = {
+            "audio/one.ogg": {
+                "path": "audio/one.ogg",
+                "expected": "one",
+                "audioSha256": "hash-1",
+            },
+            "audio/two.ogg": {
+                "path": "audio/two.ogg",
+                "expected": "two",
+                "audioSha256": "hash-2",
+            },
+            "audio/changed.ogg": {
+                "path": "audio/changed.ogg",
+                "expected": "changed",
+                "audioSha256": "old-hash",
+            },
+        }
+
+        seed = _reusable_checkpoint_seed(targets, existing, {})
+
+        self.assertEqual(
+            {"audio/one.ogg", "audio/two.ogg"},
+            set(seed),
         )
 
     def test_retry_transcript_wins_when_it_matches_better(self):
@@ -104,6 +167,13 @@ class AudioRecognitionAuditTest(unittest.TestCase):
         self.assertFalse(audit_transcript("jig", "gig").passed)
 
     def test_allows_letter_expansion_and_minor_long_sentence_difference(self):
+        self.assertTrue(
+            audit_transcript(
+                "We're looking for ways to increase revenue",
+                "We are looking for ways to increase revenue",
+            ).passed
+        )
+        self.assertTrue(audit_transcript("I'm sorry", "I am sorry").passed)
         self.assertTrue(audit_transcript("P L C", "PLC").passed)
         self.assertTrue(audit_transcript("recipient's name", "recipients name").passed)
         self.assertTrue(audit_transcript("invoice", "in voice").passed)

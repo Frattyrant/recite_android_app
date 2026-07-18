@@ -78,6 +78,8 @@ class PrepareImportWorker(
             }
             Result.success()
         } catch (error: Exception) {
+            runCatching { dao.deleteDrafts(jobId) }
+            runCatching { File(job.internalFilePath).delete() }
             dao.upsertJob(
                 job.copy(
                     status = ImportJobStatus.FAILED.name,

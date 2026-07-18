@@ -30,6 +30,33 @@ HOMOPHONE_CANONICAL = {
     "plexy": "plexi",
 }
 
+CONTRACTION_EXPANSIONS = {
+    "aren't": "are not",
+    "can't": "can not",
+    "couldn't": "could not",
+    "didn't": "did not",
+    "doesn't": "does not",
+    "don't": "do not",
+    "hadn't": "had not",
+    "hasn't": "has not",
+    "haven't": "have not",
+    "he's": "he is",
+    "i'm": "i am",
+    "isn't": "is not",
+    "it's": "it is",
+    "let's": "let us",
+    "she's": "she is",
+    "that's": "that is",
+    "they're": "they are",
+    "wasn't": "was not",
+    "we're": "we are",
+    "weren't": "were not",
+    "what's": "what is",
+    "won't": "will not",
+    "wouldn't": "would not",
+    "you're": "you are",
+}
+
 
 @dataclass(frozen=True)
 class TranscriptAudit:
@@ -61,6 +88,14 @@ def _join_initialisms(tokens: list[str]) -> tuple[str, ...]:
 
 
 def normalize_transcript(text: str) -> tuple[str, ...]:
+    text = text.replace("’", "'")
+    for contraction, expansion in CONTRACTION_EXPANSIONS.items():
+        text = re.sub(
+            rf"\b{re.escape(contraction)}\b",
+            expansion,
+            text,
+            flags=re.IGNORECASE,
+        )
     text = text.replace("&", " and ").replace("=", " equals ").replace("+", " plus ")
     text = re.sub(r"\bsch\s*80\b", "schedule 80", text, flags=re.IGNORECASE)
     tokens = [token.casefold().replace("'", "") for token in TOKEN.findall(text)]
@@ -306,11 +341,53 @@ def _can_reuse_transcript(
     return bool(prior_hash) and prior_hash == current_audio_hash
 
 
+def _reusable_checkpoint_seed(
+    targets: list[tuple[str, str, str]],
+    existing: dict[str, dict[str, Any]],
+    baseline_hashes: dict[str, str],
+) -> dict[str, dict[str, Any]]:
+    return {
+        relative: prior
+        for relative, expected, audio_hash in targets
+        if (
+            (prior := existing.get(relative)) is not None
+            and _can_reuse_transcript(
+                prior,
+                expected,
+                audio_hash,
+                baseline_hashes.get(relative, ""),
+            )
+        )
+    }
+
+
 def _write_report(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     temporary.replace(path)
+
+
+def _transcribe_audio(
+    model: Any,
+    backend: str,
+    path: str,
+    initial_prompt: str | None = None,
+) -> str:
+    common = {
+        "language": "en",
+        "task": "transcribe",
+        "temperature": 0,
+        "condition_on_previous_text": False,
+    }
+    if initial_prompt:
+        common["initial_prompt"] = initial_prompt
+    if backend == "openai":
+        return str(model.transcribe(path, fp16=False, **common).get("text", "")).strip()
+    if backend == "faster-whisper":
+        segments, _ = model.transcribe(path, beam_size=1, **common)
+        return " ".join(str(segment.text).strip() for segment in segments).strip()
+    raise ValueError(f"unsupported ASR backend: {backend}")
 
 
 def main() -> None:
@@ -319,6 +396,13 @@ def main() -> None:
     parser.add_argument("--assets", type=Path, required=True)
     parser.add_argument("--model", default="base")
     parser.add_argument("--retry-model")
+    parser.add_argument(
+        "--backend",
+        choices=("openai", "faster-whisper"),
+        default="openai",
+    )
+    parser.add_argument("--compute-type", default="int8")
+    parser.add_argument("--cpu-threads", type=int, default=12)
     parser.add_argument("--prompt-retry", action="store_true")
     parser.add_argument("--model-cache", type=Path, default=Path.home() / ".cache/whisper")
     parser.add_argument("--overrides", type=Path, default=Path("tools/pronunciation/audio_audit_overrides.json"))
@@ -327,14 +411,27 @@ def main() -> None:
     parser.add_argument("--allow-unreviewed", action="store_true")
     args = parser.parse_args()
 
-    import whisper
-
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     override_payload = json.loads(args.overrides.read_text(encoding="utf-8"))
     if override_payload.get("schemaVersion") != 1 or not isinstance(override_payload.get("entries"), dict):
         raise ValueError("audio audit overrides require schemaVersion 1 and entries")
     reviewed = override_payload["entries"]
-    model = whisper.load_model(args.model, download_root=str(args.model_cache))
+    def load_model(name: str) -> Any:
+        if args.backend == "openai":
+            import whisper
+
+            return whisper.load_model(name, download_root=str(args.model_cache))
+        from faster_whisper import WhisperModel
+
+        return WhisperModel(
+            name,
+            device="cpu",
+            compute_type=args.compute_type,
+            cpu_threads=args.cpu_threads,
+            download_root=str(args.model_cache),
+        )
+
+    model = load_model(args.model)
     retry_model = None
 
     existing: dict[str, dict[str, Any]] = {}
@@ -347,7 +444,11 @@ def main() -> None:
             json.loads(args.baseline_manifest.read_text(encoding="utf-8"))
         )
     targets = _targets(manifest)
-    results: list[dict[str, Any]] = []
+    results_by_path = _reusable_checkpoint_seed(
+        targets,
+        existing,
+        baseline_hashes,
+    )
     for index, (relative, expected, audio_hash) in enumerate(targets, 1):
         prior = existing.get(relative)
         retry_recognized = ""
@@ -361,33 +462,20 @@ def main() -> None:
             recognized = str(prior.get("recognized", ""))
             audit = audit_transcript(expected, recognized)
         else:
-            recognized = str(
-                model.transcribe(
-                    str(args.assets / relative),
-                    language="en",
-                    task="transcribe",
-                    fp16=False,
-                    temperature=0,
-                    condition_on_previous_text=False,
-                ).get("text", "")
-            ).strip()
+            recognized = _transcribe_audio(
+                model,
+                args.backend,
+                str(args.assets / relative),
+            )
             audit = audit_transcript(expected, recognized)
             if not audit.passed and args.retry_model:
                 if retry_model is None:
-                    retry_model = whisper.load_model(
-                        args.retry_model,
-                        download_root=str(args.model_cache),
-                    )
-                retry_recognized = str(
-                    retry_model.transcribe(
-                        str(args.assets / relative),
-                        language="en",
-                        task="transcribe",
-                        fp16=False,
-                        temperature=0,
-                        condition_on_previous_text=False,
-                    ).get("text", "")
-                ).strip()
+                    retry_model = load_model(args.retry_model)
+                retry_recognized = _transcribe_audio(
+                    retry_model,
+                    args.backend,
+                    str(args.assets / relative),
+                )
                 recognized, audit = _prefer_transcript(
                     expected,
                     recognized,
@@ -395,21 +483,13 @@ def main() -> None:
                 )
         if args.prompt_retry and _should_prompt_retry(audit):
             if retry_model is None:
-                retry_model = whisper.load_model(
-                    args.retry_model or args.model,
-                    download_root=str(args.model_cache),
-                )
-            prompt_recognized = str(
-                retry_model.transcribe(
-                    str(args.assets / relative),
-                    language="en",
-                    task="transcribe",
-                    fp16=False,
-                    temperature=0,
-                    condition_on_previous_text=False,
-                    initial_prompt=f"Technical English vocabulary: {expected}",
-                ).get("text", "")
-            ).strip()
+                retry_model = load_model(args.retry_model or args.model)
+            prompt_recognized = _transcribe_audio(
+                retry_model,
+                args.backend,
+                str(args.assets / relative),
+                initial_prompt=f"Technical English vocabulary: {expected}",
+            )
             prompted_text, prompted_audit = _prefer_transcript(
                 expected,
                 recognized,
@@ -422,39 +502,47 @@ def main() -> None:
                 )
             recognized, audit = prompted_text, prompted_audit
         review = _review_for_path(reviewed, relative, audio_hash)
-        results.append(
-            {
-                "path": relative,
-                "audioSha256": audio_hash,
-                "expected": expected,
-                "recognized": recognized,
-                "retryRecognized": retry_recognized or None,
-                "promptRecognized": prompt_recognized or None,
-                **asdict(audit),
-                "reviewedException": review,
-                "releasePassed": audit.passed or bool(review),
-            }
-        )
+        results_by_path[relative] = {
+            "path": relative,
+            "audioSha256": audio_hash,
+            "expected": expected,
+            "recognized": recognized,
+            "retryRecognized": retry_recognized or None,
+            "promptRecognized": prompt_recognized or None,
+            **asdict(audit),
+            "reviewedException": review,
+            "releasePassed": audit.passed or bool(review),
+        }
         if index % 25 == 0 or index == len(targets):
+            checkpoint_results = [
+                results_by_path[path]
+                for path, _, _ in targets
+                if path in results_by_path
+            ]
             payload = {
                 "schemaVersion": 1,
                 "auditPolicyVersion": 4,
                 "model": args.model,
+                "backend": args.backend,
+                "computeType": args.compute_type if args.backend == "faster-whisper" else None,
                 "retryModel": args.retry_model,
                 "manifestSha256": manifest.get("contentSha256"),
                 "assetCount": len(targets),
-                "auditedCount": len(results),
-                "assets": results,
+                "auditedCount": len(checkpoint_results),
+                "assets": checkpoint_results,
             }
             _write_report(args.report, payload)
             print(f"ASR audit {index}/{len(targets)}", flush=True)
 
+    results = [results_by_path[path] for path, _, _ in targets]
     _apply_composite_evidence(manifest, results)
     unreviewed = [item for item in results if not item["releasePassed"]]
     final = {
         "schemaVersion": 1,
         "auditPolicyVersion": 4,
         "model": args.model,
+        "backend": args.backend,
+        "computeType": args.compute_type if args.backend == "faster-whisper" else None,
         "retryModel": args.retry_model,
         "manifestSha256": manifest.get("contentSha256"),
         "assetCount": len(targets),

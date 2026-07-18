@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 import tools.build_content as content_builder
+from openpyxl import load_workbook
 from tools.build_content import (
     CATEGORY_COUNTS,
     build_content,
@@ -16,6 +17,26 @@ SOURCE_DIR = PROJECT_ROOT / "assets"
 
 
 class ContentPipelineTest(unittest.TestCase):
+    def test_source_workbook_contains_only_product_vocabulary_sheets(self):
+        workbook = load_workbook(
+            SOURCE_DIR / "专业英语.xlsx",
+            read_only=True,
+            data_only=True,
+        )
+        try:
+            self.assertEqual(
+                [
+                    "专业词汇必背-机械",
+                    "专业词汇必背-电气",
+                    "客户评审观点及问题-机械",
+                    "会议常用口语",
+                    "商务英语交流常用必背句子",
+                ],
+                workbook.sheetnames,
+            )
+        finally:
+            workbook.close()
+
     def test_primary_english_uses_first_pronounceable_variant(self):
         self.assertEqual("fixture", clean_primary_english("fixture；jig"))
         self.assertEqual("push", clean_primary_english("push/pusher"))

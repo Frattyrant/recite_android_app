@@ -17,14 +17,24 @@ from typing import Callable, Sequence
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from tools.audio_profiles import LESSAC_HIGH, load_pronunciation_overrides
+from tools.audio_profiles import (
+    LJSPEECH_DATASET_LICENSE,
+    LJSPEECH_DATASET_URL,
+    LJSPEECH_HIGH,
+    LJSPEECH_MODEL_CARD_SHA256,
+    LJSPEECH_MODEL_CONFIG_SHA256,
+    LJSPEECH_MODEL_SOURCE_URL,
+    load_pronunciation_overrides,
+)
 from tools.audio_production import (
     ProductionEntryPlan,
     assert_safe_staging_path,
     content_sha256,
     load_human_audio_sources,
+    load_model_audio_sources,
     plan_production,
     speech_plan_sha256,
+    transitional_speech_plan_sha256,
 )
 from tools.audio_trial import load_words
 from tools.generate_audio import (
@@ -42,6 +52,17 @@ Synthesizer = Callable[[str, Path], None]
 Encoder = Callable[[Path, Path, str], None]
 Probe = Callable[[Path], dict]
 HumanDecoder = Callable[[Path, Path], None]
+
+
+def _model_source_metadata(source) -> dict:
+    return {
+        "modelName": source.model_name,
+        "modelVersion": source.model_version,
+        "modelSourceUrl": source.model_source_url,
+        "modelLicense": source.model_license,
+        "voice": source.voice,
+        "sourceSha256": source.sha256,
+    }
 
 
 def _file_metadata(path: Path, output: Path, probe: Probe) -> dict:
@@ -114,11 +135,15 @@ def _can_resume(
             or not _metadata_matches(output, actual, probe, verify_decode)
         ):
             return False
+    accepted_speech_hashes = {speech_plan_sha256(plan)}
+    transitional_hash = transitional_speech_plan_sha256(plan)
+    if transitional_hash is not None:
+        accepted_speech_hashes.add(transitional_hash)
     return (
         entry.get("segmentPlanSha256") == segment_plan_sha256(
             [segment.display_text for segment in plan.segments]
         )
-        and entry.get("speechPlanSha256") == speech_plan_sha256(plan)
+        and entry.get("speechPlanSha256") in accepted_speech_hashes
     )
 
 
@@ -237,12 +262,13 @@ def generate_staged_pack(
             segment_entries: list[dict] = []
             for segment in plan.segments:
                 wav = word_temp / f"{segment.index:02d}.wav"
-                if segment.human_source is not None:
+                external_source = segment.human_source or segment.model_source
+                if external_source is not None:
                     if decode_human is None:
-                        raise RuntimeError("human audio decoder is required")
-                    source = segment.human_source.path
-                    if not source.is_file() or sha256(source) != segment.human_source.sha256:
-                        raise RuntimeError(f"human audio source hash mismatch: {source}")
+                        raise RuntimeError("external audio decoder is required")
+                    source = external_source.path
+                    if not source.is_file() or sha256(source) != external_source.sha256:
+                        raise RuntimeError(f"external audio source hash mismatch: {source}")
                     decode_human(source, wav)
                 else:
                     synthesize(segment.spoken_text, wav)
@@ -273,6 +299,10 @@ def generate_staged_pack(
                             "license": segment.human_source.license_name,
                             "sourceSha256": segment.human_source.sha256,
                         }
+                    if segment.model_source is not None:
+                        segment_entries[-1]["modelSource"] = _model_source_metadata(
+                            segment.model_source
+                        )
             complete_wav = wavs[0]
             if len(wavs) > 1:
                 complete_wav = word_temp / "combined.wav"
@@ -309,6 +339,8 @@ def generate_staged_pack(
                         "license": segment.human_source.license_name,
                         "sourceSha256": segment.human_source.sha256,
                     }
+                if segment.model_source is not None:
+                    entry["modelSource"] = _model_source_metadata(segment.model_source)
             if len(plan.segments) > 1:
                 entry["pauseBetweenSegmentsMs"] = 500
                 entry["segments"] = segment_entries
@@ -362,20 +394,37 @@ def _real_generation(args: argparse.Namespace) -> dict:
     from tools.validate_audio import probe_audio
 
     config = Path(f"{args.model}.json")
-    for required in (args.content, args.overrides, args.model, config, args.ffmpeg):
+    model_card = args.model.with_name("MODEL_CARD")
+    for required in (
+        args.content,
+        args.overrides,
+        args.model,
+        config,
+        model_card,
+        args.ffmpeg,
+    ):
         if not required.is_file():
             raise FileNotFoundError(required)
-    if sha256(args.model) != LESSAC_HIGH.model_sha256:
-        raise RuntimeError("unexpected Lessac High model SHA-256")
+    if sha256(args.model) != LJSPEECH_HIGH.model_sha256:
+        raise RuntimeError("unexpected LJSpeech High model SHA-256")
+    if sha256(config) != LJSPEECH_MODEL_CONFIG_SHA256:
+        raise RuntimeError("unexpected LJSpeech High model config SHA-256")
+    if sha256(model_card) != LJSPEECH_MODEL_CARD_SHA256:
+        raise RuntimeError("unexpected LJSpeech High model card SHA-256")
     words = load_words(args.content)
     human_audio = load_human_audio_sources(
         args.human_attributions,
         args.human_audio_root,
     )
+    model_audio = load_model_audio_sources(
+        args.model_audio_attributions,
+        args.model_audio_root,
+    )
     plans = plan_production(
         words,
         load_pronunciation_overrides(args.overrides),
         human_audio=human_audio,
+        model_audio=model_audio,
     )
     voice = PiperVoice.load(str(args.model), config_path=str(config))
     synthesis = SynthesisConfig(
@@ -389,7 +438,7 @@ def _real_generation(args: argparse.Namespace) -> dict:
             voice.synthesize_wav(text, wav_file, syn_config=synthesis)
 
     def encode(source: Path, target: Path, stable_key: str) -> None:
-        subprocess.run([str(args.ffmpeg), *ffmpeg_encode_args(LESSAC_HIGH, source, target)], check=True)
+        subprocess.run([str(args.ffmpeg), *ffmpeg_encode_args(LJSPEECH_HIGH, source, target)], check=True)
         normalize_ogg_serial(target, stable_key)
         if not valid_existing(target):
             raise RuntimeError(f"invalid encoded audio: {target}")
@@ -406,13 +455,18 @@ def _real_generation(args: argparse.Namespace) -> dict:
 
     ffprobe = args.ffmpeg.with_name("ffprobe.exe")
     profile = {
-        "name": LESSAC_HIGH.name,
+        "name": LJSPEECH_HIGH.name,
         "modelSha256": sha256(args.model),
         "modelConfigSha256": sha256(config),
+        "modelCardSha256": LJSPEECH_MODEL_CARD_SHA256,
+        "modelSourceUrl": LJSPEECH_MODEL_SOURCE_URL,
+        "dataset": "LJSpeech",
+        "datasetUrl": LJSPEECH_DATASET_URL,
+        "datasetLicense": LJSPEECH_DATASET_LICENSE,
         "piperVersion": importlib.metadata.version("piper-tts"),
         "ffmpegVersion": subprocess.run([str(args.ffmpeg), "-version"], check=True, capture_output=True, text=True).stdout.splitlines()[0],
-        "bitRateKbps": 40,
-        "application": "audio",
+        "bitRateKbps": LJSPEECH_HIGH.bit_rate_kbps,
+        "application": LJSPEECH_HIGH.application,
         "channels": 1,
         "encodedSampleRate": 48_000,
     }
@@ -432,12 +486,14 @@ def main() -> None:
     parser.add_argument("--ffmpeg", type=Path, required=True)
     parser.add_argument("--human-attributions", type=Path)
     parser.add_argument("--human-audio-root", type=Path)
+    parser.add_argument("--model-audio-attributions", type=Path)
+    parser.add_argument("--model-audio-root", type=Path)
     parser.add_argument(
         "--resume-hash-only",
         action="store_true",
         help="Trust previously validated decode metadata while still verifying bytes and SHA-256.",
     )
-    parser.add_argument("--output", type=Path, default=Path("tmp/audio-production-v2.31"))
+    parser.add_argument("--output", type=Path, default=Path("tmp/audio-production-v2.32"))
     args = parser.parse_args()
     report = _real_generation(args)
     print(f"complete entries={report['entryCount']} profile={report['profile']['name']}")

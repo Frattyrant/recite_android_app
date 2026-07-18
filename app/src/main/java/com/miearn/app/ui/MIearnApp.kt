@@ -37,6 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.miearn.app.ui.importing.ImportWizardScreen
 
 @Composable
@@ -149,6 +151,9 @@ fun MIearnApp(viewModel: MainViewModel) {
         return
     }
     val context = LocalContext.current
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        viewModel.refreshReminderStatus()
+    }
     var permissionForPrompt by remember { mutableStateOf(false) }
     var reminderPermissionMessage by remember { mutableStateOf<String?>(null) }
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -194,6 +199,8 @@ fun MIearnApp(viewModel: MainViewModel) {
     val quizState by viewModel.quizState.collectAsStateWithLifecycle()
     val showSettings by viewModel.showSettings.collectAsStateWithLifecycle()
     val showReminderPrompt by viewModel.showReminderPrompt.collectAsStateWithLifecycle()
+    val reminderUiState by viewModel.reminderUiState.collectAsStateWithLifecycle()
+    val reminderTestResult by viewModel.reminderTestResult.collectAsStateWithLifecycle()
 
     Scaffold(
         bottomBar = {
@@ -232,7 +239,7 @@ fun MIearnApp(viewModel: MainViewModel) {
                 modifier = Modifier.padding(padding),
                 onStartStudy = viewModel::startStudy,
                 onSelectCategory = viewModel::selectActiveCategory,
-                onOpenSettings = { viewModel.showSettings.value = true },
+                onOpenSettings = viewModel::openSettings,
                 onOpenSearch = {
                     viewModel.openWordBrowser(WordBrowserDestination.SEARCH)
                 },
@@ -279,6 +286,10 @@ fun MIearnApp(viewModel: MainViewModel) {
             onAutoPlay = viewModel::setAutoPlay,
             onReminderEnabled = { requestReminder(it, false) },
             onReminderTime = viewModel::setReminderTime,
+            reminderUiState = reminderUiState,
+            reminderTestResult = reminderTestResult,
+            onTestReminder = viewModel::testLearningReminder,
+            onOpenNotificationSettings = viewModel::openReminderNotificationSettings,
             reminderPermissionMessage = reminderPermissionMessage,
         )
     }

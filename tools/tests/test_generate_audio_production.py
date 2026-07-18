@@ -1,11 +1,16 @@
 import json
+import shutil
 import tempfile
 import unittest
 import wave
 from pathlib import Path
 
 from tools.audio_profiles import PronunciationOverrides
-from tools.audio_production import plan_production
+from tools.audio_production import (
+    ModelAudioSource,
+    plan_production,
+    transitional_speech_plan_sha256,
+)
 from tools.generate_audio_production import _audit, generate_staged_pack
 
 
@@ -35,6 +40,51 @@ def probe_fixture(path: Path) -> dict:
 
 
 class GenerateAudioProductionTest(unittest.TestCase):
+    def test_model_correction_is_hash_bound_and_recorded(self):
+        words = [{
+            "id": "robot",
+            "category": "mechanical",
+            "kind": "TERM",
+            "english": "robot",
+            "phonetic": "/ˈɹoʊbɑt/",
+        }]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            correction = root / "robot.wav"
+            write_fixture_wav("robot", correction)
+            import hashlib
+            source = ModelAudioSource(
+                text="robot",
+                path=correction,
+                model_name="Kokoro-82M",
+                model_version="1.0",
+                model_source_url="https://huggingface.co/hexgrad/Kokoro-82M",
+                model_license="Apache-2.0",
+                voice="af_heart",
+                sha256=hashlib.sha256(correction.read_bytes()).hexdigest(),
+            )
+            plans = plan_production(
+                words,
+                PronunciationOverrides.empty(),
+                model_audio={"robot": source},
+            )
+            report = generate_staged_pack(
+                plans=plans,
+                words=words,
+                output=root / "production",
+                content_hash="content-hash",
+                profile={"name": "en_US-ljspeech-high", "bitRateKbps": 40},
+                synthesize=write_fixture_wav,
+                encode=write_fixture_ogg,
+                probe=probe_fixture,
+                decode_human=lambda source_path, target: shutil.copyfile(source_path, target),
+            )
+
+        entry = report["entries"]["robot"]
+        self.assertEqual("model", entry["sourceType"])
+        self.assertEqual("Kokoro-82M", entry["modelSource"]["modelName"])
+        self.assertEqual(source.sha256, entry["modelSource"]["sourceSha256"])
+
     def test_audit_prefers_long_meeting_and_business_sentences(self):
         words = [
             {"id": "meet-short", "category": "meeting", "english": "Thanks."},
@@ -69,7 +119,7 @@ class GenerateAudioProductionTest(unittest.TestCase):
                 words=words,
                 output=root,
                 content_hash="content-hash",
-                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                profile={"name": "en_US-ljspeech-high", "bitRateKbps": 40},
                 synthesize=write_fixture_wav,
                 encode=write_fixture_ogg,
                 probe=probe_fixture,
@@ -107,14 +157,14 @@ class GenerateAudioProductionTest(unittest.TestCase):
                 words=words,
                 output=Path(directory) / "audio-production-v2.31",
                 content_hash="content-hash",
-                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                profile={"name": "en_US-ljspeech-high", "bitRateKbps": 40},
                 synthesize=write_fixture_wav,
                 encode=write_fixture_ogg,
                 probe=probe_fixture,
             )
 
         entry = report["entries"]["mec_catia"]
-        self.assertEqual("kuh TEE uh", entry["spokenText"])
+        self.assertEqual("kuh TEE uh.", entry["spokenText"])
         self.assertEqual("CATIA", entry["expectedTranscript"])
 
     def test_writes_complete_variants_manifest_and_audit(self):
@@ -145,7 +195,7 @@ class GenerateAudioProductionTest(unittest.TestCase):
                 words=words,
                 output=root,
                 content_hash="content-hash",
-                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                profile={"name": "en_US-ljspeech-high", "bitRateKbps": 40},
                 synthesize=write_fixture_wav,
                 encode=write_fixture_ogg,
                 probe=probe_fixture,
@@ -162,7 +212,7 @@ class GenerateAudioProductionTest(unittest.TestCase):
             self.assertTrue((root / "audio/variants/mec_0001_x_01.ogg").is_file())
             manifest = json.loads((root / "audio_manifest_v1.json").read_text(encoding="utf-8"))
             self.assertEqual("content-hash", manifest["contentSha256"])
-            self.assertEqual("en_US-lessac-high", manifest["profile"]["name"])
+            self.assertEqual("en_US-ljspeech-high", manifest["profile"]["name"])
             audit = json.loads((root / "release_audit.json").read_text(encoding="utf-8"))
             self.assertIn("mec_0001_x", {item["id"] for item in audit["samples"]})
 
@@ -187,7 +237,7 @@ class GenerateAudioProductionTest(unittest.TestCase):
                 words=words,
                 output=root,
                 content_hash="content-hash",
-                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                profile={"name": "en_US-ljspeech-high", "bitRateKbps": 40},
                 synthesize=write_fixture_wav,
                 encode=tracked_encode,
                 probe=probe_fixture,
@@ -197,6 +247,49 @@ class GenerateAudioProductionTest(unittest.TestCase):
             generate_staged_pack(**arguments)
 
             self.assertEqual(first_run_calls, len(encode_calls))
+
+    def test_transitional_null_model_hash_is_migrated_without_reencoding(self):
+        words = [{
+            "id": "mec_0001_x",
+            "category": "mechanical",
+            "kind": "TERM",
+            "english": "fixture",
+        }]
+        plans = plan_production(words, PronunciationOverrides.empty())
+        encode_calls = []
+
+        def tracked_encode(source: Path, target: Path, stable_key: str) -> None:
+            encode_calls.append(stable_key)
+            write_fixture_ogg(source, target, stable_key)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "audio-production-v2.32"
+            arguments = dict(
+                plans=plans,
+                words=words,
+                output=root,
+                content_hash="content-hash",
+                profile={"name": "en_US-ljspeech-high", "bitRateKbps": 40},
+                synthesize=write_fixture_wav,
+                encode=tracked_encode,
+                probe=probe_fixture,
+            )
+            generate_staged_pack(**arguments)
+            manifest_path = root / "audio_manifest_v1.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["entries"]["mec_0001_x"]["speechPlanSha256"] = (
+                transitional_speech_plan_sha256(plans[0])
+            )
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            first_run_calls = len(encode_calls)
+
+            report = generate_staged_pack(**arguments)
+
+            self.assertEqual(first_run_calls, len(encode_calls))
+            self.assertNotEqual(
+                transitional_speech_plan_sha256(plans[0]),
+                report["entries"]["mec_0001_x"]["speechPlanSha256"],
+            )
 
     def test_unchanged_speech_plan_survives_content_metadata_update(self):
         words = [{
@@ -219,7 +312,7 @@ class GenerateAudioProductionTest(unittest.TestCase):
                 plans=plans,
                 words=words,
                 output=root,
-                profile={"name": "en_US-lessac-high", "bitRateKbps": 40},
+                profile={"name": "en_US-ljspeech-high", "bitRateKbps": 40},
                 synthesize=write_fixture_wav,
                 encode=tracked_encode,
                 probe=probe_fixture,
