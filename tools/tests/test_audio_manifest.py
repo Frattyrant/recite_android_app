@@ -39,7 +39,13 @@ class AudioManifestTest(unittest.TestCase):
         self.assertTrue(manifest_path.is_file())
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertEqual(3, manifest["schemaVersion"])
-        self.assertEqual("en_US-lessac-high", manifest["profile"]["name"])
+        self.assertEqual("en_US-ljspeech-high", manifest["profile"]["name"])
+        self.assertEqual("LJSpeech", manifest["profile"]["dataset"])
+        self.assertEqual("Public domain", manifest["profile"]["datasetLicense"])
+        self.assertEqual(
+            "https://keithito.com/LJ-Speech-Dataset/",
+            manifest["profile"]["datasetUrl"],
+        )
         self.assertEqual(40, manifest["profile"]["bitRateKbps"])
         self.assertEqual(48_000, manifest["profile"]["encodedSampleRate"])
         entries = manifest["entries"]
@@ -50,7 +56,11 @@ class AudioManifestTest(unittest.TestCase):
             self.assertEqual(word["id"], entry["id"])
             self.assertEqual(word["audioAsset"], entry["path"])
             self.assertEqual(word["phonetic"], entry["expectedIpa"])
-            self.assertIn(entry["sourceType"], {"piper", "human", "mixed"})
+            self.assertIn(entry["sourceType"], {"piper", "human", "model", "mixed"})
+            if entry["sourceType"] == "model" and "modelSource" in entry:
+                self.assertEqual("Kokoro-82M", entry["modelSource"]["modelName"])
+                self.assertEqual("Apache-2.0", entry["modelSource"]["modelLicense"])
+                self.assertEqual(64, len(entry["modelSource"]["sourceSha256"]))
             self.assertEqual(
                 segment_plan_sha256(
                     raw_variants(word["english"], word.get("kind", "TERM"))
@@ -65,6 +75,16 @@ class AudioManifestTest(unittest.TestCase):
                 self.assertEqual(variants, [segment["text"] for segment in segments])
                 self.assertTrue(
                     all(segment.get("expectedTranscript") for segment in segments)
+                )
+                for segment in segments:
+                    if segment["sourceType"] == "model":
+                        self.assertEqual("Kokoro-82M", segment["modelSource"]["modelName"])
+                        self.assertEqual("Apache-2.0", segment["modelSource"]["modelLicense"])
+                self.assertTrue(
+                    all(
+                        segment.get("sourceType") in {"piper", "human", "model"}
+                        for segment in segments
+                    )
                 )
                 self.assertEqual(500, entry["pauseBetweenSegmentsMs"])
             else:

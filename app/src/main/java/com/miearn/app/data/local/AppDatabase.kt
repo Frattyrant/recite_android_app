@@ -251,14 +251,15 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             }
         }
+        val MIGRATIONS: Array<Migration> = arrayOf(MIGRATION_1_2, MIGRATION_2_3)
+
         fun create(context: Context): AppDatabase =
             Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
                 "miearn.db",
             )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                .fallbackToDestructiveMigration()
+                .addMigrations(*MIGRATIONS)
                 .build()
     }
 }

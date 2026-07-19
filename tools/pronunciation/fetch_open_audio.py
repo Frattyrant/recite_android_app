@@ -26,7 +26,7 @@ from tools.pronunciation.commons_audio import (
 
 
 API_URL = "https://commons.wikimedia.org/w/api.php"
-USER_AGENT = "MIearn-audio-audit/2.31 (https://github.com/Frattyrant/recite_android_app)"
+USER_AGENT = "MIearn-audio-audit/2.32 (https://github.com/Frattyrant/recite_android_app)"
 SINGLE_WORD = re.compile(r"[A-Za-z]+(?:[-'][A-Za-z]+)*\Z")
 
 

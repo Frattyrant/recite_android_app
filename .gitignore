@@ -29,6 +29,11 @@ keystore.properties
 # Build output
 build/
 **/build/
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.swiftpm/
 # Output
 output/
 outputs/

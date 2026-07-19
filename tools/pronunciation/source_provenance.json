@@ -19,8 +19,23 @@
     "allowlist": "human_audio_allowlist.json"
   },
   "synthesisFallback": {
-    "voice": "Piper en_US-lessac-high",
-    "modelSha256": "4cabf7c3a638017137f34a1516522032d4fe3f38228a843cc9b764ddcbcd9e09",
+    "voice": "Piper en_US-ljspeech-high",
+    "modelSourceUrl": "https://huggingface.co/rhasspy/piper-voices/tree/main/en/en_US/ljspeech/high",
+    "modelSha256": "5d4f08ba6a2a48c44592eed3ce56bf85e9de3dd4e20df90541ae68a8310c029a",
+    "modelConfigSha256": "7e1f4634af596d83cca997fb7a931ba80b70f8a316a2655ee69c55365e0ace14",
+    "modelCardSha256": "fbdb9c09bd33e73f6876ba48fc2eeea120b9984d07763bfa21b3c8192fd4ba86",
+    "dataset": "LJSpeech",
+    "datasetUrl": "https://keithito.com/LJ-Speech-Dataset/",
+    "datasetLicense": "Public domain",
     "encoding": "mono 48 kHz Ogg/Opus 40 kbps"
+  },
+  "expressionCorrections": {
+    "model": "Kokoro-82M",
+    "modelVersion": "1.0",
+    "modelSourceUrl": "https://huggingface.co/hexgrad/Kokoro-82M",
+    "modelLicense": "Apache-2.0",
+    "voice": "af_heart",
+    "selection": "Exact normalized expression with source WAV SHA-256 bound in the production manifest",
+    "packagedModel": false
   }
 }

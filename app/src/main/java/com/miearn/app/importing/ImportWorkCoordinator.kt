@@ -22,6 +22,7 @@ class ImportWorkCoordinator(
     private val database: AppDatabase,
 ) {
     private val workManager = WorkManager.getInstance(context)
+    private val fileStore = ImportFileStore(File(context.cacheDir, "imports"))
 
     suspend fun createAndPrepare(uri: Uri, sourceName: String): String = withContext(Dispatchers.IO) {
         val fileName = queryFileName(uri)
@@ -30,39 +31,37 @@ class ImportWorkCoordinator(
         }
         val jobId = UUID.randomUUID().toString()
         val sourceId = "custom-${UUID.randomUUID()}"
-        val folder = File(context.filesDir, "imports").apply { mkdirs() }
-        val target = File(folder, "$jobId.${fileName.substringAfterLast('.', "csv")}")
-        context.contentResolver.openInputStream(uri)?.use { input ->
-            target.outputStream().buffered().use { output ->
-                val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                var copied = 0L
-                while (true) {
-                    val read = input.read(buffer)
-                    if (read < 0) break
-                    copied += read
-                    if (copied > MAX_FILE_BYTES) throw VocabularyImportException("文件不能超过 20 MB")
-                    output.write(buffer, 0, read)
-                }
-            }
+        val target = context.contentResolver.openInputStream(uri)?.use { input ->
+            fileStore.copy(jobId, input)
         } ?: throw VocabularyImportException("无法读取所选文件")
-        val now = System.currentTimeMillis()
-        database.importDao().upsertJob(
-            ImportJobEntity(
-                jobId = jobId,
-                sourceId = sourceId,
-                sourceName = sourceName.trim().ifBlank { fileName.substringBeforeLast('.') },
-                originalFileName = fileName,
-                internalFilePath = target.absolutePath,
-                status = ImportJobStatus.COPYING.name,
-                createdAtEpochMillis = now,
-                updatedAtEpochMillis = now,
-            ),
-        )
-        val request = OneTimeWorkRequestBuilder<PrepareImportWorker>()
-            .setInputData(workDataOf(PrepareImportWorker.KEY_JOB_ID to jobId))
-            .build()
-        workManager.enqueueUniqueWork("prepare-import-$jobId", ExistingWorkPolicy.REPLACE, request)
-        jobId
+        try {
+            val now = System.currentTimeMillis()
+            database.importDao().upsertJob(
+                ImportJobEntity(
+                    jobId = jobId,
+                    sourceId = sourceId,
+                    sourceName = sourceName.trim().ifBlank { fileName.substringBeforeLast('.') },
+                    originalFileName = fileName,
+                    internalFilePath = target.absolutePath,
+                    status = ImportJobStatus.COPYING.name,
+                    createdAtEpochMillis = now,
+                    updatedAtEpochMillis = now,
+                ),
+            )
+            val request = OneTimeWorkRequestBuilder<PrepareImportWorker>()
+                .setInputData(workDataOf(PrepareImportWorker.KEY_JOB_ID to jobId))
+                .build()
+            workManager.enqueueUniqueWork(
+                "prepare-import-$jobId",
+                ExistingWorkPolicy.REPLACE,
+                request,
+            )
+            jobId
+        } catch (error: Exception) {
+            target.delete()
+            database.importDao().deleteJob(jobId)
+            throw error
+        }
     }
 
     fun observeJob(jobId: String): Flow<ImportJobEntity?> = database.importDao().observeJob(jobId)
@@ -100,9 +99,19 @@ class ImportWorkCoordinator(
         )
     }
 
-    fun cancel(jobId: String) {
+    suspend fun cancel(jobId: String) = withContext(Dispatchers.IO) {
         workManager.cancelUniqueWork("prepare-import-$jobId")
         workManager.cancelUniqueWork("commit-import-$jobId")
+        val dao = database.importDao()
+        val job = dao.getJob(jobId) ?: return@withContext
+        dao.deleteDrafts(jobId)
+        File(job.internalFilePath).delete()
+        dao.upsertJob(
+            job.copy(
+                status = ImportJobStatus.CANCELLED.name,
+                updatedAtEpochMillis = System.currentTimeMillis(),
+            ),
+        )
     }
 
     private fun queryFileName(uri: Uri): String {
@@ -115,7 +124,4 @@ class ImportWorkCoordinator(
         return uri.lastPathSegment?.substringAfterLast('/') ?: "vocabulary.csv"
     }
 
-    companion object {
-        private const val MAX_FILE_BYTES = 20L * 1024 * 1024
-    }
 }

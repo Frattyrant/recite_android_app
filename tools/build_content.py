@@ -201,9 +201,12 @@ def _extract_term_tables(pdf_path: Path) -> tuple[list[list[str]], list[list[str
     return chunks[0], chunks[1]
 
 
-def _xlsx_terms(workbook_path: Path, sheet_index: int, expected: int) -> dict[int, dict[str, str]]:
+def _xlsx_terms(workbook_path: Path, sheet_name: str, expected: int) -> dict[int, dict[str, str]]:
     workbook = load_workbook(workbook_path, read_only=True, data_only=True)
-    sheet = workbook[workbook.sheetnames[sheet_index]]
+    if sheet_name not in workbook.sheetnames:
+        workbook.close()
+        raise ValueError(f"missing Excel vocabulary sheet: {sheet_name}")
+    sheet = workbook[sheet_name]
     terms: dict[int, dict[str, str]] = {}
     for row in sheet.iter_rows(values_only=True):
         if not isinstance(row[0], (int, float)):
@@ -218,7 +221,7 @@ def _xlsx_terms(workbook_path: Path, sheet_index: int, expected: int) -> dict[in
         }
     workbook.close()
     if len(terms) != expected:
-        raise ValueError(f"unexpected Excel term count in sheet {sheet_index}: {len(terms)}")
+        raise ValueError(f"unexpected Excel term count in sheet {sheet_name}: {len(terms)}")
     return terms
 
 
@@ -413,8 +416,8 @@ def _make_record(
 def build_content(source_dir: Path, output_path: Path, report_path: Path) -> list[dict[str, Any]]:
     workbook_path, pdf_path = _find_sources(source_dir)
     mechanical_pdf, electrical_pdf = _extract_term_tables(pdf_path)
-    mechanical_xlsx = _xlsx_terms(workbook_path, 2, 1227)
-    electrical_xlsx = _xlsx_terms(workbook_path, 3, 970)
+    mechanical_xlsx = _xlsx_terms(workbook_path, "专业词汇必背-机械", 1227)
+    electrical_xlsx = _xlsx_terms(workbook_path, "专业词汇必背-电气", 970)
     reviewed_corrections = load_corrections(TERM_CORRECTIONS_PATH)
     unmatched_corrections = set(reviewed_corrections)
 

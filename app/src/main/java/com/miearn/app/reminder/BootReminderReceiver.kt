@@ -3,24 +3,29 @@ package com.miearn.app.reminder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.miearn.app.MIearnApplication
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class BootReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action != Intent.ACTION_BOOT_COMPLETED) return
+        if (!ReminderSystemEvent.shouldReconcile(intent.action)) return
         val pendingResult = goAsync()
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                val app = context.applicationContext as? MIearnApplication ?: return@launch
-                val settings = app.container.settings.settings.first()
-                app.container.reminderScheduler.apply(settings)
+                ReminderCoordinator.create(context.applicationContext).reconcile()
             } finally {
                 pendingResult.finish()
             }
         }
     }
+}
+
+internal object ReminderSystemEvent {
+    fun shouldReconcile(action: String?): Boolean = action in setOf(
+        Intent.ACTION_BOOT_COMPLETED,
+        Intent.ACTION_MY_PACKAGE_REPLACED,
+        Intent.ACTION_TIME_CHANGED,
+        Intent.ACTION_TIMEZONE_CHANGED,
+    )
 }

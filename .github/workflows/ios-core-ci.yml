@@ -1,0 +1,72 @@
+name: iOS CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-core-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-15
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+
+      - name: Test shared iOS domain logic
+        working-directory: ios/MIearnCore
+        run: swift test
+
+      - name: Verify offline iOS audio pack
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          root = Path("ios/MIearnApp/Resources")
+          manifest = json.loads((root / "ios_audio_manifest.json").read_text())
+          assets = manifest["assets"]
+          assert manifest["assetCount"] == 3741, manifest["assetCount"]
+          assert len(assets) == 3741, len(assets)
+          expected = set()
+          for record in assets:
+              relative = record["path"]
+              assert relative.startswith("audio/") and relative.endswith(".m4a")
+              assert ".." not in Path(relative).parts
+              assert relative not in expected
+              expected.add(relative)
+              path = root / relative
+              assert path.stat().st_size == record["bytes"] > 0, relative
+              assert hashlib.sha256(path.read_bytes()).hexdigest() == record["audioSha256"], relative
+          actual = {path.relative_to(root).as_posix() for path in (root / "audio").rglob("*.m4a")}
+          assert actual == expected, (len(actual), len(expected))
+          print("iOS offline audio assets=3741; hashes and sizes verified")
+          PY
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate iOS project
+        working-directory: ios/MIearnApp
+        run: xcodegen generate
+
+      - name: Build iOS app for Simulator
+        working-directory: ios/MIearnApp
+        run: |
+          xcodebuild \
+            -project MIearn.xcodeproj \
+            -scheme MIearn \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build

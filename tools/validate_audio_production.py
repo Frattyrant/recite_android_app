@@ -1,4 +1,4 @@
-"""Validate every staged MIearn V2.31 production audio asset."""
+"""Validate every staged MIearn V2.32 production audio asset."""
 
 from __future__ import annotations
 
@@ -18,15 +18,24 @@ from tools.audio_production import (
     IPA_GROUP,
     ProductionEntryPlan,
     load_human_audio_sources,
+    load_model_audio_sources,
     plan_production,
     speech_plan_sha256,
 )
 from tools.audio_profiles import load_pronunciation_overrides
+from tools.audio_profiles import (
+    LJSPEECH_DATASET_LICENSE,
+    LJSPEECH_DATASET_URL,
+    LJSPEECH_HIGH,
+    LJSPEECH_MODEL_CARD_SHA256,
+    LJSPEECH_MODEL_CONFIG_SHA256,
+    LJSPEECH_MODEL_SOURCE_URL,
+)
 from tools.generate_variant_audio import raw_variants, segment_plan_sha256
 
 
 Probe = Callable[[Path], dict]
-HIGH_MODEL_SHA256 = "4cabf7c3a638017137f34a1516522032d4fe3f38228a843cc9b764ddcbcd9e09"
+HIGH_MODEL_SHA256 = LJSPEECH_HIGH.model_sha256
 
 
 def _sha256(path: Path) -> str:
@@ -97,16 +106,22 @@ def validate_production(
         errors.append("unsupported production manifest schema")
     profile = payload.get("profile", {})
     expected_profile = {
-        "name": "en_US-lessac-high",
-        "bitRateKbps": 40,
-        "application": "audio",
+        "name": LJSPEECH_HIGH.name,
+        "bitRateKbps": LJSPEECH_HIGH.bit_rate_kbps,
+        "application": LJSPEECH_HIGH.application,
         "channels": 1,
         "encodedSampleRate": 48_000,
+        "modelConfigSha256": LJSPEECH_MODEL_CONFIG_SHA256,
+        "modelCardSha256": LJSPEECH_MODEL_CARD_SHA256,
+        "modelSourceUrl": LJSPEECH_MODEL_SOURCE_URL,
+        "dataset": "LJSpeech",
+        "datasetUrl": LJSPEECH_DATASET_URL,
+        "datasetLicense": LJSPEECH_DATASET_LICENSE,
     }
     if any(profile.get(key) != value for key, value in expected_profile.items()):
-        errors.append("production profile does not match Lessac High 40k audio")
+        errors.append("production profile does not match LJSpeech High 40k audio")
     if profile.get("modelSha256") != HIGH_MODEL_SHA256:
-        errors.append("production model SHA-256 does not match approved Lessac High")
+        errors.append("production model SHA-256 does not match approved LJSpeech High")
     entries = payload.get("entries", {})
     if not isinstance(entries, dict):
         errors.append("manifest entries must be an object")
@@ -121,7 +136,7 @@ def validate_production(
     planned = {plan.word_id: plan for plan in plans or []}
 
     output_paths: set[str] = set()
-    source_counts = {"piper": 0, "human": 0, "mixed": 0}
+    source_counts = {"piper": 0, "human": 0, "model": 0, "mixed": 0}
     for word in words:
         word_id = str(word.get("id", ""))
         entry = entries.get(word_id)
@@ -179,13 +194,18 @@ def validate_production(
             ):
                 errors.append(f"{word_id}: segment {index} expected transcript mismatch")
             segment_source = str(segment.get("sourceType", ""))
-            if segment_source not in {"piper", "human"}:
+            if segment_source not in {"piper", "human", "model"}:
                 errors.append(f"{word_id}: segment {index} invalid source type")
             human_source = segment.get("humanSource")
+            model_source = segment.get("modelSource")
             if segment_source == "human":
                 _validate_human_source(human_source, f"{word_id}:segment:{index}", errors)
             elif human_source is not None:
                 errors.append(f"{word_id}: segment {index} unexpected human provenance")
+            if segment_source == "model":
+                _validate_model_source(model_source, f"{word_id}:segment:{index}", errors)
+            elif model_source is not None:
+                errors.append(f"{word_id}: segment {index} unexpected model provenance")
             metrics = _validate_file(root, segment, probe, f"{word_id}:segment:{index}", errors)
             if metrics is not None:
                 segment_metrics.append(metrics)
@@ -199,10 +219,15 @@ def validate_production(
         output_paths.add(complete_relative)
         if len(variants) == 1:
             human_source = entry.get("humanSource")
+            model_source = entry.get("modelSource")
             if source_type == "human":
                 _validate_human_source(human_source, f"{word_id}:complete", errors)
             elif human_source is not None:
                 errors.append(f"{word_id}: unexpected complete human provenance")
+            if source_type == "model":
+                _validate_model_source(model_source, f"{word_id}:complete", errors)
+            elif model_source is not None:
+                errors.append(f"{word_id}: unexpected complete model provenance")
         if len(segment_metrics) > 1 and complete_metrics is not None:
             measured_pause = float(complete_metrics["durationSeconds"]) - sum(
                 float(metrics["durationSeconds"]) for metrics in segment_metrics
@@ -234,6 +259,27 @@ def _validate_human_source(value: object, label: str, errors: list[str]) -> None
         errors.append(f"{label}: human source license is not approved")
 
 
+def _validate_model_source(value: object, label: str, errors: list[str]) -> None:
+    if not isinstance(value, dict):
+        errors.append(f"{label}: model provenance missing")
+        return
+    required = (
+        "modelName",
+        "modelVersion",
+        "modelSourceUrl",
+        "modelLicense",
+        "voice",
+        "sourceSha256",
+    )
+    if any(not str(value.get(key, "")).strip() for key in required):
+        errors.append(f"{label}: incomplete model provenance")
+    if str(value.get("modelLicense", "")).casefold() not in {"apache-2.0", "apache 2.0"}:
+        errors.append(f"{label}: model source license is not approved")
+    source_hash = str(value.get("sourceSha256", ""))
+    if len(source_hash) != 64 or any(character not in "0123456789abcdef" for character in source_hash):
+        errors.append(f"{label}: invalid model source hash")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, required=True)
@@ -244,6 +290,8 @@ def main() -> None:
     parser.add_argument("--overrides", type=Path, default=Path("tools/audio/pronunciation_overrides.json"))
     parser.add_argument("--human-attributions", type=Path)
     parser.add_argument("--human-audio-root", type=Path)
+    parser.add_argument("--model-audio-attributions", type=Path)
+    parser.add_argument("--model-audio-root", type=Path)
     args = parser.parse_args()
     from tools.audio_trial import load_words
     from tools.validate_audio import probe_audio
@@ -261,6 +309,10 @@ def main() -> None:
         human_audio=load_human_audio_sources(
             args.human_attributions,
             args.human_audio_root,
+        ),
+        model_audio=load_model_audio_sources(
+            args.model_audio_attributions,
+            args.model_audio_root,
         ),
     )
     manifest_payload = json.loads(

@@ -17,7 +17,7 @@ import org.robolectric.annotation.Config
 @Config(application = Application::class)
 class SpeechAssetPlanTest {
     @Test
-    fun productionManifestUsesApprovedV231AudioSourcesForEveryBuiltInWord() {
+    fun productionManifestUsesApprovedV232AudioSourcesForEveryBuiltInWord() {
         val assets = File("src/main/assets")
         val content = JSONObject(
             File(assets, "content/words_v1.json").readText(Charsets.UTF_8),
@@ -32,7 +32,7 @@ class SpeechAssetPlanTest {
         assertEquals(2_698, words.length())
         assertEquals(words.length(), entries.length())
         assertEquals(3, manifest.getInt("schemaVersion"))
-        assertEquals("en_US-lessac-high", profile.getString("name"))
+        assertEquals("en_US-ljspeech-high", profile.getString("name"))
         assertEquals(40, profile.getInt("bitRateKbps"))
         assertEquals(48_000, profile.getInt("encodedSampleRate"))
     }

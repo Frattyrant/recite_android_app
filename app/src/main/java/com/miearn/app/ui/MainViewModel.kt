@@ -24,6 +24,9 @@ import com.miearn.app.domain.CalendarDaySummary
 import com.miearn.app.domain.LearningContentPolicy
 import com.miearn.app.domain.LearningSession
 import com.miearn.app.domain.QuizEngine
+import com.miearn.app.reminder.LearningReminderNotifier
+import com.miearn.app.reminder.ReminderCoordinator
+import com.miearn.app.reminder.ReminderUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +34,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -43,6 +47,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val container = (application as MIearnApplication).container
     private val repository = container.repository
     private val settingsRepository = container.settings
+    private val reminderCoordinator = ReminderCoordinator.create(application)
     private val launchEpochDay = MIearnRepository.todayEpochDay()
     private val currentMineMonth = YearMonth.from(LocalDate.ofEpochDay(launchEpochDay))
     private var selectedMineMonth = currentMineMonth
@@ -52,6 +57,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val selectedTab = MutableStateFlow(MainTab.LEARNING)
     val showSettings = MutableStateFlow(false)
     val showReminderPrompt = MutableStateFlow(false)
+    val reminderUiState = MutableStateFlow(ReminderUiState())
+    val reminderTestResult = MutableStateFlow<Boolean?>(null)
     val showInsights = MutableStateFlow(false)
     val showImport = MutableStateFlow(false)
     val importUiError = MutableStateFlow<String?>(null)
@@ -155,6 +162,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         retrySeed()
+        refreshReminderStatus()
         viewModelScope.launch {
             settings.collect { selected ->
                 if (
@@ -343,21 +351,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun setReminderEnabled(enabled: Boolean) {
         viewModelScope.launch {
             settingsRepository.setReminderEnabled(enabled)
-            container.reminderScheduler.apply(
-                settings.value.copy(reminderEnabled = enabled),
-            )
+            reconcilePersistedReminder()
         }
     }
 
     fun setReminderTime(hour: Int, minute: Int) {
         viewModelScope.launch {
             settingsRepository.setReminderTime(hour, minute)
-            container.reminderScheduler.apply(
-                settings.value.copy(
-                    reminderHour = hour,
-                    reminderMinute = minute,
-                ),
-            )
+            reconcilePersistedReminder()
         }
     }
 
@@ -367,11 +368,48 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             settingsRepository.markReminderPromptShown()
             if (enable) {
                 settingsRepository.setReminderEnabled(true)
-                container.reminderScheduler.apply(
-                    settings.value.copy(reminderEnabled = true),
+            }
+            reconcilePersistedReminder()
+        }
+    }
+
+    fun openSettings() {
+        reminderTestResult.value = null
+        showSettings.value = true
+        refreshReminderStatus()
+    }
+
+    fun refreshReminderStatus() {
+        viewModelScope.launch {
+            runCatching { reminderCoordinator.reconcile() }
+                .onSuccess { reminderUiState.value = it }
+        }
+    }
+
+    fun testLearningReminder() {
+        reminderTestResult.value = reminderCoordinator.showTest()
+        refreshReminderStatus()
+    }
+
+    fun openReminderNotificationSettings() {
+        val application = getApplication<Application>()
+        val channelIntent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+            .putExtra(Settings.EXTRA_APP_PACKAGE, application.packageName)
+            .putExtra(Settings.EXTRA_CHANNEL_ID, LearningReminderNotifier.CHANNEL_ID)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        runCatching { application.startActivity(channelIntent) }
+            .recoverCatching {
+                application.startActivity(
+                    Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                        .putExtra(Settings.EXTRA_APP_PACKAGE, application.packageName)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 )
             }
-        }
+    }
+
+    private suspend fun reconcilePersistedReminder() {
+        val persisted = settingsRepository.settings.first()
+        reminderUiState.value = reminderCoordinator.apply(persisted)
     }
 
     fun openInsights() {

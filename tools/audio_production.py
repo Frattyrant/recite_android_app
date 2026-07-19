@@ -20,6 +20,14 @@ PRODUCTION_AUDIO = Path("app/src/main/assets/audio")
 IPA_GROUP = re.compile(r"/[^/]+/")
 
 
+def piper_utterance(text: str) -> str:
+    """Give sentence-trained Piper voices an explicit utterance boundary."""
+    value = text.strip()
+    if value.endswith((".", "!", "?")):
+        return value
+    return value.rstrip(",;:") + "."
+
+
 @dataclass(frozen=True)
 class HumanAudioSource:
     text: str
@@ -32,6 +40,18 @@ class HumanAudioSource:
 
 
 @dataclass(frozen=True)
+class ModelAudioSource:
+    text: str
+    path: Path
+    model_name: str
+    model_version: str
+    model_source_url: str
+    model_license: str
+    voice: str
+    sha256: str
+
+
+@dataclass(frozen=True)
 class ProductionSegmentPlan:
     index: int
     display_text: str
@@ -40,6 +60,7 @@ class ProductionSegmentPlan:
     expected_ipa: str
     source_type: str
     human_source: HumanAudioSource | None = None
+    model_source: ModelAudioSource | None = None
     expected_transcript: str = ""
 
 
@@ -60,9 +81,10 @@ def content_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def speech_plan_sha256(plan: ProductionEntryPlan) -> str:
-    payload = [
-        {
+def _speech_plan_sha256(plan: ProductionEntryPlan, include_null_model_source: bool) -> str:
+    payload = []
+    for segment in plan.segments:
+        item = {
             "index": segment.index,
             "text": segment.display_text,
             "spokenText": segment.spoken_text,
@@ -72,10 +94,31 @@ def speech_plan_sha256(plan: ProductionEntryPlan) -> str:
                 segment.human_source.sha256 if segment.human_source is not None else None
             ),
         }
-        for segment in plan.segments
-    ]
+        # Preserve hashes for the existing Piper/human plans. The correction
+        # source is added only when it is actually part of this segment.
+        if segment.model_source is not None or include_null_model_source:
+            item["modelSourceSha256"] = (
+                segment.model_source.sha256 if segment.model_source is not None else None
+            )
+        payload.append(item)
     canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def speech_plan_sha256(plan: ProductionEntryPlan) -> str:
+    return _speech_plan_sha256(plan, include_null_model_source=False)
+
+
+def transitional_speech_plan_sha256(plan: ProductionEntryPlan) -> str | None:
+    """Hash emitted briefly by the v2.32 correction migration.
+
+    It is accepted only for plans that have no model correction and only while
+    all file bytes and manifest bindings still match. Resumed entries are
+    immediately rewritten with the canonical hash.
+    """
+    if any(segment.model_source is not None for segment in plan.segments):
+        return None
+    return _speech_plan_sha256(plan, include_null_model_source=True)
 
 
 def assert_safe_staging_path(path: Path) -> None:
@@ -117,13 +160,58 @@ def load_human_audio_sources(
     return result
 
 
+def load_model_audio_sources(
+    path: Path | None,
+    audio_root: Path | None = None,
+) -> dict[str, ModelAudioSource]:
+    if path is None:
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("schemaVersion") != 1 or not isinstance(payload.get("records"), list):
+        raise ValueError("model audio attribution manifest is invalid")
+    root = (audio_root or path.parent).resolve()
+    result: dict[str, ModelAudioSource] = {}
+    for record in payload["records"]:
+        text = str(record.get("text", "")).strip()
+        file_name = str(record.get("fileName", "")).strip()
+        candidate = (root / file_name).resolve()
+        if not file_name or candidate == root or root not in candidate.parents:
+            raise ValueError(f"unsafe model audio path for {text!r}")
+        source = ModelAudioSource(
+            text=text,
+            path=candidate,
+            model_name=str(record.get("modelName", "")).strip(),
+            model_version=str(record.get("modelVersion", "")).strip(),
+            model_source_url=str(record.get("modelSourceUrl", "")).strip(),
+            model_license=str(record.get("modelLicense", "")).strip(),
+            voice=str(record.get("voice", "")).strip(),
+            sha256=str(record.get("sha256", "")).strip(),
+        )
+        if not all((
+            source.text,
+            source.model_name,
+            source.model_version,
+            source.model_source_url,
+            source.model_license,
+            source.voice,
+        )) or not re.fullmatch(r"[0-9a-f]{64}", source.sha256):
+            raise ValueError(f"incomplete model audio provenance for {text!r}")
+        key = normalize_text(text)
+        if key in result:
+            raise ValueError(f"duplicate model audio text: {text}")
+        result[key] = source
+    return result
+
+
 def plan_production(
     words: Sequence[dict],
     overrides: PronunciationOverrides,
     human_audio: dict[str, HumanAudioSource] | None = None,
+    model_audio: dict[str, ModelAudioSource] | None = None,
     require_ipa_alignment: bool = True,
 ) -> list[ProductionEntryPlan]:
     human_audio = human_audio or {}
+    model_audio = model_audio or {}
     seen_ids: set[str] = set()
     seen_paths: set[str] = set()
     plans: list[ProductionEntryPlan] = []
@@ -164,6 +252,11 @@ def plan_production(
                 overrides,
             )
             human_source = human_audio.get(normalize_text(display_text))
+            model_source = None if human_source is not None else model_audio.get(
+                normalize_text(display_text)
+            )
+            if human_source is None and model_source is None:
+                spoken_text = piper_utterance(spoken_text)
             segments.append(
                 ProductionSegmentPlan(
                     index=index,
@@ -171,8 +264,13 @@ def plan_production(
                     spoken_text=spoken_text,
                     override_key=override_key,
                     expected_ipa=ipa_groups[index],
-                    source_type="human" if human_source is not None else "piper",
+                    source_type=(
+                        "human" if human_source is not None
+                        else "model" if model_source is not None
+                        else "piper"
+                    ),
                     human_source=human_source,
+                    model_source=model_source,
                     expected_transcript=expected_transcript,
                 )
             )

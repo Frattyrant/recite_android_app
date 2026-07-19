@@ -33,6 +33,30 @@ LESSAC_HIGH = AudioProfile(
     application="audio",
 )
 
+# Approved production voice. The upstream model card identifies the LJSpeech
+# dataset as public domain, unlike the legacy Lessac voice's research-only
+# dataset license. Keep LESSAC_HIGH above only so old release audits can still
+# be interpreted; new production generation must use this profile.
+LJSPEECH_HIGH = AudioProfile(
+    name="en_US-ljspeech-high",
+    model_sha256="5d4f08ba6a2a48c44592eed3ce56bf85e9de3dd4e20df90541ae68a8310c029a",
+    bit_rate_kbps=40,
+    application="audio",
+)
+
+LJSPEECH_MODEL_CONFIG_SHA256 = (
+    "7e1f4634af596d83cca997fb7a931ba80b70f8a316a2655ee69c55365e0ace14"
+)
+LJSPEECH_MODEL_CARD_SHA256 = (
+    "fbdb9c09bd33e73f6876ba48fc2eeea120b9984d07763bfa21b3c8192fd4ba86"
+)
+LJSPEECH_MODEL_SOURCE_URL = (
+    "https://huggingface.co/rhasspy/piper-voices/tree/main/"
+    "en/en_US/ljspeech/high"
+)
+LJSPEECH_DATASET_URL = "https://keithito.com/LJ-Speech-Dataset/"
+LJSPEECH_DATASET_LICENSE = "Public domain"
+
 
 @dataclass(frozen=True)
 class PronunciationRule:
