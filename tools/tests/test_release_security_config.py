@@ -34,6 +34,13 @@ class ReleaseSecurityConfigTest(unittest.TestCase):
             plugin_management,
         )
 
+    def test_dependency_resolution_prefers_official_repositories(self) -> None:
+        settings = SETTINGS.read_text(encoding="utf-8")
+        repositories = settings.split("dependencyResolutionManagement", 1)[1]
+
+        self.assertLess(repositories.index("google()"), repositories.index("maven.aliyun.com"))
+        self.assertLess(repositories.index("mavenCentral()"), repositories.index("maven.aliyun.com"))
+
     def test_local_signing_file_names_are_consistent(self) -> None:
         example = EXAMPLE.read_text(encoding="utf-8")
         readme = README.read_text(encoding="utf-8")
