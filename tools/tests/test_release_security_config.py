@@ -8,6 +8,7 @@ README = ROOT / "README.md"
 GITIGNORE = ROOT / ".gitignore"
 CI_WORKFLOW = ROOT / ".github" / "workflows" / "android-ci.yml"
 RELEASE_WORKFLOW = ROOT / ".github" / "workflows" / "android-release.yml"
+SETTINGS = ROOT / "settings.gradle.kts"
 REQUIRED_SECRET_NAMES = (
     "MIEARN_KEYSTORE_BASE64",
     "MIEARN_KEYSTORE_PASSWORD",
@@ -17,6 +18,12 @@ REQUIRED_SECRET_NAMES = (
 
 
 class ReleaseSecurityConfigTest(unittest.TestCase):
+    def test_plugin_management_keeps_official_google_repository(self) -> None:
+        settings = SETTINGS.read_text(encoding="utf-8")
+        plugin_management = settings.split("dependencyResolutionManagement", 1)[0]
+
+        self.assertIn("google()", plugin_management)
+
     def test_local_signing_file_names_are_consistent(self) -> None:
         example = EXAMPLE.read_text(encoding="utf-8")
         readme = README.read_text(encoding="utf-8")
