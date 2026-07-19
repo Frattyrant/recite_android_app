@@ -4,13 +4,18 @@ MIearn 是一款面向制造业专业英语的离线背词应用。内置 2,698 
 
 [下载 Android 最新版](https://github.com/Frattyrant/recite_android_app/releases/latest)
 
+## 发布平台
+
+- **Android：正式支持。** GitHub Releases 当前只提供 Android APK。
+- **iPhone / iPad：尚未发布。** iOS 设备不能安装 APK；仓库中的 iOS 工程仅用于源码开发与模拟器构建验证，目前没有 IPA、TestFlight 或 App Store 版本。
+
 ## v2.32 更新
 
 - 全量重建美式英语发音：LJSpeech High 主声音 + Kokoro 定向纠音，3,741 个完整/分段音频均通过哈希、解码和 ASR 审计。
 - 修正专业词条音标与多表达切分；点击紫色词块可只播放当前表达。
 - 修复每日提醒只触发一次的问题，并增加系统状态与测试提醒入口。
 - 强化本地数据安全、数据库迁移和自定义词库导入的临时文件保护。
-- 新增 iOS 16+ SwiftUI 客户端源码，与 Android 共用词库、学习规则和离线音频。
+- 新增实验性的 iOS 16+ SwiftUI 客户端源码，与 Android 共用词库、学习规则和离线音频；该源码不属于当前可下载安装的正式版本。
 
 ## 主要功能
 
@@ -19,7 +24,7 @@ MIearn 是一款面向制造业专业英语的离线背词应用。内置 2,698 
 - SM-2 复习、错题强化、收藏、学习日历和数据统计。
 - 英选中、中选英、拼写、听音选词和例句填空五种测试。
 - 内置美式音标和离线发音；多表达词条支持完整播放或单独播放。
-- Android 支持导入 CSV/XLSX 自定义词库；iOS 当前支持 CSV。
+- Android 正式版支持导入 CSV/XLSX 自定义词库；iOS 源码预览支持 CSV。
 - 跟随系统切换浅色或深色界面。
 
 ## Android 安装
@@ -58,7 +63,7 @@ limit switch,限位开关
 ```
 
 - Android：支持 `.csv` 和 `.xlsx`，单文件不超过 20 MB、最多 20,000 行。
-- iOS：当前支持 UTF-8 编码的 `.csv`。
+- iOS 源码预览：支持 UTF-8 编码的 `.csv`，当前没有可供用户安装的 iOS 版本。
 - 解析、清洗、字典补全和学习记录均保存在本机。
 - 自定义词条在学习时使用系统英语 TTS 发音。
 
@@ -85,7 +90,7 @@ Debug APK：`app/build/outputs/apk/debug/app-debug.apk`
 
 ### iOS
 
-需要 macOS、Xcode 16、XcodeGen 和 iOS 16+ SDK：
+以下内容仅面向源码开发者，不代表仓库已经发布 iOS 安装包。构建需要受支持的 macOS、Xcode、XcodeGen 和 iOS 16+ SDK：
 
 ```bash
 cd ios/MIearnCore
@@ -102,7 +107,7 @@ xcodebuild \
   build
 ```
 
-仓库不提供已签名 IPA；请在 Xcode 中使用自己的 Apple Developer 签名运行或归档。
+当前发布渠道仅提供 Android APK。仓库不提供已签名 IPA、TestFlight 或 App Store 版本；如需研究 iOS 源码，请在 macOS 的 Xcode 中使用自己的 Apple Developer 签名运行或归档。
 
 ## 安全发布
 
