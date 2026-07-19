@@ -24,6 +24,16 @@ class ReleaseSecurityConfigTest(unittest.TestCase):
 
         self.assertIn("google()", plugin_management)
 
+    def test_ksp_plugin_uses_direct_module_fallback(self) -> None:
+        settings = SETTINGS.read_text(encoding="utf-8")
+        plugin_management = settings.split("dependencyResolutionManagement", 1)[0]
+
+        self.assertIn('requested.id.id == "com.google.devtools.ksp"', plugin_management)
+        self.assertIn(
+            'useModule("com.google.devtools.ksp:symbol-processing-gradle-plugin:${requested.version}")',
+            plugin_management,
+        )
+
     def test_local_signing_file_names_are_consistent(self) -> None:
         example = EXAMPLE.read_text(encoding="utf-8")
         readme = README.read_text(encoding="utf-8")
