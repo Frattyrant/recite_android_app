@@ -21,7 +21,9 @@ import com.miearn.app.importing.ImportColumnMapping
 import com.miearn.app.data.settings.UserSettings
 import com.miearn.app.domain.LearningPhase
 import com.miearn.app.domain.CalendarDaySummary
+import com.miearn.app.domain.EnglishPresentation
 import com.miearn.app.domain.LearningContentPolicy
+import com.miearn.app.domain.from
 import com.miearn.app.domain.LearningSession
 import com.miearn.app.domain.QuizEngine
 import com.miearn.app.reminder.LearningReminderNotifier
@@ -703,7 +705,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             audioHelpVisible = audioHelpLatched,
         )
         currentWordShownAtMillis = System.currentTimeMillis()
-        if (autoplay && settings.value.autoPlay) pronounce(word)
+        if (autoplay && settings.value.autoPlay) {
+            val primary = EnglishPresentation.from(word).primary
+            pronounceVariant(word, primary.index)
+        }
     }
 
     private suspend fun finishStudy(session: LearningSession) {

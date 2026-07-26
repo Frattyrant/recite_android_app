@@ -18,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -192,7 +191,6 @@ private fun ActiveStudy(
         } else {
             ChoiceCard(
                 state = state,
-                onPlay = onPlay,
                 onPlayVariant = onPlayVariant,
                 onOpenWordDetail = onOpenWordDetail,
                 onFavorite = onFavorite,
@@ -292,6 +290,8 @@ private fun BrowseCard(
             EnglishVariants(
                 word = state.word,
                 onPlayVariant = onPlayVariant,
+                mode = EnglishVariantsMode.FOCUSED,
+                onPlayAll = { onPlay(state.word) },
                 onOpenVariant = { word, index ->
                     onOpenWordDetail(
                         word,
@@ -306,9 +306,6 @@ private fun BrowseCard(
             )
             Spacer(Modifier.height(14.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { onPlay(state.word) }) {
-                    Icon(Icons.Default.PlayArrow, contentDescription = "播放发音")
-                }
                 IconButton(onClick = { onFavorite(state.word.id) }) {
                     Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
                 }
@@ -373,7 +370,6 @@ private fun BrowseCard(
 @Composable
 private fun ChoiceCard(
     state: StudyUiState.Active,
-    onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
     onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
@@ -395,6 +391,8 @@ private fun ChoiceCard(
                 EnglishVariants(
                     word = state.word,
                     onPlayVariant = onPlayVariant,
+                    mode = EnglishVariantsMode.FOCUSED,
+                    allowExpansion = false,
                     onOpenVariant = { word, index ->
                         onOpenWordDetail(
                             word,
@@ -416,9 +414,6 @@ private fun ChoiceCard(
                     )
                 }
                 Row {
-                    IconButton(onClick = { onPlay(state.word) }) {
-                        Icon(Icons.Default.PlayArrow, contentDescription = "播放发音")
-                    }
                     IconButton(onClick = { onFavorite(state.word.id) }) {
                         Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
                     }
