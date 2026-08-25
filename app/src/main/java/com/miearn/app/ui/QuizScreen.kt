@@ -11,12 +11,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,17 +35,23 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.input.ImeAction
 import com.miearn.app.data.local.WordEntity
 import com.miearn.app.ui.theme.Danger
 import com.miearn.app.ui.theme.Success
@@ -51,7 +63,8 @@ fun QuizScreen(
     onStart: (QuizMode, Int, Boolean) -> Unit,
     onSubmit: (String) -> Unit,
     onNext: () -> Unit,
-    onPlay: (WordEntity) -> Unit,
+    onPlayVariant: (WordEntity, Int) -> Unit,
+    onPlayExample: ((String) -> Unit)? = null,
     onReset: () -> Unit,
     onRetryWrong: () -> Unit,
 ) {
@@ -61,8 +74,39 @@ fun QuizScreen(
             QuizUiState.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
-            is QuizUiState.Active -> QuizQuestionView(state, Modifier.fillMaxSize(), onSubmit, onNext, onPlay)
+            is QuizUiState.Unavailable -> QuizUnavailable(
+                message = state.message,
+                modifier = Modifier.fillMaxSize(),
+                onReset = onReset,
+            )
+            is QuizUiState.Active -> QuizQuestionView(
+                state,
+                Modifier.fillMaxSize(),
+                onSubmit,
+                onNext,
+                onPlayVariant,
+                onPlayExample,
+            )
             is QuizUiState.Complete -> QuizComplete(state, Modifier.fillMaxSize(), onReset, onRetryWrong)
+        }
+    }
+}
+
+@Composable
+private fun QuizUnavailable(
+    message: String,
+    modifier: Modifier,
+    onReset: () -> Unit,
+) {
+    Column(
+        modifier.padding(28.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        SoftEmptyState("暂时无法生成选择题", message)
+        Spacer(Modifier.height(16.dp))
+        OutlinedButton(onClick = onReset, modifier = Modifier.fillMaxWidth()) {
+            Text("重新选择测试方式")
         }
     }
 }
@@ -221,11 +265,29 @@ private fun QuizQuestionView(
     modifier: Modifier,
     onSubmit: (String) -> Unit,
     onNext: () -> Unit,
-    onPlay: (WordEntity) -> Unit,
+    onPlayVariant: (WordEntity, Int) -> Unit,
+    onPlayExample: ((String) -> Unit)?,
 ) {
-    var input by rememberSaveable(state.index) { mutableStateOf("") }
+    val inputKey = quizInputKey(
+        mode = state.question.mode,
+        wordId = state.question.word.id,
+        index = state.index,
+    )
+    var input by remember(inputKey) { mutableStateOf("") }
+    val inputFocusRequester = remember(inputKey) { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val usesTextInput = quizModeUsesTextInput(state.question.mode)
+    LaunchedEffect(inputKey, usesTextInput) {
+        if (usesTextInput) {
+            inputFocusRequester.requestFocus()
+            keyboardController?.show()
+        }
+    }
     Column(
-        modifier.padding(18.dp),
+        modifier
+            .verticalScroll(rememberScrollState())
+            .imePadding()
+            .padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp),
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -245,10 +307,16 @@ private fun QuizQuestionView(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                if (state.question.mode == QuizMode.LISTENING) {
-                    IconButton(onClick = { onPlay(state.question.word) }) {
-                        Icon(Icons.Default.PlayArrow, contentDescription = "重播发音")
-                    }
+                IconButton(
+                    onClick = {
+                        onPlayVariant(
+                            state.question.word,
+                            listeningAudioVariantIndex(state.question.word),
+                        )
+                    },
+                    modifier = Modifier.testTag("quiz-replay-audio"),
+                ) {
+                    Icon(Icons.Default.PlayArrow, contentDescription = "重播主表达发音")
                 }
                 Text(
                     state.question.prompt,
@@ -260,8 +328,19 @@ private fun QuizQuestionView(
                         value = input,
                         onValueChange = { input = it },
                         enabled = state.feedbackCorrect == null,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(inputFocusRequester),
                         label = { Text("输入答案") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                if (input.isNotBlank() && state.feedbackCorrect == null) {
+                                    onSubmit(input)
+                                }
+                            },
+                        ),
                     )
                     Button(
                         onClick = { onSubmit(input) },
@@ -269,11 +348,27 @@ private fun QuizQuestionView(
                     ) { Text("提交") }
                 } else {
                     state.question.options.forEach { option ->
+                        val isCorrectOption = option == state.question.expected
+                        val isSubmittedOption = option == state.submittedAnswer
+                        val optionColors = when {
+                            state.feedbackCorrect != null && isCorrectOption ->
+                                ButtonDefaults.outlinedButtonColors(
+                                    containerColor = Success.copy(alpha = 0.14f),
+                                    contentColor = Success,
+                                )
+                            state.feedbackCorrect == false && isSubmittedOption ->
+                                ButtonDefaults.outlinedButtonColors(
+                                    containerColor = Danger.copy(alpha = 0.14f),
+                                    contentColor = Danger,
+                                )
+                            else -> ButtonDefaults.outlinedButtonColors()
+                        }
                         OutlinedButton(
                             onClick = { onSubmit(option) },
                             enabled = state.feedbackCorrect == null,
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(14.dp),
+                            colors = optionColors,
                         ) { Text(option, textAlign = TextAlign.Center) }
                     }
                 }
@@ -292,6 +387,34 @@ private fun QuizQuestionView(
                         color = if (correct) Success else Danger,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
+            Card(
+                Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.88f),
+                ),
+            ) {
+                Column(
+                    Modifier.fillMaxWidth().padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        "记忆提示",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    if (state.question.word.phonetic.isNotBlank()) {
+                        Text(
+                            state.question.word.phonetic,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    ExampleList(
+                        word = state.question.word,
+                        onPlayExample = onPlayExample,
                     )
                 }
             }

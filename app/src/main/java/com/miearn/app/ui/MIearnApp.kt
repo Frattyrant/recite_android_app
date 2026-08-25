@@ -45,6 +45,7 @@ import com.miearn.app.ui.importing.ImportWizardScreen
 fun MIearnApp(viewModel: MainViewModel) {
     val seedState by viewModel.seedState.collectAsStateWithLifecycle()
     val studyState by viewModel.studyState.collectAsStateWithLifecycle()
+    val favoriteIds by viewModel.favoriteIds.collectAsStateWithLifecycle()
 
     if (seedState !is SeedUiState.Ready) {
         when (val state = seedState) {
@@ -64,7 +65,9 @@ fun MIearnApp(viewModel: MainViewModel) {
             phonetic = resolveVariantPhonetic(request.word, request.variantIndex),
             onBack = viewModel::closeWordDetail,
             onPlay = viewModel::playWordDetail,
+            onPlayExample = viewModel::pronounceText,
             onFavorite = { viewModel.toggleFavorite(request.word.id) },
+            isFavorite = request.word.id in favoriteIds,
         )
         return
     }
@@ -79,8 +82,10 @@ fun MIearnApp(viewModel: MainViewModel) {
             onClose = viewModel::closeStudy,
             onPlay = viewModel::pronounce,
             onPlayVariant = viewModel::pronounceVariant,
+            onPlayExample = viewModel::pronounceText,
             onOpenWordDetail = viewModel::openWordDetail,
             onFavorite = viewModel::toggleFavorite,
+            favoriteIds = favoriteIds,
             onToggleCard = viewModel::toggleStudyCard,
             onPreviousBrowse = viewModel::previousBrowseWord,
             onNextBrowse = viewModel::nextBrowseWord,
@@ -104,8 +109,10 @@ fun MIearnApp(viewModel: MainViewModel) {
             onQuery = { viewModel.wordBrowserQuery.value = it },
             onPlay = viewModel::pronounce,
             onPlayVariant = viewModel::pronounceVariant,
+            onPlayExample = viewModel::pronounceText,
             onOpenWordDetail = viewModel::openWordDetail,
             onFavorite = viewModel::toggleFavorite,
+            favoriteIds = favoriteIds,
         )
         return
     }
@@ -143,15 +150,19 @@ fun MIearnApp(viewModel: MainViewModel) {
             job = importJob,
             localError = importUiError,
             onBack = viewModel::closeImport,
+            onCancel = viewModel::cancelImport,
+            onUseSource = viewModel::useImportedSource,
             onFileSelected = viewModel::startImport,
             onMapping = viewModel::resumeImportWithMapping,
             onCommit = viewModel::commitImport,
             onClearError = viewModel::clearImportError,
+            onRetry = viewModel::retryImport,
         )
         return
     }
     val context = LocalContext.current
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        viewModel.refreshToday()
         viewModel.refreshReminderStatus()
     }
     var permissionForPrompt by remember { mutableStateOf(false) }
@@ -253,7 +264,8 @@ fun MIearnApp(viewModel: MainViewModel) {
                 onStart = viewModel::startQuiz,
                 onSubmit = viewModel::submitQuiz,
                 onNext = viewModel::nextQuizQuestion,
-                onPlay = viewModel::pronounce,
+                onPlayVariant = viewModel::pronounceVariant,
+                onPlayExample = viewModel::pronounceText,
                 onReset = viewModel::resetQuiz,
                 onRetryWrong = viewModel::retryWrongQuiz,
             )
@@ -271,6 +283,9 @@ fun MIearnApp(viewModel: MainViewModel) {
                 },
                 onWrong = {
                     viewModel.openWordBrowser(WordBrowserDestination.WRONG)
+                },
+                onMastered = {
+                    viewModel.openWordBrowser(WordBrowserDestination.MASTERED)
                 },
                 onInsights = viewModel::openInsights,
                 onSources = viewModel::openSourceManager,

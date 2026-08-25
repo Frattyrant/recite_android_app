@@ -67,7 +67,9 @@ data class ImportJobEntity(
     val headersJson: String = "[]",
     val previewRowsJson: String = "[]",
     val conflictPolicy: String? = null,
+    val errorCode: String? = null,
     val errorMessage: String? = null,
+    val recoveryHint: String? = null,
     val createdAtEpochMillis: Long,
     val updatedAtEpochMillis: Long,
 )

@@ -21,7 +21,7 @@ class WordDetailScreenTest {
     val composeRule = createComposeRule()
 
     @Test
-    fun variantTextOpensDetailAndSpeakerOnlyPlaysSelectedVariant() {
+    fun variantTextPlaysSelectedVariantAndInfoOpensDetail() {
         val word = word()
         var opened = -1
         var played = -1
@@ -36,11 +36,11 @@ class WordDetailScreenTest {
         }
 
         composeRule.onNodeWithText("jig").performClick()
-        assertEquals(1, opened)
-        assertEquals(-1, played)
-
-        composeRule.onNodeWithContentDescription("播放 jig").performClick()
+        assertEquals(-1, opened)
         assertEquals(1, played)
+
+        composeRule.onNodeWithContentDescription("查看 jig 详情").performClick()
+        assertEquals(1, opened)
     }
 
     @Test
@@ -65,6 +65,9 @@ class WordDetailScreenTest {
         composeRule.onNodeWithText("jig").assertIsDisplayed()
         composeRule.onNodeWithText("/dʒɪɡ/").assertIsDisplayed()
         composeRule.onNodeWithText("夹具").assertIsDisplayed()
+        composeRule.onNodeWithText("机械专业词汇").assertIsDisplayed()
+        composeRule.onNodeWithText("备注：机械设计").assertIsDisplayed()
+        composeRule.onNodeWithText("例句").assertIsDisplayed()
         composeRule.onNodeWithText("The technician checked the fixture.").assertIsDisplayed()
         composeRule.onNodeWithText("技术员检查了夹具。").assertIsDisplayed()
 

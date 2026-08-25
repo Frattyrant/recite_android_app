@@ -8,6 +8,17 @@ import org.junit.Test
 
 class LearningSessionTest {
     @Test
+    fun startDeduplicatesIdsAndKeepsReviewQueueAsPriority() {
+        val state = LearningSession.start(
+            reviewIds = listOf("r1", "shared", "r1"),
+            newIds = listOf("shared", "n1", "n1"),
+        )
+
+        assertEquals(listOf("r1", "shared"), state.reviewIds)
+        assertEquals(listOf("n1"), state.newIds)
+    }
+
+    @Test
     fun sessionRunsReviewThenBrowseThenConsolidate() {
         var state = LearningSession.start(
             reviewIds = listOf("r1"),

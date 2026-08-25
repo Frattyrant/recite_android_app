@@ -19,6 +19,7 @@ import com.miearn.app.domain.StudyProgress
 import com.miearn.app.domain.WeeklyLearningSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import org.json.JSONArray
 import java.time.LocalDate
 import java.time.YearMonth
@@ -43,6 +44,12 @@ class MIearnRepository(private val database: AppDatabase) {
 
     fun unseenCount(category: String): Flow<Int> =
         database.studyDao().observeUnseenCount(category)
+
+    fun newLearnedToday(category: String, today: Long): Flow<Int> =
+        database.studyDao().observeNewLearnedToday(category, today)
+
+    fun masteredCount(category: String): Flow<Int> =
+        database.studyDao().observeMasteredCount(category)
 
     suspend fun createSession(
         category: String,
@@ -74,6 +81,17 @@ class MIearnRepository(private val database: AppDatabase) {
                 category = it.category,
                 session = it.toDomain(),
             )
+        }
+
+    fun observeSavedSessionRecord(): Flow<SavedLearningSession?> =
+        database.sessionDao().observe().map { entity ->
+            entity?.let {
+                SavedLearningSession(
+                    epochDay = it.epochDay,
+                    category = it.category,
+                    session = it.toDomain(),
+                )
+            }
         }
 
     suspend fun clearSavedSession() {
@@ -262,6 +280,29 @@ class MIearnRepository(private val database: AppDatabase) {
     suspend fun recordReinforcementAnswer(session: LearningSession) {
         database.withTransaction {
             val saved = database.sessionDao().get() ?: return@withTransaction
+            if (
+                saved.phase == session.phase.name &&
+                saved.index == session.index &&
+                saved.pendingFirstCorrect != null
+            ) {
+                return@withTransaction
+            }
+            val wordId = session.currentId
+            val firstCorrect = session.pendingFirstCorrect
+            if (wordId != null && firstCorrect != null) {
+                val old = database.progressDao().getByWordId(wordId)
+                if (old != null) {
+                    database.progressDao().upsert(
+                        old.copy(
+                            wrongCount = if (firstCorrect) {
+                                maxOf(0, old.wrongCount - 1)
+                            } else {
+                                old.wrongCount + 1
+                            },
+                        ),
+                    )
+                }
+            }
             database.sessionDao().upsert(
                 session.toEntity(saved.epochDay, saved.category),
             )
@@ -288,6 +329,11 @@ class MIearnRepository(private val database: AppDatabase) {
                 database.progressDao().incrementWrong(wordId)
             }
         }
+    }
+
+    /** Reduce the wrong-book weight after a correct answer in a quiz. */
+    suspend fun resolveWrong(wordId: String) {
+        database.progressDao().decrementWrong(wordId)
     }
 
     suspend fun quizWords(category: String, learnedOnly: Boolean, limit: Int): List<WordEntity> =

@@ -7,6 +7,7 @@ import com.miearn.app.domain.CalendarDaySummary
 import com.miearn.app.data.local.CategoryStats
 import com.miearn.app.data.local.WordEntity
 import com.miearn.app.data.settings.UserSettings
+import com.miearn.app.domain.EnglishPresentation
 import com.miearn.app.domain.LearningPhase
 
 enum class MainTab(val label: String) {
@@ -26,6 +27,7 @@ enum class WordBrowserDestination(val title: String) {
     SEARCH("搜索"),
     FAVORITES("收藏"),
     WRONG("错题"),
+    MASTERED("已掌握"),
 }
 
 enum class QuizMode(val label: String, val description: String) {
@@ -105,9 +107,13 @@ data class QuizQuestion(
     val options: List<String>,
 )
 
+internal fun listeningAudioVariantIndex(word: WordEntity): Int =
+    EnglishPresentation.from(word.english, word.primaryEnglish, word.kind).primary.index
+
 sealed interface QuizUiState {
     data object Setup : QuizUiState
     data object Loading : QuizUiState
+    data class Unavailable(val message: String) : QuizUiState
     data class Active(
         val question: QuizQuestion,
         val index: Int,

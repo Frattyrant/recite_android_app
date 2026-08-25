@@ -10,6 +10,7 @@ import com.miearn.app.data.local.WordEntity
 import com.miearn.app.domain.LearningPhase
 import com.miearn.app.domain.LearningSession
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.flow.first
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -92,6 +93,38 @@ class ObjectiveLearningRepositoryTest {
         assertEquals(1, database.eventDao().countForWord(word.id))
         assertEquals(1, database.activityDao().get(200)?.reviewCount)
         assertEquals(1, database.progressDao().getByWordId(word.id)?.lapseCount)
+        assertEquals(1, database.progressDao().getByWordId(word.id)?.wrongCount)
+    }
+
+    @Test
+    fun wrongReinforcementIncreasesWrongWeightOnlyOnce() = runTest {
+        val word = word("reinforce-wrong")
+        database.wordDao().upsert(word)
+        database.progressDao().upsert(
+            ProgressEntity(
+                wordId = word.id,
+                wrongCount = 1,
+                firstLearnedEpochDay = 100,
+                nextReviewEpochDay = 101,
+            ),
+        )
+        val firstAnswer = LearningSession.start(listOf(word.id), emptyList())
+            .submitAnswer(false)
+        repository.recordFirstAnswer(
+            word,
+            LearningPhase.REVIEW,
+            false,
+            500,
+            101,
+            8_726_400_000,
+            firstAnswer,
+        )
+        val reinforcement = firstAnswer.continueAfterAnswer().submitAnswer(false)
+
+        repository.recordReinforcementAnswer(reinforcement)
+        repository.recordReinforcementAnswer(reinforcement)
+
+        assertEquals(3, database.progressDao().getByWordId(word.id)?.wrongCount)
     }
 
     @Test
@@ -124,6 +157,19 @@ class ObjectiveLearningRepositoryTest {
     }
 
     @Test
+    fun masteredWordsOnlyReturnsWordsMarkedAsMastered() = runTest {
+        val mastered = word("mastered-entry")
+        val learning = word("learning-entry")
+        database.wordDao().upsertAll(listOf(mastered, learning))
+        database.progressDao().upsert(ProgressEntity(wordId = mastered.id, mastered = true))
+        database.progressDao().upsert(ProgressEntity(wordId = learning.id, mastered = false))
+
+        val result = repository.masteredWords().first()
+
+        assertEquals(listOf(mastered.id), result.map { it.id })
+    }
+
+    @Test
     fun correctAnswerReducesWrongWeightWithoutGoingBelowZero() = runTest {
         val word = word("r1")
         database.wordDao().upsertAll(listOf(word))
@@ -148,6 +194,25 @@ class ObjectiveLearningRepositoryTest {
             answered,
         )
 
+        assertEquals(0, database.progressDao().getByWordId(word.id)?.wrongCount)
+    }
+
+    @Test
+    fun correctQuizAnswerCanResolveWrongWeightWithoutGoingBelowZero() = runTest {
+        val word = word("quiz-resolve")
+        database.wordDao().upsert(word)
+        database.progressDao().upsert(
+            ProgressEntity(
+                wordId = word.id,
+                wrongCount = 2,
+            ),
+        )
+
+        repository.resolveWrong(word.id)
+        assertEquals(1, database.progressDao().getByWordId(word.id)?.wrongCount)
+
+        repository.resolveWrong(word.id)
+        repository.resolveWrong(word.id)
         assertEquals(0, database.progressDao().getByWordId(word.id)?.wrongCount)
     }
 

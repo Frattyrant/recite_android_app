@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -166,22 +167,22 @@ private fun EnglishVariantChip(
                 text = text,
                 modifier = Modifier
                     .weight(1f, fill = false)
-                    .clickable(onClick = onOpen)
+                    .clickable(onClick = onPlay)
                     .semantics {
-                        contentDescription = "查看 $text 详情"
+                        contentDescription = "播放 $text"
                     }
                     .padding(start = 14.dp, top = 10.dp, bottom = 10.dp),
                 style = textStyle,
                 textAlign = TextAlign.Center,
             )
             IconButton(
-                onClick = onPlay,
+                onClick = onOpen,
                 modifier = Modifier.semantics {
-                    contentDescription = "播放 $text"
+                    contentDescription = "查看 $text 详情"
                 },
             ) {
                 Icon(
-                    Icons.Default.PlayArrow,
+                    Icons.Default.Info,
                     contentDescription = null,
                 )
             }

@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -36,7 +37,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -55,8 +55,10 @@ fun StudyScreen(
     onClose: () -> Unit,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onPlayExample: ((String) -> Unit)? = null,
     onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
+    favoriteIds: Set<String> = emptySet(),
     onToggleCard: () -> Unit,
     onPreviousBrowse: () -> Unit,
     onNextBrowse: () -> Unit,
@@ -86,8 +88,10 @@ fun StudyScreen(
             onClose = onClose,
             onPlay = onPlay,
             onPlayVariant = onPlayVariant,
+            onPlayExample = onPlayExample,
             onOpenWordDetail = onOpenWordDetail,
             onFavorite = onFavorite,
+            favoriteIds = favoriteIds,
             onToggleCard = onToggleCard,
             onPreviousBrowse = onPreviousBrowse,
             onNextBrowse = onNextBrowse,
@@ -131,6 +135,7 @@ private fun StudyComplete(
     state: StudyUiState.Complete,
     onClose: () -> Unit,
 ) {
+    val hasActivity = hasStudyCompletionActivity(state.newCount, state.reviewCount)
     val accuracy = if (state.answeredFirstTry == 0) {
         0
     } else {
@@ -141,10 +146,21 @@ private fun StudyComplete(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text("今日任务完成", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            studyCompletionTitle(state.newCount, state.reviewCount),
+            style = MaterialTheme.typography.headlineMedium,
+        )
         Spacer(Modifier.height(16.dp))
-        Text("新学 ${state.newCount} · 复习 ${state.reviewCount}")
-        Text("首次正确率 $accuracy%")
+        if (hasActivity) {
+            Text("新学 ${state.newCount} · 复习 ${state.reviewCount}")
+            Text("首次正确率 $accuracy%")
+        } else {
+            Text(
+                studyCompletionDescription(state.newCount, state.reviewCount),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         Spacer(Modifier.height(24.dp))
         Button(onClick = onClose, modifier = Modifier.fillMaxWidth()) {
             Text("返回学习页")
@@ -158,8 +174,10 @@ private fun ActiveStudy(
     onClose: () -> Unit,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onPlayExample: ((String) -> Unit)?,
     onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
+    favoriteIds: Set<String>,
     onToggleCard: () -> Unit,
     onPreviousBrowse: () -> Unit,
     onNextBrowse: () -> Unit,
@@ -181,8 +199,10 @@ private fun ActiveStudy(
                 state = state,
                 onPlay = onPlay,
                 onPlayVariant = onPlayVariant,
+                onPlayExample = onPlayExample,
                 onOpenWordDetail = onOpenWordDetail,
                 onFavorite = onFavorite,
+                isFavorite = state.word.id in favoriteIds,
                 onToggleCard = onToggleCard,
                 onPrevious = onPreviousBrowse,
                 onNext = onNextBrowse,
@@ -194,6 +214,7 @@ private fun ActiveStudy(
                 onPlayVariant = onPlayVariant,
                 onOpenWordDetail = onOpenWordDetail,
                 onFavorite = onFavorite,
+                isFavorite = state.word.id in favoriteIds,
                 onAnswer = onAnswer,
                 modifier = Modifier.weight(1f),
             )
@@ -249,8 +270,10 @@ private fun BrowseCard(
     state: StudyUiState.Active,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onPlayExample: ((String) -> Unit)?,
     onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
+    isFavorite: Boolean,
     onToggleCard: () -> Unit,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
@@ -307,7 +330,11 @@ private fun BrowseCard(
             Spacer(Modifier.height(14.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { onFavorite(state.word.id) }) {
-                    Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
+                    Icon(
+                        if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = if (isFavorite) "取消收藏" else "收藏",
+                        tint = if (isFavorite) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                    )
                 }
             }
             if (state.expanded) {
@@ -326,18 +353,7 @@ private fun BrowseCard(
                 )
                 if (state.word.exampleEn.isNotBlank()) {
                     Spacer(Modifier.height(20.dp))
-                    Text(
-                        state.word.exampleEn,
-                        modifier = Modifier.fillMaxWidth(),
-                        fontStyle = FontStyle.Italic,
-                    )
-                    if (state.word.exampleZh.isNotBlank()) {
-                        Text(
-                            state.word.exampleZh,
-                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = .68f),
-                        )
-                    }
+                    ExampleList(state.word, onPlayExample = onPlayExample)
                 }
                 if (state.word.note.isNotBlank()) {
                     Text(
@@ -373,6 +389,7 @@ private fun ChoiceCard(
     onPlayVariant: (WordEntity, Int) -> Unit,
     onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
+    isFavorite: Boolean,
     onAnswer: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -415,7 +432,11 @@ private fun ChoiceCard(
                 }
                 Row {
                     IconButton(onClick = { onFavorite(state.word.id) }) {
-                        Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
+                        Icon(
+                            if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = if (isFavorite) "取消收藏" else "收藏",
+                            tint = if (isFavorite) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                        )
                     }
                 }
             }

@@ -38,14 +38,17 @@ class ImportRepository(
             val valid = !duplicate && ImportSanitizer.isValidEnglish(row.english)
             val existing = if (valid) database.wordDao().findCanonicalWord(normalized) else null
             val local = if (valid && existing == null) dictionary.lookup(normalized) else null
+            val inferredKind = EnglishVariantParser.inferKind(row.english)
+            val primaryEnglish = EnglishVariantParser.parse(row.english, inferredKind)
+                .firstOrNull()
+                ?: ImportSanitizer.clean(row.english)
             onProgress(index + 1, rows.size)
             ImportDraftEntity(
                 jobId = job.jobId,
                 rowIndex = row.rowIndex,
                 normalizedEnglish = normalized,
                 english = ImportSanitizer.clean(row.english),
-                primaryEnglish = EnglishVariantParser.parse(row.english, "TERM").firstOrNull()
-                    ?: ImportSanitizer.clean(row.english),
+                primaryEnglish = primaryEnglish,
                 phonetic = row.phonetic.ifBlank { existing?.phonetic ?: local?.phonetic.orEmpty() },
                 chinese = row.chinese.ifBlank { existing?.chinese ?: local?.translation.orEmpty() },
                 note = row.note.ifBlank { existing?.note.orEmpty() },
@@ -89,12 +92,14 @@ class ImportRepository(
     suspend fun commit(jobId: String, policy: ImportConflictPolicy): Int =
         database.withTransaction {
             val job = requireNotNull(database.importDao().getJob(jobId))
+            val sourceName = uniqueCustomSourceName(job.sourceName, job.sourceId)
+            val sourceJob = job.copy(sourceName = sourceName)
             val drafts = database.importDao().drafts(jobId).filter { it.validationError == null }
             val links = ArrayList<WordSourceCrossRef>(drafts.size)
             drafts.forEachIndexed { order, draft ->
                 val existing = draft.existingWordId?.let { database.wordDao().getById(it) }
                 val word = when {
-                    existing == null -> draft.toNewWord(job, order)
+                    existing == null -> draft.toNewWord(sourceJob, order)
                     policy == ImportConflictPolicy.UPDATE_NON_EMPTY -> existing.copy(
                         english = draft.english.ifBlank { existing.english },
                         primaryEnglish = draft.primaryEnglish.ifBlank { existing.primaryEnglish },
@@ -114,7 +119,7 @@ class ImportRepository(
             database.sourceDao().upsert(
                 SourceEntity(
                     sourceId = job.sourceId,
-                    displayName = job.sourceName,
+                    displayName = sourceName,
                     type = SourceType.CUSTOM.name,
                     originalFileName = job.originalFileName,
                     createdAtEpochMillis = job.createdAtEpochMillis,
@@ -127,6 +132,7 @@ class ImportRepository(
                 job.copy(
                     status = ImportJobStatus.COMPLETED.name,
                     conflictPolicy = policy.name,
+                    sourceName = sourceName,
                     updatedAtEpochMillis = now,
                 ),
             )
@@ -134,15 +140,56 @@ class ImportRepository(
             links.size
         }
 
-    suspend fun renameSource(sourceId: String, name: String): Boolean =
-        database.sourceDao().rename(sourceId, name.trim(), System.currentTimeMillis()) > 0
+    private suspend fun uniqueCustomSourceName(
+        requestedName: String,
+        sourceId: String,
+    ): String {
+        val base = requestedName.trim().ifBlank { "我的词库" }
+        var candidate = base
+        var suffix = 2
+        while (true) {
+            val existing = database.sourceDao().customByName(candidate)
+            if (existing == null || existing.sourceId == sourceId) return candidate
+            candidate = "$base ($suffix)"
+            suffix += 1
+        }
+    }
+
+    suspend fun renameSource(sourceId: String, name: String): Boolean = database.withTransaction {
+        val normalizedName = uniqueCustomSourceName(name, sourceId)
+        val now = System.currentTimeMillis()
+        val renamed = database.sourceDao().rename(
+            sourceId,
+            normalizedName,
+            now,
+        ) > 0
+        if (renamed) {
+            database.wordDao().syncCustomCategoryLabel(sourceId, normalizedName)
+            database.importDao().renameSourceJobs(sourceId, normalizedName, now)
+        }
+        renamed
+    }
 
     suspend fun deleteSource(sourceId: String): Boolean = database.withTransaction {
         val wordIds = database.sourceDao().wordIds(sourceId)
         if (database.sourceDao().deleteCustom(sourceId) == 0) return@withTransaction false
+        // A saved session points to concrete word IDs from this source. Once
+        // the source is deleted those IDs may be cascaded away, so retaining
+        // the session would make the next launch offer an impossible resume.
+        if (database.sessionDao().get()?.category == sourceId) {
+            database.sessionDao().delete()
+        }
         wordIds.forEach { wordId ->
             if (database.sourceDao().membershipCount(wordId) == 0) {
                 database.wordDao().deleteCustomWord(wordId)
+            } else if (database.wordDao().getById(wordId)?.isCustom == true) {
+                val remainingSource = database.sourceDao().sourcesForWord(wordId).firstOrNull()
+                if (remainingSource != null) {
+                    database.wordDao().syncCustomCategoryLabel(
+                        sourceId = remainingSource.sourceId,
+                        label = remainingSource.displayName,
+                    )
+                }
             }
         }
         true

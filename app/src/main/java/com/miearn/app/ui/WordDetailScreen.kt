@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
@@ -22,12 +23,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.miearn.app.domain.LearningContentPolicy
@@ -38,7 +41,9 @@ fun WordDetailScreen(
     phonetic: PhoneticDisplay?,
     onBack: () -> Unit,
     onPlay: () -> Unit,
+    onPlayExample: ((String) -> Unit)? = null,
     onFavorite: () -> Unit,
+    isFavorite: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val word = request.word
@@ -62,8 +67,17 @@ fun WordDetailScreen(
                     )
                 }
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = onFavorite) {
-                    Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏词条")
+                IconButton(
+                    onClick = onFavorite,
+                    modifier = Modifier.semantics {
+                        contentDescription = if (isFavorite) "取消收藏" else "收藏词条"
+                    },
+                ) {
+                    Icon(
+                        if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = null,
+                        tint = if (isFavorite) MaterialTheme.colorScheme.error else LocalContentColor.current,
+                    )
                 }
             }
 
@@ -72,6 +86,12 @@ fun WordDetailScreen(
                 request.displayEnglish,
                 style = MaterialTheme.typography.displaySmall,
                 color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                word.categoryLabel,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
             )
             phonetic?.let {
@@ -118,16 +138,10 @@ fun WordDetailScreen(
                         LearningContentPolicy.displayChinese(word.chinese),
                         style = MaterialTheme.typography.headlineSmall,
                     )
-                    if (word.exampleEn.isNotBlank()) {
+                    ExampleList(word, onPlayExample = onPlayExample)
+                    if (word.note.isNotBlank()) {
                         Text(
-                            word.exampleEn,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontStyle = FontStyle.Italic,
-                        )
-                    }
-                    if (word.exampleZh.isNotBlank()) {
-                        Text(
-                            word.exampleZh,
+                            "备注：${word.note}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )

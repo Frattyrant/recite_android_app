@@ -176,14 +176,21 @@ data class LearningSession(
             reviewIds: List<String>,
             newIds: List<String>,
         ): LearningSession {
+            val normalizedReviewIds = reviewIds
+                .filter(String::isNotBlank)
+                .distinct()
+            val normalizedNewIds = newIds
+                .filter(String::isNotBlank)
+                .distinct()
+                .filterNot(normalizedReviewIds::contains)
             val phase = when {
-                reviewIds.isNotEmpty() -> LearningPhase.REVIEW
-                newIds.isNotEmpty() -> LearningPhase.BROWSE
+                normalizedReviewIds.isNotEmpty() -> LearningPhase.REVIEW
+                normalizedNewIds.isNotEmpty() -> LearningPhase.BROWSE
                 else -> LearningPhase.COMPLETE
             }
             return LearningSession(
-                reviewIds = reviewIds,
-                newIds = newIds,
+                reviewIds = normalizedReviewIds,
+                newIds = normalizedNewIds,
                 reinforcementIds = emptyList(),
                 phase = phase,
                 index = 0,

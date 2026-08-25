@@ -92,6 +92,7 @@ fun InsightsScreen(
 private fun InsightsContent(snapshot: InsightsSnapshot) {
     var range by rememberSaveable { mutableIntStateOf(7) }
     val days = snapshot.days.takeLast(range)
+    val hasAccuracySamples = snapshot.days.any { it.answeredFirstTry > 0 }
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(14.dp),
@@ -142,7 +143,7 @@ private fun InsightsContent(snapshot: InsightsSnapshot) {
             Column(Modifier.fillMaxWidth().padding(16.dp)) {
                 Text("首次正确率", style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "${(snapshot.firstTryAccuracy * 100).roundToInt()}%",
+                    firstTryAccuracyLabel(snapshot.firstTryAccuracy, hasAccuracySamples),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                 )

@@ -21,6 +21,16 @@ class QuizEngineTest {
     }
 
     @Test
+    fun blankQuestionSelectsOneMultilineExampleWithoutLeakingTheAnswer() {
+        val prompt = QuizEngine.blankExample(
+            example = "Inspect the fixture before assembly.\nThe fixture is stored beside the jig.",
+            primaryEnglish = "fixture",
+        )
+
+        assertEquals("Inspect the ______ before assembly.", prompt)
+    }
+
+    @Test
     fun chineseOptionsAreUniqueDeterministicAndContainAnswer() {
         val first = QuizEngine.chineseOptions(
             answer = "正确",
@@ -56,5 +66,25 @@ class QuizEngineTest {
         assertEquals(4, options.size)
         assertEquals(4, options.distinct().size)
         assertTrue("limit switch" in options)
+    }
+
+    @Test
+    fun choiceOptionsIgnoreWhitespaceAndCaseDuplicates() {
+        val options = QuizEngine.choiceOptions(
+            answer = "Limit Switch",
+            candidates = listOf(
+                " limit switch ",
+                "Sensor",
+                " sensor ",
+                "relay",
+                "fixture",
+                "panel",
+            ),
+            seed = 12,
+        )
+
+        assertEquals(4, options.size)
+        assertEquals(4, options.map { it.trim().lowercase() }.distinct().size)
+        assertEquals(1, options.count { it.trim().lowercase() == "limit switch" })
     }
 }

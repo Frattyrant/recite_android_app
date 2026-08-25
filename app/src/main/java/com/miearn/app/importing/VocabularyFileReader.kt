@@ -1,24 +1,30 @@
 package com.miearn.app.importing
 
-import java.io.ByteArrayInputStream
 import java.io.InputStream
-import java.util.Locale
 
 class VocabularyFileReader(
     private val csv: CsvVocabularyReader = CsvVocabularyReader(),
     private val xlsx: XlsxVocabularyReader = XlsxVocabularyReader(),
+    private val detector: VocabularyFileDetector = VocabularyFileDetector,
 ) {
-    fun rows(fileName: String, input: InputStream): Sequence<RawVocabularyRow> {
+    data class VocabularyReadResult(
+        val detected: DetectedVocabularyFile,
+        val rows: Sequence<RawVocabularyRow>,
+    )
+
+    fun read(fileName: String, mimeType: String?, input: InputStream): VocabularyReadResult {
         val bytes = input.readBytes()
-        val lowerName = fileName.lowercase(Locale.ROOT)
-        val isZip = bytes.size >= 4 &&
-            bytes[0] == 'P'.code.toByte() &&
-            bytes[1] == 'K'.code.toByte()
-        val reader = when {
-            lowerName.endsWith(".xlsx") || isZip -> xlsx
-            lowerName.endsWith(".csv") -> csv
-            else -> throw UnsupportedVocabularyFileException()
+        val detected = detector.detect(fileName, mimeType, bytes)
+        val reader = when (detected.type) {
+            VocabularyFileType.XLSX -> xlsx
+            VocabularyFileType.CSV -> csv
+            VocabularyFileType.TSV,
+            VocabularyFileType.TXT,
+            -> DelimitedTextVocabularyReader(detected.type)
         }
-        return reader.rows(ByteArrayInputStream(bytes))
+        return VocabularyReadResult(detected, reader.rows(bytes.inputStream()))
     }
+
+    fun rows(fileName: String, input: InputStream): Sequence<RawVocabularyRow> =
+        read(fileName, null, input).rows
 }

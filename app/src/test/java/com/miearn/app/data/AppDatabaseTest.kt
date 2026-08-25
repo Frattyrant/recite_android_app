@@ -115,6 +115,61 @@ class AppDatabaseTest {
     }
 
     @Test
+    fun masteredCountIsScopedToTheSelectedSource() = runTest {
+        database.wordDao().upsertAll(
+            listOf(
+                word(id = "mechanical-mastered", category = "mechanical"),
+                word(id = "electrical-mastered", category = "electrical"),
+                word(id = "mechanical-learning", category = "mechanical", sourceIndex = 3),
+            ),
+        )
+        database.progressDao().upsert(
+            ProgressEntity(wordId = "mechanical-mastered", mastered = true),
+        )
+        database.progressDao().upsert(
+            ProgressEntity(wordId = "electrical-mastered", mastered = true),
+        )
+
+        assertEquals(1, database.studyDao().observeMasteredCount("mechanical").first())
+        assertEquals(1, database.studyDao().observeMasteredCount("electrical").first())
+    }
+
+    @Test
+    fun newLearnedTodayIsScopedToTheSelectedSource() = runTest {
+        database.wordDao().upsertAll(
+            listOf(
+                word(id = "mechanical-new", category = "mechanical"),
+                word(id = "electrical-new", category = "electrical"),
+                word(id = "mechanical-old", category = "mechanical", sourceIndex = 3),
+            ),
+        )
+        database.progressDao().upsert(
+            ProgressEntity(wordId = "mechanical-new", firstLearnedEpochDay = 500),
+        )
+        database.progressDao().upsert(
+            ProgressEntity(wordId = "electrical-new", firstLearnedEpochDay = 500),
+        )
+        database.progressDao().upsert(
+            ProgressEntity(wordId = "mechanical-old", firstLearnedEpochDay = 499),
+        )
+
+        assertEquals(1, database.studyDao().observeNewLearnedToday("mechanical", 500).first())
+        assertEquals(1, database.studyDao().observeNewLearnedToday("electrical", 500).first())
+    }
+
+    @Test
+    fun observesFavoriteWordIdsForImmediateUiState() = runTest {
+        database.wordDao().upsertAll(
+            listOf(word(id = "saved"), word(id = "plain", sourceIndex = 2)),
+        )
+        database.progressDao().upsert(
+            ProgressEntity(wordId = "saved", isFavorite = true),
+        )
+
+        assertEquals(listOf("saved"), database.progressDao().observeFavoriteIds().first())
+    }
+
+    @Test
     fun reviewEventsCanBeInsertedCountedAndQueriedByEpochDayRange() = runTest {
         database.wordDao().upsertAll(listOf(word(id = "one")))
         database.eventDao().insert(reviewEvent(wordId = "one", epochDay = 100))
@@ -131,11 +186,13 @@ class AppDatabaseTest {
     @Test
     fun singletonStudySessionCanBeReplacedAndDeleted() = runTest {
         val initial = studySession(phase = "REVIEW", index = 1)
+        assertEquals(null, database.sessionDao().observe().first())
         database.sessionDao().upsert(initial)
         database.sessionDao().upsert(initial.copy(phase = "BROWSE", index = 2))
 
         assertEquals("BROWSE", database.sessionDao().get()?.phase)
         assertEquals(2, database.sessionDao().get()?.index)
+        assertEquals("BROWSE", database.sessionDao().observe().first()?.phase)
 
         database.sessionDao().delete()
 

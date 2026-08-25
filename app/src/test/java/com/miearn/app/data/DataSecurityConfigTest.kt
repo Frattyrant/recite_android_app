@@ -63,7 +63,7 @@ class DataSecurityConfigTest {
     @Test
     fun databaseUsesOnlyExplicitMigrationsAndNeverDestructiveFallback() {
         assertEquals(
-            listOf(1 to 2, 2 to 3),
+            listOf(1 to 2, 2 to 3, 3 to 4),
             AppDatabase.MIGRATIONS.map { it.startVersion to it.endVersion },
         )
         val source = File(

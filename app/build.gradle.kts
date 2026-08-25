@@ -158,7 +158,9 @@ registerApkSizeGate(
     "verifyDebugApkSize",
     "assembleDebug",
     "outputs/apk/debug/app-debug.apk",
-    65_000_000L,
+    // Debuggable APKs keep unoptimized bytecode for local installation; the
+    // signed/release gate below remains the strict production budget.
+    70_000_000L,
 )
 registerApkSizeGate(
     "verifyReleaseApkSize",

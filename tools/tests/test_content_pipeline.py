@@ -315,7 +315,7 @@ class ContentPipelineTest(unittest.TestCase):
         audit = json.loads(report.read_text(encoding="utf-8"))
         self.assertEqual(2698, audit["total"])
         self.assertEqual(CATEGORY_COUNTS, audit["counts"])
-        self.assertEqual("2026.07.13-v2.31", on_disk["contentVersion"])
+        self.assertEqual("2026.08.25-v2.33-examples", on_disk["contentVersion"])
         self.assertEqual(6, len(audit["v231Migration"]["excludedIds"]))
         self.assertEqual(99, audit["phraseCleanup"]["cleanedCount"])
         self.assertEqual(3, len(audit["reviewedTermCorrections"]))

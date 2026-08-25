@@ -86,18 +86,18 @@ fun V21LearningHomeScreen(
                 }
                 if (
                     importJob != null &&
-                    importJob.status !in setOf(
-                        ImportJobStatus.COMPLETED.name,
-                        ImportJobStatus.FAILED.name,
-                        ImportJobStatus.CANCELLED.name,
-                    )
+                    shouldShowHomeImportJob(importJob)
                 ) {
                     item {
                         Card(
                             onClick = onImportVocabulary,
                             shape = RoundedCornerShape(18.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                                containerColor = if (importJob.status == ImportJobStatus.FAILED.name) {
+                                    MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.82f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                                },
                             ),
                         ) {
                             Column(
@@ -108,9 +108,20 @@ fun V21LearningHomeScreen(
                             ) {
                                 Text("词库导入", fontWeight = FontWeight.SemiBold)
                                 Text(
-                                    importJob.homeStatusText(),
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    importHomeStatusText(importJob),
+                                    color = if (importJob.status == ImportJobStatus.FAILED.name) {
+                                        MaterialTheme.colorScheme.onErrorContainer
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
                                 )
+                                if (importJob.status == ImportJobStatus.FAILED.name) {
+                                    Text(
+                                        "点击查看详情并重新选择",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onErrorContainer,
+                                    )
+                                }
                             }
                         }
                     }
@@ -119,6 +130,7 @@ fun V21LearningHomeScreen(
 
             Button(
                 onClick = onStartStudy,
+                enabled = hasDailyStudyTask(state.todayNew, state.todayReview),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(64.dp)
@@ -127,7 +139,7 @@ fun V21LearningHomeScreen(
             ) {
                 Icon(Icons.Default.PlayArrow, contentDescription = null)
                 Text(
-                    "开始学习",
+                    dailyStudyActionLabel(state.todayNew, state.todayReview),
                     modifier = Modifier.padding(start = 8.dp),
                     style = MaterialTheme.typography.titleMedium,
                 )
@@ -136,7 +148,6 @@ fun V21LearningHomeScreen(
         }
     }
 }
-
 @Composable
 private fun HomeTopBar(
     categoryLabel: String,
@@ -190,7 +201,6 @@ private fun HomeTopBar(
         }
     }
 }
-
 @Composable
 private fun DailyTaskCard(state: DashboardUiState) {
     val active = state.activeStats
@@ -342,16 +352,5 @@ private fun StreakBadge(
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-    }
-}
-
-private fun ImportJobEntity.homeStatusText(): String = when (status) {
-    ImportJobStatus.AWAITING_MAPPING.name -> "需要确认文件列"
-    ImportJobStatus.AWAITING_CONFIRMATION.name -> "校验完成，等待确认"
-    ImportJobStatus.COMMITTING.name -> "正在保存词库…"
-    else -> if (totalRows > 0) {
-        "正在校验第 $processedRows/$totalRows 个词…"
-    } else {
-        "正在读取 $originalFileName…"
     }
 }

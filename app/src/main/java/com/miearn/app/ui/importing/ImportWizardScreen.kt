@@ -42,6 +42,7 @@ import com.miearn.app.importing.ColumnRole
 import com.miearn.app.importing.ImportColumnMapping
 import com.miearn.app.importing.ImportMappingCodec
 import com.miearn.app.importing.ImportSanitizer
+import com.miearn.app.ui.canRetryImport
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,10 +50,13 @@ fun ImportWizardScreen(
     job: ImportJobEntity?,
     localError: String?,
     onBack: () -> Unit,
+    onCancel: () -> Unit = onBack,
+    onUseSource: (String) -> Unit = {},
     onFileSelected: (Uri, String) -> Unit,
     onMapping: (ImportColumnMapping) -> Unit,
     onCommit: (ImportConflictPolicy) -> Unit,
     onClearError: () -> Unit,
+    onRetry: () -> Unit = {},
 ) {
     var sourceName by rememberSaveable { mutableStateOf("") }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -79,9 +83,31 @@ fun ImportWizardScreen(
                 Text(localError, color = MaterialTheme.colorScheme.error)
                 TextButton(onClick = onClearError) { Text("知道了") }
             }
+            if (job?.status == ImportJobStatus.FAILED.name) {
+                Column(
+                    Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Text(
+                        "导入失败${job.errorCode?.let { "（$it）" }.orEmpty()}",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(job.errorMessage ?: "文件无法解析，请检查格式后重试。")
+                    job.recoveryHint?.takeIf(String::isNotBlank)?.let { hint ->
+                        Text(hint, style = MaterialTheme.typography.bodySmall)
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        if (canRetryImport(job)) {
+                            Button(onClick = onRetry) { Text("重试") }
+                        }
+                        OutlinedButton(onClick = { onClearError(); onBack() }) { Text("重新选择") }
+                    }
+                }
+            }
             when {
                 job == null -> {
-                    Text("从 CSV 或 Excel 导入", style = MaterialTheme.typography.headlineSmall)
+                    Text("导入词库文件", style = MaterialTheme.typography.headlineSmall)
                     Text(
                         "第一列可直接放英文；也支持“英文、中文、音标、例句、例句翻译、备注”等表头。数据只在本机处理。",
                         style = MaterialTheme.typography.bodyMedium,
@@ -97,17 +123,12 @@ fun ImportWizardScreen(
                     Button(
                         onClick = {
                             picker.launch(
-                                arrayOf(
-                                    "text/csv",
-                                    "text/comma-separated-values",
-                                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                    "application/octet-stream",
-                                ),
+                                arrayOf("*/*"),
                             )
                         },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text("选择 .csv 或 .xlsx 文件")
+                        Text("选择 .xlsx、.csv、.tsv 或 .txt 文件")
                     }
                     Text(
                         "限制：文件不超过 20 MB，最多 20,000 行。",
@@ -133,6 +154,12 @@ fun ImportWizardScreen(
                         "可以离开此页面，导入任务会继续运行。",
                         style = MaterialTheme.typography.bodySmall,
                     )
+                    OutlinedButton(
+                        onClick = onCancel,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("取消导入")
+                    }
                 }
 
                 job.status == ImportJobStatus.AWAITING_MAPPING.name -> {
@@ -163,8 +190,28 @@ fun ImportWizardScreen(
                     Text("导入完成", style = MaterialTheme.typography.headlineSmall)
                     Text("“${job.sourceName}”已加入 ${job.validRows} 个有效词条。")
                     Spacer(Modifier.height(8.dp))
-                    Button(onClick = onBack, modifier = Modifier.fillMaxWidth()) { Text("完成") }
+                    Button(
+                        onClick = { onUseSource(job.sourceId) },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("开始学习这个词库")
+                    }
+                    OutlinedButton(
+                        onClick = onBack,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("稍后再学")
+                    }
                 }
+
+                job.status == ImportJobStatus.CANCELLED.name -> {
+                    Text("导入已取消", style = MaterialTheme.typography.headlineSmall)
+                    Text("临时文件和未提交的词条已清理，现有学习进度不受影响。")
+                    Spacer(Modifier.height(8.dp))
+                    Button(onClick = onBack, modifier = Modifier.fillMaxWidth()) { Text("返回") }
+                }
+
+                job.status == ImportJobStatus.FAILED.name -> Unit
 
                 else -> {
                     Text("导入未完成", style = MaterialTheme.typography.headlineSmall)

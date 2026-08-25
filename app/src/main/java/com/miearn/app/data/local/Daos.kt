@@ -46,6 +46,23 @@ interface WordDao {
     @Query("""SELECT * FROM words WHERE LOWER(TRIM(english)) = :normalizedEnglish ORDER BY isCustom, rowid LIMIT 1""")
     suspend fun findCanonicalWord(normalizedEnglish: String): WordEntity?
     @Query("DELETE FROM words WHERE id = :wordId AND isCustom = 1") suspend fun deleteCustomWord(wordId: String): Int
+
+    @Query(
+        """
+        UPDATE words
+        SET categoryLabel = CASE
+            WHEN (SELECT COUNT(*) FROM word_source allSources WHERE allSources.wordId = words.id) = 1
+                THEN :label
+            ELSE '自定义词条'
+        END
+        WHERE isCustom = 1
+          AND EXISTS (
+              SELECT 1 FROM word_source x
+              WHERE x.wordId = words.id AND x.sourceId = :sourceId
+          )
+        """,
+    )
+    suspend fun syncCustomCategoryLabel(sourceId: String, label: String): Int
 }
 @Dao
 interface ProgressDao {
@@ -60,6 +77,9 @@ interface ProgressDao {
 
     @Query("UPDATE progress SET isFavorite = NOT isFavorite WHERE wordId = :wordId")
     suspend fun toggleFavorite(wordId: String)
+
+    @Query("SELECT wordId FROM progress WHERE isFavorite = 1 ORDER BY wordId")
+    fun observeFavoriteIds(): Flow<List<String>>
 
     @Query("UPDATE progress SET wrongCount = wrongCount + 1 WHERE wordId = :wordId")
     suspend fun incrementWrong(wordId: String)
@@ -128,6 +148,12 @@ interface StudyDao {
 
     @Query("""SELECT COUNT(*) FROM words w LEFT JOIN progress p ON p.wordId = w.id WHERE (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId)) AND p.firstLearnedEpochDay IS NULL""")
     fun observeUnseenCount(sourceId: String): Flow<Int>
+
+    @Query("""SELECT COUNT(*) FROM progress p JOIN words w ON w.id = p.wordId WHERE p.mastered = 1 AND (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId))""")
+    fun observeMasteredCount(sourceId: String): Flow<Int>
+
+    @Query("""SELECT COUNT(*) FROM progress p JOIN words w ON w.id = p.wordId WHERE p.firstLearnedEpochDay = :today AND (w.category = :sourceId OR EXISTS (SELECT 1 FROM word_source x WHERE x.wordId = w.id AND x.sourceId = :sourceId))""")
+    fun observeNewLearnedToday(sourceId: String, today: Long): Flow<Int>
 }
 @Dao
 interface ActivityDao {
@@ -186,6 +212,9 @@ interface EventDao {
 interface SessionDao {
     @Query("SELECT * FROM study_session WHERE slot = 1")
     suspend fun get(): StudySessionEntity?
+
+    @Query("SELECT * FROM study_session WHERE slot = 1")
+    fun observe(): Flow<StudySessionEntity?>
 
     @Upsert
     suspend fun upsert(session: StudySessionEntity)

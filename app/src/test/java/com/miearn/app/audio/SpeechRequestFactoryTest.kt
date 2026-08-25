@@ -32,6 +32,15 @@ class SpeechRequestFactoryTest {
     }
 
     @Test
+    fun textRequestUsesTtsOnlyAndKeepsOneSentence() {
+        val request = SpeechRequestFactory.text("Inspect the fixture.")
+
+        assertEquals("Inspect the fixture.", request.text)
+        assertEquals("", request.assetPath)
+        assertEquals(listOf("Inspect the fixture."), request.segments.map { it.text })
+    }
+
+    @Test
     fun variantRequestUsesOnlySelectedVariantAssetAndText() {
         val request = SpeechRequestFactory.variant(fixture, 1)
 

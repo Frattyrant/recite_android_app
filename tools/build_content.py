@@ -564,7 +564,7 @@ def build_content(source_dir: Path, output_path: Path, report_path: Path) -> lis
 
     payload = {
         "schemaVersion": 1,
-        "contentVersion": "2026.06.29",
+        "contentVersion": "2026.08.25",
         "sourceFiles": [workbook_path.name, pdf_path.name],
         "words": records,
     }

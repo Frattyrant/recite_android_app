@@ -26,10 +26,12 @@ import com.miearn.app.domain.LearningContentPolicy
 import com.miearn.app.domain.from
 import com.miearn.app.domain.LearningSession
 import com.miearn.app.domain.QuizEngine
+import com.miearn.app.domain.QuizContentPolicy
 import com.miearn.app.reminder.LearningReminderNotifier
 import com.miearn.app.reminder.ReminderCoordinator
 import com.miearn.app.reminder.ReminderUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -51,9 +53,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val settingsRepository = container.settings
     private val reminderCoordinator = ReminderCoordinator.create(application)
     private val launchEpochDay = MIearnRepository.todayEpochDay()
+    private val currentEpochDay = MutableStateFlow(launchEpochDay)
     private val currentMineMonth = YearMonth.from(LocalDate.ofEpochDay(launchEpochDay))
     private var selectedMineMonth = currentMineMonth
     private var answerAdvanceJob: Job? = null
+    private var importCopyJob: Job? = null
 
     val seedState = MutableStateFlow<SeedUiState>(SeedUiState.Loading)
     val selectedTab = MutableStateFlow(MainTab.LEARNING)
@@ -82,29 +86,59 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         UserSettings(),
     )
 
-    private val activeCounts = settings.flatMapLatest { selected ->
+    val favoriteIds: StateFlow<Set<String>> = container.database.progressDao()
+        .observeFavoriteIds()
+        .map { it.toSet() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptySet())
+
+    private val activeCounts = combine(settings, currentEpochDay) { selected, today ->
+        selected to today
+    }.flatMapLatest { (selected, today) ->
         combine(
-            repository.dueCount(selected.activeCategory, MIearnRepository.todayEpochDay()),
+            repository.dueCount(selected.activeCategory, today),
             repository.unseenCount(selected.activeCategory),
-        ) { due, unseen -> due to minOf(unseen, selected.dailyGoal) }
+            repository.newLearnedToday(selected.activeCategory, today),
+            repository.observeSavedSessionRecord(),
+        ) { due, unseen, learnedToday, saved ->
+            val session = saved?.takeIf {
+                it.epochDay == today &&
+                    it.category == selected.activeCategory &&
+                    !it.session.isComplete
+            }?.session
+            val counts = session?.let {
+                remainingSessionTaskCounts(
+                    phase = it.phase,
+                    index = it.index,
+                    phaseTotal = it.phaseTotal,
+                )
+            } ?: DailyTaskCounts(
+                newCount = remainingDailyNewCount(selected.dailyGoal, learnedToday, unseen),
+                reviewCount = due,
+            )
+            DailyTaskSnapshot(epochDay = today, counts = counts)
+        }
+    }
+
+    private val activeMasteredCount = settings.flatMapLatest { selected ->
+        repository.masteredCount(selected.activeCategory)
     }
 
     val dashboard: StateFlow<DashboardUiState> = combine(
         settings,
         repository.categoryStats,
         repository.activities,
-        repository.masteredCount,
+        activeMasteredCount,
         activeCounts,
-    ) { selected, categories, activities, mastered, counts ->
+    ) { selected, categories, activities, mastered, taskSnapshot ->
         DashboardUiState(
             settings = selected,
             categories = categories,
-            todayNew = counts.second,
-            todayReview = counts.first,
+            todayNew = taskSnapshot.counts.newCount,
+            todayReview = taskSnapshot.counts.reviewCount,
             mastered = mastered,
             streak = MIearnRepository.calculateStreak(
                 activities,
-                MIearnRepository.todayEpochDay(),
+                taskSnapshot.epochDay,
             ),
         )
     }.stateIn(
@@ -126,6 +160,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 WordBrowserDestination.SEARCH -> repository.searchAll(query)
                 WordBrowserDestination.FAVORITES -> repository.favorites()
                 WordBrowserDestination.WRONG -> repository.wrongWords()
+                WordBrowserDestination.MASTERED -> repository.masteredWords()
                 null -> repository.searchAll("")
             }
             source.map { words ->
@@ -184,6 +219,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 studyState.value = active.copy(pronunciationStatus = pronunciationStatus, audioHelpVisible = audioHelpLatched)
             }
         }
+        viewModelScope.launch {
+            // A COPYING job owns a SAF stream from the previous process and
+            // cannot be resumed. Recover it before exposing the latest job so
+            // users see a concrete error and a reselect action after restart.
+            container.importCoordinator.recoverInterruptedCopies()
+            container.importCoordinator.observeLatestActiveJob().collect { latest ->
+                if (activeImportJobId.value == null && latest != null) {
+                    activeImportJobId.value = latest.jobId
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        answerAdvanceJob?.cancel()
+        importCopyJob?.cancel()
+        container.audio.release()
+        container.answerFeedback.release()
+        super.onCleared()
     }
 
     fun retrySeed() {
@@ -226,21 +280,46 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun closeImport() {
         showImport.value = false
         val job = importJob.value
-        if (job?.status == com.miearn.app.data.local.ImportJobStatus.COMPLETED.name) {
+        if (
+            job?.status == com.miearn.app.data.local.ImportJobStatus.COMPLETED.name ||
+            job?.status == com.miearn.app.data.local.ImportJobStatus.CANCELLED.name
+        ) {
             activeImportJobId.value = null
         }
     }
 
     fun startImport(uri: Uri, sourceName: String) {
+        importCopyJob?.cancel()
+        importCopyJob = viewModelScope.launch {
+            importUiError.value = null
+            try {
+                container.importCoordinator.createAndPrepare(uri, sourceName) { jobId ->
+                    activeImportJobId.value = jobId
+                }
+            } catch (error: CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                importUiError.value = error.message ?: "无法创建导入任务，请重试。"
+            }
+        }
+    }
+
+    fun retryImport() {
+        val jobId = activeImportJobId.value ?: return
         viewModelScope.launch {
-            runCatching { container.importCoordinator.createAndPrepare(uri, sourceName) }
-                .onSuccess {
-                    importUiError.value = null
-                    activeImportJobId.value = it
-                }
-                .onFailure {
-                    importUiError.value = it.message ?: "无法读取所选文件"
-                }
+            if (!container.importCoordinator.retry(jobId)) {
+                importUiError.value = "临时文件已不存在，请重新选择文件。"
+            }
+        }
+    }
+
+    fun cancelImport() {
+        val jobId = activeImportJobId.value ?: return
+        importCopyJob?.cancel()
+        importCopyJob = null
+        viewModelScope.launch {
+            runCatching { container.importCoordinator.cancel(jobId) }
+                .onFailure { importUiError.value = it.message ?: "取消导入失败，请重试。" }
         }
     }
 
@@ -260,6 +339,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val jobId = activeImportJobId.value ?: return
         viewModelScope.launch { container.importCoordinator.commit(jobId, policy) }
     }
+
+    fun useImportedSource(sourceId: String) {
+        viewModelScope.launch {
+            settingsRepository.setActiveCategory(sourceId)
+            showImport.value = false
+            activeImportJobId.value = null
+        }
+    }
+
     fun selectTab(tab: MainTab) {
         container.audio.stop()
         val enteringMine = tab == MainTab.MINE && selectedTab.value != MainTab.MINE
@@ -323,6 +411,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun stopAudio() {
         container.audio.stop()
+    }
+
+    fun refreshToday() {
+        val today = MIearnRepository.todayEpochDay()
+        if (shouldRefreshStudyDay(currentEpochDay.value, today)) {
+            currentEpochDay.value = today
+        }
     }
 
     fun selectActiveCategory(category: String) {
@@ -463,6 +558,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun pronounceVariant(word: WordEntity, index: Int) {
         container.audio.playVariant(word, index)
+    }
+
+    fun pronounceText(text: String) {
+        container.audio.playText(text)
     }
 
     fun startStudy() {
@@ -744,6 +843,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     QuizMode.LISTENING -> word.primaryEnglish.isNotBlank()
                 }
             }
+            if (!QuizAvailability.hasEnoughChoiceAnswers(mode, quizPool)) {
+                quizState.value = QuizUiState.Unavailable(
+                    "当前范围至少需要两个不同答案；可以扩大词库，或改用拼写/例句填空。",
+                )
+                return@launch
+            }
             quizItems = quizPool.shuffled().take(count)
             quizIndex = 0
             quizCorrect = 0
@@ -764,6 +869,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         container.answerFeedback.play(if (isCorrect) AnswerFeedback.CORRECT else AnswerFeedback.WRONG)
         if (isCorrect) {
             quizCorrect += 1
+            // A correct retry should make the wrong-book list converge just
+            // like the reinforcement phase does. The DAO clamps at zero, so
+            // ordinary quiz answers remain harmless for clean words.
+            viewModelScope.launch { repository.resolveWrong(active.question.word.id) }
         } else {
             quizWrongIds += active.question.word.id
             viewModelScope.launch { repository.markWrong(active.question.word.id) }
@@ -814,7 +923,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             QuizMode.EN_TO_ZH -> QuizQuestion(
                 word,
                 quizMode,
-                word.english,
+                QuizContentPolicy.primaryEnglish(word),
                 LearningContentPolicy.displayChinese(word.chinese),
                 QuizEngine.choiceOptions(
                     answer = LearningContentPolicy.displayChinese(word.chinese),
@@ -828,10 +937,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 word,
                 quizMode,
                 LearningContentPolicy.displayChinese(word.chinese),
-                word.primaryEnglish,
+                QuizContentPolicy.primaryEnglish(word),
                 QuizEngine.choiceOptions(
-                    answer = word.primaryEnglish,
-                    candidates = distractors.map(WordEntity::primaryEnglish),
+                    answer = QuizContentPolicy.primaryEnglish(word),
+                    candidates = distractors.map(QuizContentPolicy::primaryEnglish),
                     seed = word.id.hashCode() xor quizIndex,
                 ),
             )
@@ -839,10 +948,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 word,
                 quizMode,
                 "听发音，选择正确的英文",
-                word.primaryEnglish,
+                QuizContentPolicy.primaryEnglish(word),
                 QuizEngine.choiceOptions(
-                    answer = word.primaryEnglish,
-                    candidates = distractors.map(WordEntity::primaryEnglish),
+                    answer = QuizContentPolicy.primaryEnglish(word),
+                    candidates = distractors.map(QuizContentPolicy::primaryEnglish),
                     seed = word.id.hashCode() xor quizIndex,
                 ),
             )
@@ -850,14 +959,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 word,
                 quizMode,
                 LearningContentPolicy.displayChinese(word.chinese),
-                word.primaryEnglish,
+                QuizContentPolicy.primaryEnglish(word),
                 emptyList(),
             )
             QuizMode.FILL_BLANK -> QuizQuestion(
                 word,
                 quizMode,
-                QuizEngine.blankExample(word.exampleEn, word.primaryEnglish),
-                word.primaryEnglish,
+                QuizEngine.blankExample(
+                    word.exampleEn,
+                    QuizContentPolicy.primaryEnglish(word),
+                ),
+                QuizContentPolicy.primaryEnglish(word),
                 emptyList(),
             )
         }
@@ -867,6 +979,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             total = quizItems.size,
             correct = quizCorrect,
         )
-        if (quizMode == QuizMode.LISTENING) pronounce(word)
+        if (quizMode == QuizMode.LISTENING) {
+            pronounceVariant(
+                word,
+                listeningAudioVariantIndex(word),
+            )
+        }
     }
 }

@@ -9,6 +9,16 @@ data class SpeechSegment(
 )
 
 object SpeechRequestFactory {
+    fun text(text: String): SpeechRequest {
+        val cleanText = EnglishVariantParser.toSpeechText(text)
+        return SpeechRequest(
+            id = "text-${cleanText.hashCode()}",
+            text = cleanText,
+            assetPath = "",
+            segments = listOf(SpeechSegment(cleanText, "")),
+        )
+    }
+
     fun full(word: WordEntity): SpeechRequest {
         val variants = EnglishVariantParser.parse(word.english, word.kind)
         return SpeechRequest(

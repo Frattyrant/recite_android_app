@@ -201,7 +201,6 @@ class XlsxVocabularyReader(private val maxRows: Int = 20_000) : VocabularyRowRea
                     }
                     "t" -> if (cellType == "inlineStr") {
                         inInlineText = true
-                        value.setLength(0)
                     }
                 }
             }

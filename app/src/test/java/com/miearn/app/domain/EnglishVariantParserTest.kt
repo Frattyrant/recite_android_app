@@ -73,6 +73,28 @@ class EnglishVariantParserTest {
     }
 
     @Test
+    fun phraseSplitsChinesePunctuationAndLowercaseSentenceStarts() {
+        assertEquals(
+            listOf("Check the fixture.", "inspect the jig。"),
+            EnglishVariantParser.parse(
+                "Check the fixture. inspect the jig。再检查一次？",
+                kind = "PHRASE",
+            ),
+        )
+    }
+
+    @Test
+    fun phraseKeepsAbbreviationsAndDecimalsTogether() {
+        assertEquals(
+            listOf("Use e.g. a 300.5mm fixture.", "Then inspect it."),
+            EnglishVariantParser.parse(
+                "Use e.g. a 300.5mm fixture. Then inspect it.",
+                kind = "PHRASE",
+            ),
+        )
+    }
+
+    @Test
     fun speechTextNeverContainsSpokenSlashCharacters() {
         assertEquals("300mm s", EnglishVariantParser.toSpeechText("300mm/s"))
         assertEquals("gun gripper", EnglishVariantParser.toSpeechText("gun\\gripper"))

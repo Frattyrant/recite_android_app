@@ -51,7 +51,7 @@ class ContentSeederUpgradeTest {
 
         seeder.syncSeed(
             ContentSeed(
-                contentVersion = "2026.07.13-v2.31",
+                contentVersion = "2026.08.25-v2.33-examples",
                 words = listOf(word("retained", note = "updated")),
             ),
         )

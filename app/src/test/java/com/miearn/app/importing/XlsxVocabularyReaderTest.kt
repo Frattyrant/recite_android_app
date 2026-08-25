@@ -86,6 +86,37 @@ class XlsxVocabularyReaderTest {
     }
 
     @Test
+    fun concatenatesRichTextRunsInsideInlineStringCells() {
+        val bytes = xlsx(
+            "xl/workbook.xml" to """
+                <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+                    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+                  <sheets><sheet name="词库" sheetId="1" r:id="rId1"/></sheets>
+                </workbook>
+            """,
+            "xl/_rels/workbook.xml.rels" to """
+                <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+                  <Relationship Id="rId1" Target="worksheets/sheet1.xml"/>
+                </Relationships>
+            """,
+            "xl/worksheets/sheet1.xml" to worksheet(
+                """
+                <row r="1">
+                  <c r="A1" t="inlineStr"><is>
+                    <r><rPr><b/></rPr><t>fix</t></r>
+                    <r><t>ture</t></r>
+                  </is></c>
+                </row>
+                """,
+            ),
+        )
+
+        val row = XlsxVocabularyReader().rows(ByteArrayInputStream(bytes)).single()
+
+        assertEquals(listOf("fixture"), row.cells)
+    }
+
+    @Test
     fun rejectsCorruptZip() {
         assertThrows(CorruptVocabularyFileException::class.java) {
             XlsxVocabularyReader()

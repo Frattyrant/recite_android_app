@@ -6,8 +6,8 @@ import org.junit.Test
 
 class AnswerFeedbackAudioPolicyTest {
     @Test
-    fun feedbackUsesMediaVolumeInsteadOfMutedSystemEffectsVolume() {
-        assertEquals(AudioAttributes.USAGE_MEDIA, AnswerFeedbackAudioPolicy.usage)
+    fun feedbackUsesAssistanceSonificationVolume() {
+        assertEquals(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION, AnswerFeedbackAudioPolicy.usage)
         assertEquals(
             AudioAttributes.CONTENT_TYPE_SONIFICATION,
             AnswerFeedbackAudioPolicy.contentType,

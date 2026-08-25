@@ -12,7 +12,7 @@ enum class AnswerFeedback {
 
 
 internal object AnswerFeedbackAudioPolicy {
-    const val usage = AudioAttributes.USAGE_MEDIA
+    const val usage = AudioAttributes.USAGE_ASSISTANCE_SONIFICATION
     const val contentType = AudioAttributes.CONTENT_TYPE_SONIFICATION
 }
 class AnswerFeedbackPlayer(context: Context) {

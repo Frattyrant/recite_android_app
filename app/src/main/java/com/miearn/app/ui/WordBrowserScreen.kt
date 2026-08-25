@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
@@ -22,6 +23,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -52,8 +54,10 @@ fun WordBrowserScreen(
     onQuery: (String) -> Unit,
     onPlay: (WordEntity) -> Unit,
     onPlayVariant: (WordEntity, Int) -> Unit,
+    onPlayExample: ((String) -> Unit)? = null,
     onOpenWordDetail: (WordEntity, Int?) -> Unit,
     onFavorite: (String) -> Unit,
+    favoriteIds: Set<String> = emptySet(),
 ) {
     var selectedWord by remember { mutableStateOf<WordEntity?>(null) }
     val focusRequester = remember { FocusRequester() }
@@ -104,6 +108,7 @@ fun WordBrowserScreen(
                         onClick = { selectedWord = word },
                         onPlay = { onPlay(word) },
                         onFavorite = { onFavorite(word.id) },
+                        isFavorite = word.id in favoriteIds,
                     )
                 }
             }
@@ -143,19 +148,14 @@ fun WordBrowserScreen(
                         Icon(Icons.Default.PlayArrow, contentDescription = "播放完整发音")
                     }
                     IconButton(onClick = { onFavorite(word.id) }) {
-                        Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
-                    }
-                }
-                if (word.exampleEn.isNotBlank()) {
-                    Text(word.exampleEn, modifier = Modifier.fillMaxWidth())
-                    if (word.exampleZh.isNotBlank()) {
-                        Text(
-                            word.exampleZh,
-                            modifier = Modifier.fillMaxWidth(),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        Icon(
+                            if (word.id in favoriteIds) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = if (word.id in favoriteIds) "取消收藏" else "收藏",
+                            tint = if (word.id in favoriteIds) MaterialTheme.colorScheme.error else LocalContentColor.current,
                         )
                     }
                 }
+                ExampleList(word, onPlayExample = onPlayExample)
                 if (word.note.isNotBlank()) {
                     Text("备注：${word.note}", modifier = Modifier.fillMaxWidth())
                 }
@@ -171,6 +171,7 @@ private fun WordBrowserRow(
     onClick: () -> Unit,
     onPlay: () -> Unit,
     onFavorite: () -> Unit,
+    isFavorite: Boolean,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
@@ -203,7 +204,11 @@ private fun WordBrowserRow(
                 Icon(Icons.Default.PlayArrow, contentDescription = "播放")
             }
             IconButton(onClick = onFavorite) {
-                Icon(Icons.Default.FavoriteBorder, contentDescription = "收藏")
+                Icon(
+                    if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = if (isFavorite) "取消收藏" else "收藏",
+                    tint = if (isFavorite) MaterialTheme.colorScheme.error else LocalContentColor.current,
+                )
             }
         }
     }

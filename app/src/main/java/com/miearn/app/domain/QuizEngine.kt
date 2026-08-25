@@ -8,8 +8,15 @@ object QuizEngine {
 
     fun blankExample(example: String, primaryEnglish: String): String {
         if (primaryEnglish.isBlank()) return example
-        return Regex(Regex.escape(primaryEnglish), RegexOption.IGNORE_CASE)
-            .replaceFirst(example, "______")
+        val token = Regex(Regex.escape(primaryEnglish), RegexOption.IGNORE_CASE)
+        // A word can have multiple newline-delimited examples. Present one
+        // sentence per question so a second sentence cannot reveal the answer.
+        val sentence = example
+            .lineSequence()
+            .map(String::trim)
+            .firstOrNull(token::containsMatchIn)
+            ?: return example
+        return token.replaceFirst(sentence, "______")
     }
 
     fun chineseOptions(
@@ -23,11 +30,12 @@ object QuizEngine {
         candidates: List<String>,
         seed: Int,
     ): List<String> {
+        val normalizedAnswer = answer.trim().lowercase()
         val distractors = candidates
             .asSequence()
             .map(String::trim)
-            .filter { it.isNotEmpty() && it != answer }
-            .distinct()
+            .filter { it.isNotEmpty() && it.lowercase() != normalizedAnswer }
+            .distinctBy(String::lowercase)
             .shuffled(Random(seed))
             .take(3)
             .toList()

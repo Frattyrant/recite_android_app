@@ -5,7 +5,12 @@ import java.util.Locale
 
 object ImportSanitizer {
     private val whitespace = Regex("\\s+")
-    private val validEnglish = Regex("^[A-Za-z0-9\\s'’\\-_/&(),.:;；\\\\]+$")
+    // Keep validation useful without rejecting normal engineering notation such as
+    // C++, C#, 50×50mm, ±5% or key=value. Chinese-only rows still fail the Latin
+    // character check below and are not treated as English terms.
+    private val validEnglish = Regex(
+        "^[A-Za-z0-9\\s'’\\-_/&(),.:;；\\\\+*#%@°×±≤≥=<>!?]+$",
+    )
 
     fun clean(value: String): String = Normalizer.normalize(value, Normalizer.Form.NFKC)
         .trim()
@@ -19,14 +24,33 @@ object ImportSanitizer {
     }
 
     fun detectHeader(value: String): ColumnRole {
-        val header = normalizeEnglish(value).replace("_", "").replace(" ", "")
+        // Spreadsheet exports use many harmless decorations (spaces,
+        // underscores, brackets and a colon). Normalize those before matching
+        // so "English Word", "Example (EN)" and their Chinese equivalents
+        // are recognized without forcing a manual column mapping.
+        val header = normalizeEnglish(value)
+            .replace(Regex("[\\s_\\-():：/\\\\（）()]+"), "")
         return when (header) {
-            "word", "words", "english", "英文", "单词", "词汇", "英文单词" -> ColumnRole.ENGLISH
-            "chinese", "translation", "meaning", "中文", "翻译", "释义", "中文释义" -> ColumnRole.CHINESE
-            "phonetic", "ipa", "音标" -> ColumnRole.PHONETIC
-            "example", "exampleen", "sentence", "例句", "英文例句" -> ColumnRole.EXAMPLE_EN
-            "examplezh", "exampletranslation", "例句翻译", "中文例句" -> ColumnRole.EXAMPLE_ZH
-            "note", "notes", "remark", "备注", "笔记" -> ColumnRole.NOTE
+            "word", "words", "english", "englishword", "englishwords",
+            "term", "terms", "expression", "expressions", "vocabulary",
+            "英文", "单词", "词汇", "英文单词", "英文词条",
+            -> ColumnRole.ENGLISH
+            "chinese", "chinesemeaning", "translation", "translationzh",
+            "meaning", "meaningzh", "definition", "definitions",
+            "中文", "翻译", "释义", "中文释义", "中文意思",
+            -> ColumnRole.CHINESE
+            "phonetic", "phonetics", "ipa", "pronunciation", "pronunciations",
+            "音标", "发音",
+            -> ColumnRole.PHONETIC
+            "example", "exampleen", "exampleenglish", "sentence", "sentences",
+            "例句", "英文例句", "英语例句",
+            -> ColumnRole.EXAMPLE_EN
+            "examplezh", "exampletranslation", "translationexample",
+            "例句翻译", "中文例句", "例句中文",
+            -> ColumnRole.EXAMPLE_ZH
+            "note", "notes", "remark", "remarks", "comment", "comments",
+            "annotation", "annotations", "备注", "笔记",
+            -> ColumnRole.NOTE
             else -> ColumnRole.IGNORE
         }
     }

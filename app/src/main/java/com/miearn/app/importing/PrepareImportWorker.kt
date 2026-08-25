@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import com.miearn.app.MIearnApplication
 import com.miearn.app.data.local.ImportJobStatus
 import java.io.File
+import kotlinx.coroutines.CancellationException
 
 class PrepareImportWorker(
     appContext: Context,
@@ -17,6 +18,7 @@ class PrepareImportWorker(
         val container = (applicationContext as MIearnApplication).container
         val dao = container.database.importDao()
         val job = dao.getJob(jobId) ?: return Result.failure()
+        if (job.status == ImportJobStatus.CANCELLED.name) return Result.success()
         return try {
             dao.upsertJob(
                 job.copy(
@@ -77,15 +79,26 @@ class PrepareImportWorker(
                 }
             }
             Result.success()
+        } catch (error: CancellationException) {
+            // A user cancellation is coordinated by ImportWorkCoordinator,
+            // which owns the CANCELLED state and cleanup. Do not convert it
+            // into a parse failure or race the coordinator with an upsert.
+            throw error
         } catch (error: Exception) {
             runCatching { dao.deleteDrafts(jobId) }
-            runCatching { File(job.internalFilePath).delete() }
-            dao.upsertJob(
-                job.copy(
-                    status = ImportJobStatus.FAILED.name,
-                    errorMessage = error.message ?: "文件解析失败",
-                    updatedAtEpochMillis = System.currentTimeMillis(),
-                ),
+            val failure = error.toImportFailure(
+                fallbackCode = ImportFailureCode.PARSE_FAILED,
+                fallbackMessage = "文件解析失败",
+                fallbackHint = "请检查列格式或重新选择文件后重试。",
+                fallbackRetryable = false,
+            )
+            if (!failure.retryable) runCatching { File(job.internalFilePath).delete() }
+            dao.markPreparationFailed(
+                jobId = jobId,
+                errorCode = failure.code.name,
+                errorMessage = failure.message,
+                recoveryHint = failure.recoveryHint,
+                now = System.currentTimeMillis(),
             )
             Result.failure()
         }

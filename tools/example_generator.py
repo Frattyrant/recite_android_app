@@ -70,10 +70,23 @@ def example_for(word: dict) -> ExamplePair:
         "mechanical": MECHANICAL_TEMPLATES,
         "electrical": ELECTRICAL_TEMPLATES,
     }.get(category, GENERIC_TEMPLATES)
-    template_en, template_zh = templates[_template_index(word, len(templates))]
+    primary_index = _template_index(word, len(templates))
+    secondary_index = (primary_index + max(1, len(templates) // 2)) % len(templates)
+    template_en, template_zh = templates[primary_index]
+    secondary_en, secondary_zh = templates[secondary_index]
     return ExamplePair(
-        example_en=template_en.format(term=term),
-        example_zh=template_zh.format(meaning=chinese),
+        example_en="\n".join(
+            (
+                template_en.format(term=term),
+                secondary_en.format(term=term),
+            ),
+        ),
+        example_zh="\n".join(
+            (
+                template_zh.format(meaning=chinese),
+                secondary_zh.format(meaning=chinese),
+            ),
+        ),
     )
 
 

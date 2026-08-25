@@ -7,12 +7,23 @@ internal class ImportFileStore(
     private val directory: File,
     private val maxBytes: Long = DEFAULT_MAX_BYTES,
 ) {
-    fun copy(jobId: String, input: InputStream): File {
+    fun target(jobId: String): File = File(directory, "$jobId.source")
+
+    fun cleanup(jobId: String) {
+        target(jobId).delete()
+        File(directory, "$jobId.partial").delete()
+    }
+
+    fun copy(
+        jobId: String,
+        input: InputStream,
+        checkpoint: () -> Unit = {},
+    ): File {
         check(directory.mkdirs() || directory.isDirectory) {
             "无法创建导入临时目录"
         }
         val partial = File(directory, "$jobId.partial")
-        val target = File(directory, "$jobId.source")
+        val target = target(jobId)
         partial.delete()
         target.delete()
         try {
@@ -20,11 +31,13 @@ internal class ImportFileStore(
                 val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
                 var copied = 0L
                 while (true) {
+                    checkpoint()
                     val read = input.read(buffer)
                     if (read < 0) break
+                    checkpoint()
                     copied += read
                     if (copied > maxBytes) {
-                        throw VocabularyImportException("文件不能超过 20 MB")
+                        throw FileSizeLimitException(maxBytes)
                     }
                     output.write(buffer, 0, read)
                 }
@@ -35,8 +48,7 @@ internal class ImportFileStore(
             }
             return target
         } catch (error: Exception) {
-            partial.delete()
-            target.delete()
+            cleanup(jobId)
             throw error
         }
     }

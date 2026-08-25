@@ -23,6 +23,8 @@ class ExampleGeneratorTest(unittest.TestCase):
         for index, row in enumerate(rows, 1):
             self.assertIn(f"fixture {index}".casefold(), row.example_en.casefold())
             self.assertIn(f"夹具 {index}", row.example_zh)
+            self.assertEqual(2, len(row.example_en.splitlines()))
+            self.assertEqual(2, len(row.example_zh.splitlines()))
 
     def test_electrical_examples_use_electrical_context(self):
         row = example_for(self.word(2, category="electrical"))

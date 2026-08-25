@@ -127,6 +127,31 @@ class PrepareImportWorkerTest {
         }
     }
 
+    @Test
+    fun workerDoesNotResurrectCancelledJob() = runTest {
+        withContext(Dispatchers.IO) {
+            val file = File(application.cacheDir, "cancelled-before-worker.csv")
+            file.writeText("not a valid import", Charsets.UTF_8)
+            val job = importJob(
+                jobId = "cancelled-before-worker",
+                file = file,
+                status = ImportJobStatus.CANCELLED,
+            )
+            application.container.database.importDao().upsertJob(job)
+
+            val result = TestListenableWorkerBuilder<PrepareImportWorker>(application)
+                .setInputData(workDataOf(PrepareImportWorker.KEY_JOB_ID to job.jobId))
+                .build()
+                .doWork()
+
+            assertTrue(result is androidx.work.ListenableWorker.Result.Success)
+            assertEquals(
+                ImportJobStatus.CANCELLED.name,
+                application.container.database.importDao().getJob(job.jobId)?.status,
+            )
+        }
+    }
+
     private fun importJob(
         jobId: String,
         file: File,

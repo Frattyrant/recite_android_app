@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
@@ -61,6 +62,7 @@ fun MineScreen(
     onRetry: () -> Unit,
     onFavorites: () -> Unit,
     onWrong: () -> Unit,
+    onMastered: () -> Unit,
     onInsights: () -> Unit,
     onSources: () -> Unit,
 ) {
@@ -81,6 +83,7 @@ fun MineScreen(
                 onSelectDay = onSelectDay,
                 onFavorites = onFavorites,
                 onWrong = onWrong,
+                onMastered = onMastered,
                 onInsights = onInsights,
                 onSources = onSources,
             )
@@ -101,6 +104,7 @@ private fun MineContent(
     onSelectDay: (Long) -> Unit,
     onFavorites: () -> Unit,
     onWrong: () -> Unit,
+    onMastered: () -> Unit,
     onInsights: () -> Unit,
     onSources: () -> Unit,
 ) {
@@ -140,6 +144,15 @@ private fun MineContent(
                 icon = Icons.Default.Warning,
                 onClick = onWrong,
                 iconColor = MaterialTheme.colorScheme.secondary,
+            )
+        }
+        item {
+            SoftEntryRow(
+                title = "已掌握词条",
+                subtitle = "回看已经稳定记住的内容",
+                icon = Icons.Default.CheckCircle,
+                onClick = onMastered,
+                iconColor = MaterialTheme.colorScheme.primary,
             )
         }
         item { SoftSectionTitle("数据与工具", Modifier.padding(top = 8.dp)) }

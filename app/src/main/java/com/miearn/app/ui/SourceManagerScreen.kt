@@ -132,14 +132,27 @@ fun SourceManagerScreen(
             onDismissRequest = { renameSource = null },
             title = { Text("重命名词库") },
             text = {
-                OutlinedTextField(value = name, onValueChange = { name = it }, singleLine = true)
+                val validationMessage = sourceNameValidationMessage(name)
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    singleLine = true,
+                    isError = validationMessage != null,
+                    supportingText = {
+                        validationMessage?.let { Text(it) }
+                    },
+                )
             },
             confirmButton = {
+                val validationMessage = sourceNameValidationMessage(name)
                 TextButton(
                     onClick = {
-                        if (name.isNotBlank()) onRename(source.sourceId, name.trim())
-                        renameSource = null
+                        if (validationMessage == null) {
+                            onRename(source.sourceId, name.trim())
+                            renameSource = null
+                        }
                     },
+                    enabled = validationMessage == null,
                 ) { Text("保存") }
             },
             dismissButton = { TextButton(onClick = { renameSource = null }) { Text("取消") } },

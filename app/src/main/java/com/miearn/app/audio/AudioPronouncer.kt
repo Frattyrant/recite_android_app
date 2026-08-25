@@ -61,6 +61,12 @@ class AudioPronouncer(context: Context) {
         playRequest(SpeechRequestFactory.variant(word, index))
     }
 
+    fun playText(text: String) {
+        if (text.isNotBlank()) {
+            playRequest(SpeechRequestFactory.text(text))
+        }
+    }
+
     fun stop() {
         executor.stop()
     }

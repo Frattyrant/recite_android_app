@@ -102,7 +102,7 @@ class ContentV231MigrationTest(unittest.TestCase):
     def test_updates_content_version_and_never_adds_image_fields(self):
         migrated, _ = migrate_content(self.v23, self.repairs)
 
-        self.assertEqual("2026.07.13-v2.31", migrated["contentVersion"])
+        self.assertEqual("2026.08.25-v2.33-examples", migrated["contentVersion"])
         self.assertTrue(all("imageAsset" not in word for word in migrated["words"]))
 
     def test_repairs_clear_source_typos_without_touching_stable_ids(self):

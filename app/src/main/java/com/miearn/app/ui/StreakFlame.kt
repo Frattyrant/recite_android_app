@@ -1,5 +1,6 @@
 package com.miearn.app.ui
 
+import androidx.compose.runtime.getValue
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -8,6 +9,10 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.currentStateAsState
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -27,7 +32,13 @@ internal fun StreakFlame(
     val level = StreakFlameLevel.fromDays(days)
     if (level == StreakFlameLevel.NONE) return
 
-    val shouldAnimate = animated && isVisible
+    val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+    val shouldAnimate = animated &&
+        isVisible &&
+        StreakMotionPolicy.shouldAnimate(
+            screenStarted = lifecycleState.isAtLeast(Lifecycle.State.STARTED),
+            systemAnimatorScale = StreakMotionPolicy.readSystemAnimatorScale(LocalContext.current),
+        )
     val infiniteTransition = rememberInfiniteTransition(label = "streak-flame")
     val outerMotion = if (shouldAnimate) {
         infiniteTransition.animateFloat(
