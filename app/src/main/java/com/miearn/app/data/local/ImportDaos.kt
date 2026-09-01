@@ -75,7 +75,8 @@ interface ImportDao {
     fun observeJobs(): Flow<List<ImportJobEntity>>
 
     @Query(
-        "SELECT * FROM import_jobs WHERE status NOT IN ('COMPLETED', 'CANCELLED') ORDER BY updatedAtEpochMillis DESC LIMIT 1",
+        "SELECT * FROM import_jobs WHERE status IN ('COPYING', 'PREPARING', 'AWAITING_MAPPING', 'AWAITING_CONFIRMATION', 'COMMITTING') " +
+            "ORDER BY updatedAtEpochMillis DESC LIMIT 1",
     )
     fun observeLatestActiveJob(): Flow<ImportJobEntity?>
 

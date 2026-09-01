@@ -128,6 +128,41 @@ class PrepareImportWorkerTest {
     }
 
     @Test
+    fun pastedTextUsesTheSameObservableImportJobPipeline() = runTest {
+        withContext(Dispatchers.IO) {
+            val coordinator = ImportWorkCoordinator(
+                application,
+                application.container.database,
+            )
+            var callbackJobId: String? = null
+
+            val jobId = coordinator.createAndPrepareText(
+                text = "英文,中文\nfixture,夹具\n",
+                sourceName = "粘贴词库",
+            ) { callbackJobId = it }
+
+            assertEquals(jobId, callbackJobId)
+            val job = application.container.database.importDao().getJob(jobId)!!
+            assertEquals("pasted.txt", job.originalFileName)
+            assertTrue(
+                job.status in setOf(
+                    ImportJobStatus.COPYING.name,
+                    ImportJobStatus.PREPARING.name,
+                    ImportJobStatus.AWAITING_MAPPING.name,
+                    ImportJobStatus.AWAITING_CONFIRMATION.name,
+                ),
+            )
+            assertTrue(File(job.internalFilePath).isFile)
+            assertEquals(
+                "英文,中文\nfixture,夹具\n",
+                File(job.internalFilePath).readText(Charsets.UTF_8),
+            )
+
+            coordinator.cancel(jobId)
+        }
+    }
+
+    @Test
     fun workerDoesNotResurrectCancelledJob() = runTest {
         withContext(Dispatchers.IO) {
             val file = File(application.cacheDir, "cancelled-before-worker.csv")

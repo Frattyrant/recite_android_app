@@ -12,6 +12,7 @@ import com.miearn.app.data.local.ImportConflictPolicy
 import com.miearn.app.data.local.ImportJobEntity
 import com.miearn.app.data.local.ImportJobStatus
 import java.io.File
+import java.io.InputStream
 import java.util.UUID
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -35,12 +36,40 @@ class ImportWorkCoordinator(
         sourceName: String,
         onJobCreated: (String) -> Unit = {},
     ): String = withContext(Dispatchers.IO) {
-        val copyContext = currentCoroutineContext()
         // Some SAF providers throw while querying metadata. The job must still be
         // created so the UI can surface the actual open/copy failure instead of
         // silently losing the import request.
         val fileName = runCatching { queryFileName(uri) }
             .getOrDefault(uri.lastPathSegment?.substringAfterLast('/') ?: "vocabulary.txt")
+        createAndPrepareInput(
+            fileName = fileName,
+            sourceName = sourceName,
+            inputProvider = { context.contentResolver.openInputStream(uri) },
+            onJobCreated = onJobCreated,
+        )
+    }
+
+    suspend fun createAndPrepareText(
+        text: String,
+        sourceName: String,
+        onJobCreated: (String) -> Unit = {},
+    ): String {
+        if (text.isBlank()) throw EmptyVocabularyFileException()
+        return createAndPrepareInput(
+            fileName = "pasted.txt",
+            sourceName = sourceName,
+            inputProvider = { text.byteInputStream() },
+            onJobCreated = onJobCreated,
+        )
+    }
+
+    private suspend fun createAndPrepareInput(
+        fileName: String,
+        sourceName: String,
+        inputProvider: () -> InputStream?,
+        onJobCreated: (String) -> Unit,
+    ): String = withContext(Dispatchers.IO) {
+        val copyContext = currentCoroutineContext()
         val jobId = UUID.randomUUID().toString()
         val sourceId = "custom-${UUID.randomUUID()}"
         val target = fileStore.target(jobId)
@@ -59,7 +88,7 @@ class ImportWorkCoordinator(
         database.importDao().upsertJob(job)
         onJobCreated(jobId)
         try {
-            val copied = context.contentResolver.openInputStream(uri)?.use { input ->
+            val copied = inputProvider()?.use { input ->
                 fileStore.copy(jobId, input) { copyContext.ensureActive() }
             } ?: throw VocabularyImportException(
                 message = "无法读取所选文件",

@@ -1,5 +1,6 @@
 package com.miearn.app.ui.importing
 
+import android.content.ActivityNotFoundException
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -52,15 +53,59 @@ fun ImportWizardScreen(
     onBack: () -> Unit,
     onCancel: () -> Unit = onBack,
     onUseSource: (String) -> Unit = {},
+    onReselect: () -> Unit = onBack,
     onFileSelected: (Uri, String) -> Unit,
+    onTextSelected: (String, String) -> Unit = { _, _ -> },
     onMapping: (ImportColumnMapping) -> Unit,
     onCommit: (ImportConflictPolicy) -> Unit,
     onClearError: () -> Unit,
     onRetry: () -> Unit = {},
 ) {
     var sourceName by rememberSaveable { mutableStateOf("") }
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) onFileSelected(uri, sourceName)
+    var pasteMode by rememberSaveable { mutableStateOf(false) }
+    var pastedText by rememberSaveable { mutableStateOf("") }
+    var pickerMessage by rememberSaveable { mutableStateOf<String?>(null) }
+    var pickerLaunching by rememberSaveable { mutableStateOf(false) }
+    val contentPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        pickerLaunching = false
+        if (uri != null) {
+            pickerMessage = null
+            onFileSelected(uri, sourceName)
+        } else {
+            pickerMessage = importPickerResultMessage(hasUri = false)
+        }
+    }
+    val documentPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        pickerLaunching = false
+        if (uri != null) {
+            pickerMessage = null
+            onFileSelected(uri, sourceName)
+        } else {
+            pickerMessage = importPickerResultMessage(hasUri = false)
+        }
+    }
+    fun launchPicker(mode: ImportPickerMode) {
+        pickerLaunching = true
+        pickerMessage = "正在打开文件选择器…"
+        try {
+            when (mode) {
+                ImportPickerMode.GET_CONTENT -> contentPicker.launch("*/*")
+                ImportPickerMode.OPEN_DOCUMENT -> documentPicker.launch(arrayOf("*/*"))
+            }
+        } catch (_: ActivityNotFoundException) {
+            nextImportPicker(mode)?.let(::launchPicker) ?: run {
+                pickerLaunching = false
+                pickerMessage = "系统文件选择器不可用，请直接粘贴文本。"
+            }
+        } catch (_: SecurityException) {
+            nextImportPicker(mode)?.let(::launchPicker) ?: run {
+                pickerLaunching = false
+                pickerMessage = "系统文件选择器没有访问权限，请直接粘贴文本。"
+            }
+        } catch (_: IllegalStateException) {
+            pickerLaunching = false
+            pickerMessage = "当前页面暂时无法打开文件选择器，请稍后重试或直接粘贴文本。"
+        }
     }
     Scaffold(
         topBar = {
@@ -101,7 +146,7 @@ fun ImportWizardScreen(
                         if (canRetryImport(job)) {
                             Button(onClick = onRetry) { Text("重试") }
                         }
-                        OutlinedButton(onClick = { onClearError(); onBack() }) { Text("重新选择") }
+                        OutlinedButton(onClick = onReselect) { Text("重新选择") }
                     }
                 }
             }
@@ -120,15 +165,51 @@ fun ImportWizardScreen(
                         label = { Text("词库名称（可稍后修改）") },
                         placeholder = { Text("例如：考研英语") },
                     )
+                    if (pickerMessage != null) {
+                        Text(
+                            pickerMessage.orEmpty(),
+                            color = if (pickerLaunching) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.error
+                            },
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
                     Button(
-                        onClick = {
-                            picker.launch(
-                                arrayOf("*/*"),
-                            )
-                        },
+                        onClick = { launchPicker(ImportPickerMode.GET_CONTENT) },
+                        enabled = !pickerLaunching,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text("选择 .xlsx、.csv、.tsv 或 .txt 文件")
+                        Text(if (pickerLaunching) "正在打开…" else "选择 .xlsx、.csv、.tsv 或 .txt 文件")
+                    }
+                    OutlinedButton(
+                        onClick = { launchPicker(ImportPickerMode.OPEN_DOCUMENT) },
+                        enabled = !pickerLaunching,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("系统文件选择器（兼容模式）")
+                    }
+                    TextButton(onClick = { pasteMode = !pasteMode }) {
+                        Text(if (pasteMode) "收起直接粘贴" else "无法选择文件？直接粘贴文本")
+                    }
+                    if (pasteMode) {
+                        OutlinedTextField(
+                            value = pastedText,
+                            onValueChange = { pastedText = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            minLines = 5,
+                            maxLines = 10,
+                            label = { Text("粘贴词库内容") },
+                            placeholder = { Text("每行一个单词，也支持：英文<Tab>中文") },
+                        )
+                        Button(
+                            onClick = { onTextSelected(pastedText, sourceName) },
+                            enabled = pastedText.isNotBlank() && !pickerLaunching,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text("开始导入粘贴内容")
+                        }
                     }
                     Text(
                         "限制：文件不超过 20 MB，最多 20,000 行。",

@@ -16,6 +16,7 @@ import com.miearn.app.data.SavedLearningSession
 import com.miearn.app.data.local.WordEntity
 import com.miearn.app.data.local.ImportConflictPolicy
 import com.miearn.app.data.local.ImportJobEntity
+import com.miearn.app.data.local.ImportJobStatus
 import com.miearn.app.data.local.SourceEntity
 import com.miearn.app.importing.ImportColumnMapping
 import com.miearn.app.data.settings.UserSettings
@@ -280,10 +281,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun closeImport() {
         showImport.value = false
         val job = importJob.value
-        if (
-            job?.status == com.miearn.app.data.local.ImportJobStatus.COMPLETED.name ||
-            job?.status == com.miearn.app.data.local.ImportJobStatus.CANCELLED.name
+        if (job?.status == ImportJobStatus.COMPLETED.name ||
+            job?.status == ImportJobStatus.CANCELLED.name
         ) {
+            activeImportJobId.value = null
+        }
+    }
+
+    fun reselectImport() {
+        val jobId = activeImportJobId.value
+        val job = importJob.value
+        importCopyJob?.cancel()
+        importCopyJob = null
+        importUiError.value = null
+        if (
+            jobId == null ||
+            job == null ||
+            job.status == ImportJobStatus.COMPLETED.name ||
+            job.status == ImportJobStatus.CANCELLED.name
+        ) {
+            activeImportJobId.value = null
+            return
+        }
+        viewModelScope.launch {
+            runCatching { container.importCoordinator.cancel(jobId) }
+                .onFailure { importUiError.value = it.message ?: "旧导入任务清理失败，请重试。" }
             activeImportJobId.value = null
         }
     }
@@ -294,6 +316,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             importUiError.value = null
             try {
                 container.importCoordinator.createAndPrepare(uri, sourceName) { jobId ->
+                    activeImportJobId.value = jobId
+                }
+            } catch (error: CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                importUiError.value = error.message ?: "无法创建导入任务，请重试。"
+            }
+        }
+    }
+
+    fun startImportText(text: String, sourceName: String) {
+        importCopyJob?.cancel()
+        importCopyJob = viewModelScope.launch {
+            importUiError.value = null
+            try {
+                container.importCoordinator.createAndPrepareText(text, sourceName) { jobId ->
                     activeImportJobId.value = jobId
                 }
             } catch (error: CancellationException) {

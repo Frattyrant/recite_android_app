@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.miearn.app.data.local.AppDatabase
+import com.miearn.app.data.local.ImportJobEntity
+import com.miearn.app.data.local.ImportJobStatus
 import com.miearn.app.data.local.ProgressEntity
 import com.miearn.app.data.local.ReviewEventEntity
 import com.miearn.app.data.local.StudySessionEntity
@@ -197,6 +199,25 @@ class AppDatabaseTest {
         database.sessionDao().delete()
 
         assertEquals(null, database.sessionDao().get())
+    }
+
+    @Test
+    fun failedImportJobsDoNotResumeAsActive() = runTest {
+        database.importDao().upsertJob(
+            ImportJobEntity(
+                jobId = "failed-import",
+                sourceId = "custom-source",
+                sourceName = "我的词库",
+                originalFileName = "words.txt",
+                internalFilePath = "",
+                status = ImportJobStatus.FAILED.name,
+                errorMessage = "文件无法解析",
+                createdAtEpochMillis = 1,
+                updatedAtEpochMillis = 1,
+            ),
+        )
+
+        assertEquals(null, database.importDao().observeLatestActiveJob().first())
     }
 
     private fun reviewEvent(wordId: String, epochDay: Long) = ReviewEventEntity(
